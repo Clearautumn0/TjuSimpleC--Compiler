@@ -1,0 +1,79 @@
+1. program -> compUnit
+2. compUnit -> decl compUnit
+3. compUnit -> funcDef compUnit
+4. compUnit -> $
+5. decl -> constDecl
+6. decl -> varDecl
+7. constDecl -> const bType constDef argConst ;
+8. argConst -> , constDef argConst
+9. argConst -> $
+10. constDef -> Ident = constInitVal
+11. constInitVal -> constExp
+12. varDecl -> bType varDef argVarDecl ;
+13. argVarDecl -> , varDef argVarDecl
+14. argVarDecl -> $
+15. varDef -> Ident argVarDef
+16. argVarDef -> = initVal
+17. argVarDef -> $
+18. initVal -> exp
+19. bType -> int
+20. bType -> float
+21. bType -> char
+22. funcDef -> funcType Ident ( funcFParams ) block
+23. funcType -> void
+24. funcFParams -> funcFParam argFunctionF
+25. funcFParams -> $
+26. argFunctionF -> , funcFParam argFunctionF
+27. argFunctionF -> $
+28. funcFParam -> bType Ident
+29. block -> { blockItem }
+30. blockItem -> decl blockItem
+31. blockItem -> stmt blockItem
+32. blockItem -> $
+33. stmt -> exp ;
+34. stmt -> ;
+35. stmt -> block
+36. stmt -> return argExp ;
+37. argExp -> $
+38. argExp -> exp
+39. exp -> assignExp
+40. lVal -> Ident
+41. primaryExp -> ( exp )
+42. primaryExp -> number
+43. number -> INT
+44. unaryOp -> +
+45. unaryOp -> -
+46. unaryOp -> !
+47. unaryExp -> unaryOp unaryExp
+48. unaryExp -> Ident callFunc
+49. callFunc -> ( funcRParams )
+50. callFunc -> $
+51. unaryExp -> primaryExp
+52. funcRParams -> funcRParam argFunctionR
+53. funcRParams -> $
+54. argFunctionR -> , funcRParam argFunctionR
+55. argFunctionR -> $
+56. funcRParam -> exp
+57. mulExp -> unaryExp mulExpAtom
+58. mulExpAtom -> * unaryExp mulExpAtom
+59. mulExpAtom -> / unaryExp mulExpAtom
+60. mulExpAtom -> % unaryExp mulExpAtom
+61. mulExpAtom -> $
+62. addExp -> mulExp addExpAtom
+63. addExpAtom -> + mulExp addExpAtom
+64. addExpAtom -> - mulExp addExpAtom
+65. addExpAtom -> $
+66. relExp -> addExp relExpAtom
+67. relExpAtom -> < addExp relExpAtom
+68. relExpAtom -> > addExp relExpAtom
+69. relExpAtom -> <= addExp relExpAtom
+70. relExpAtom -> >= addExp relExpAtom
+71. relExpAtom -> $
+72. eqExp -> relExp eqExpAtom
+73. eqExpAtom -> == relExp eqExpAtom
+74. eqExpAtom -> != relExp eqExpAtom
+75. eqExpAtom -> $
+76. assignExp -> eqExp assignExpAtom
+77. assignExpAtom -> = eqExp assignExpAtom
+78. assignExpAtom -> $
+79. constExp -> assignExp
