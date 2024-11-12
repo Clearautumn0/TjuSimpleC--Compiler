@@ -158,6 +158,87 @@ def epsilon_closure(nfa_states):
     return closure
 
 
+
+
+
+
+# DFA 生成和最小化的类定义
+
+class MinimizedDFA:
+    def __init__(self, dfa):
+        self.dfa = dfa
+        self.minimized_states = []
+        self.transitions = {}
+        self.accept_token_map = {}
+
+    def minimize(self):
+        # 初始划分为接受状态和非接受状态
+        accept_states = {state_id for state_id, state in self.dfa.states.items() if state.is_accept}
+        non_accept_states = set(self.dfa.states) - accept_states
+        partitions = [accept_states, non_accept_states]
+
+        while True:
+            new_partitions = []
+            for group in partitions:
+                split_map = defaultdict(set)
+                for state in group:
+                    key = tuple(self._find_target_partition(state, symbol, partitions)
+                                for symbol in self.dfa.states[state].transitions.keys())
+                    split_map[key].add(state)
+
+                new_partitions.extend(split_map.values())
+
+            if new_partitions == partitions:
+                break
+            partitions = new_partitions
+
+        self._build_minimized_dfa(partitions)
+
+    def _find_target_partition(self, state, symbol, partitions):
+        target_state = self.dfa.states[state].transitions.get(symbol)
+        for index, group in enumerate(partitions):
+            if target_state in group:
+                return index
+        return None
+
+    def _build_minimized_dfa(self, partitions):
+        state_mapping = {}
+        for index, group in enumerate(partitions):
+            is_accept = any(self.dfa.states[state].is_accept for state in group)
+            state_mapping[frozenset(group)] = index
+            self.minimized_states.append(index)
+            self.transitions[index] = {}
+
+            # 映射接受状态到 token 类型
+            for state in group:
+                if self.dfa.states[state].is_accept:
+                    token_type = self.dfa.states[state].accept_token_type
+                    self.accept_token_map[index] = token_type
+
+        for index, group in enumerate(partitions):
+            representative = next(iter(group))
+            for symbol, target_state in self.dfa.states[representative].transitions.items():
+                target_partition = self._find_target_partition(representative, symbol, partitions)
+                self.transitions[index][symbol] = target_partition
+
+    def match_tokens(self, code):
+        tokens = []
+        current_state = 0
+        current_token = ""
+        for char in code:
+            if char in self.transitions[current_state]:
+                current_token += char
+                current_state = self.transitions[current_state][char]
+                if current_state in self.accept_token_map:
+                    token_type = self.accept_token_map[current_state]
+                    tokens.append((current_token, token_type))
+                    current_token = ""
+                    current_state = 0
+            else:
+                current_token = ""
+                current_state = 0
+        return tokens
+
 # 示例代码
 code = "int main() { return 0; }"
 lexer = Lexer()
@@ -177,72 +258,6 @@ nfa_generator.display_nfa(start_state)
 dfa = nfa_to_dfa(start_state)  # `start_state` 是之前 NFA 的起始状态
 print("\nDFA Transitions:")
 dfa.display_dfa()
-
-
-class MinimizedDFA:
-    def __init__(self, dfa):
-        self.dfa = dfa
-        self.minimized_states = []
-        self.transitions = {}
-
-    def minimize(self):
-        # 初始划分：接受状态和非接受状态
-        # accept_states = {s for s in self.dfa.states if s.is_accept}
-        accept_states = {state_id for state_id, state in self.dfa.states.items() if state.is_accept}
-        non_accept_states = set(self.dfa.states) - accept_states
-        partitions = [accept_states, non_accept_states]
-
-        # 进行划分细化
-        while True:
-            new_partitions = []
-            for group in partitions:
-                # 基于输入字符的转换对当前组进行细分
-                split_map = defaultdict(set)
-                for state in group:
-                    # 获取状态在不同输入字符下的目标状态
-                    key = tuple(self._find_target_group(state, symbol, partitions) 
-                                for symbol in self.dfa.states[state].transitions.keys())
-                    split_map[key].add(state)
-
-                # 记录细分后的组
-                new_partitions.extend(split_map.values())
-
-            if new_partitions == partitions:
-                break
-            partitions = new_partitions
-
-        # 构建最小化 DFA
-        self._build_minimized_dfa(partitions)
-
-    def _find_target_group(self, state, symbol, partitions):
-        # 查找状态在指定输入下转移的组
-        target_state = self.dfa.states[state].transitions.get(symbol)
-        for i, group in enumerate(partitions):
-            if target_state in group:
-                return i
-        return None
-
-    def _build_minimized_dfa(self, partitions):
-        # 为每个状态组创建一个新的最小化 DFA 状态
-        state_mapping = {}
-        for i, group in enumerate(partitions):
-            is_accept = any(self.dfa.states[state].is_accept for state in group)
-            self.minimized_states.append(i)
-            state_mapping[frozenset(group)] = i
-            self.transitions[i] = {}
-        
-        # 填充最小化 DFA 的状态转移
-        for i, group in enumerate(partitions):
-            representative = next(iter(group))  # 选择组中一个状态作为代表
-            for symbol, target_state in self.dfa.states[representative].transitions.items():
-                target_group = self._find_target_group(representative, symbol, partitions)
-                self.transitions[i][symbol] = target_group
-
-    def display_minimized_dfa(self):
-        print("Minimized DFA Transitions:")
-        for state, transitions in self.transitions.items():
-            for symbol, target in transitions.items():
-                print(f"State {state} --{symbol}--> State {target}")
 
 # 示例：最小化 DFA
 minimized_dfa = MinimizedDFA(dfa)  # `dfa` 是之前生成的 DFA
