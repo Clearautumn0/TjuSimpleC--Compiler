@@ -28,13 +28,13 @@ class LeftRecursionEliminator:
     def eliminate_left_recursion(self, non_terminal_symbols:list, productions:Grammar):
         new_productions = productions
         for i in range(len(non_terminal_symbols)):
+            i_mark = non_terminal_symbols[i]
             for j in range(i):
-                i_mark = non_terminal_symbols[i]
                 j_mark = non_terminal_symbols[j]
                 i_rules = new_productions.rules[i_mark]
                 j_rules = new_productions.rules[j_mark]
                 new_productions.rules[i_mark] = self.expand_grammar(i_rules, j_rules, j_mark)
-            self.eliminate_direct_left_recursion_for_one_rule(new_productions.rules[non_terminal_symbols[i]])
+            self.eliminate_direct_left_recursion_for_one_rule(i_mark, new_productions.rules[i_mark])
         print(new_productions)
 
     # 实现带入
@@ -57,14 +57,19 @@ class LeftRecursionEliminator:
         return new_program_rules
 
     # 消除直接左递归
-    def eliminate_direct_left_recursion_for_one_rule(self, lhs, rhs):
-        left_recursive = [token for l in rhs if lhs == rhs[0]]
-        non_left_recursive = [prod for prod in rule if prod[0] != rule[0][0]]
-        if not left_recursive:
-            return rule
+    def eliminate_direct_left_recursion_for_one_rule(self, lhs, rhs_rules):
+        left_recursive = []
+        non_left_recursive = []
+        for rhs in rhs_rules:
+            if rhs[0] == lhs:
+                left_recursive.append(rhs[1:])
+            else:
+                non_left_recursive.append(rhs)
 
-        new_rules = non_left_recursive
-        new_rules.append([right for right in left_recursive[0]])
+        if not left_recursive:
+            return rhs_rules
+
+        new_lhs = f"{lhs}'"
 
 
 
