@@ -1,10 +1,26 @@
+'''
+本文件是语法分析器的工具类，负责从文件中读取文法规则并解析成 Grammar 对象。
+语法规则文件格式如下：
 
+    S -> NP VP
+    NP -> Det N
+    VP -> V NP
+    Det -> "the" | "a"
+    N -> "man" | "park"
+    V -> "saw" | "walked"
+
+提供的函数有：
+
+- load_from_file(file_path): 从文件中读取文法规则并解析成 Grammar 对象。
+- 通过 grammars.get_rules()获取所有文法规则。
+
+'''
 
 from src.Syntax.grammar import Grammar
 
 
 def load_from_file(file_path):
-    grammars=[]#返回值
+    grammar = Grammar()
     with open(file_path, 'r', encoding='utf-8') as file:
         for line in file:
             line = line.strip()
@@ -18,17 +34,14 @@ def load_from_file(file_path):
             
             # 添加文法规则到 Grammar 中
             for rhs in rhs_options:
-                grammar=Grammar()
                 # 直接用 rhs 包含分号
                 grammar.add_rule(lhs, rhs.strip().split())
-                grammars.append(grammar)
-    return grammars        
+    return grammar
             
             
 if __name__ == '__main__':
-    
     grammars = load_from_file("../../input/grammars.txt")
-    i =1
-    for grammar in grammars:
-        print(f"{i}. {grammar}")
-        i+=1
+    print(grammars)
+
+    for key, value in grammars.get_rules().items():
+        print(key, "->", value)
