@@ -70,7 +70,7 @@ class LeftRecursionEliminator:
             return rhs_rules
 
         new_lhs = f"{lhs}'"
-
+        new_production
 
 
 
