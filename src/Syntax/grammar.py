@@ -92,4 +92,4 @@ if __name__ == "__main__":
 
     print(f"使用get_rule()方法获取文法规则：{grammar.get_rules()}")
 
-    print(f"使用get_productions()方法获取compUnit右侧产生式：{grammar.get_productions("compUnit")}")
+    print(f"使用get_productions()方法获取compUnit右侧产生式：{grammar.get_productions('compUnit')}")
