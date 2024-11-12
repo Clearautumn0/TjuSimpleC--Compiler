@@ -26,52 +26,64 @@
 
 class Grammar:
     def __init__(self):
-        # 使用字典来存储文法规则，键是非终结符，值是右侧产生式列表
-        self.rules = {}
-
+        self.lhs=""
+        self.rhs=[]
+        self.rule={}
     def add_rule(self, lhs, rhs):
         """
         添加一条文法规则
         :param lhs: 左侧非终结符
         :param rhs: 右侧产生式（列表形式）
         """
-        lhs = lhs.strip()
-        rhs = [r.strip().split() for r in rhs]
-        if lhs not in self.rules:
-            self.rules[lhs] = []
-        self.rules[lhs].extend(rhs)
+        # print(lhs,rhs)
+        self.lhs = lhs.strip()
+        self.rhs = rhs
+        if self.lhs not in self.rule:
+            self.rule[self.lhs] = []
+        self.rule[self.lhs].append(self.rhs)
+        # print(self.rule)
 
-    def get_productions(self, lhs):
+    def get_productions(self):
         """
-        获取给定非终结符的所有产生式
-        :param lhs: 左侧非终结符
         :return: 右侧产生式列表
         """
-        return self.rules.get(lhs, [])
+        return self.rhs
 
     def __str__(self):
         """
         返回文法规则的字符串表示
         """
-        output = []
-        for lhs, rhs_list in self.rules.items():
-            for rhs in rhs_list:
-                output.append(f"{lhs} -> {' '.join(rhs)}")
-        return "\n".join(output)
+        result = []  # 创建一个空列表来存储结果
+        for key, value_list in self.rule.items():
+            for value in value_list:
+                # 使用 '->' 连接键和对应的值，并添加到结果列表中
+                result.append(f"{key} -> {' '.join(value)}")
+
+        return '\n'.join(result)  # 将结果列表连接成字符串并返回
+
+    def get_rule(self):
+        """
+        :return: 文法规则字典
+        """
+        return self.rule
+
+
+
 
 # 测试
 if __name__ == "__main__":
     grammar = Grammar()
-    grammar.add_rule("program", ["compUnit"])
     grammar.add_rule("compUnit", ["decl", "compUnit"])
     grammar.add_rule("compUnit", ["funcDef", "compUnit"])
-    grammar.add_rule("decl", ["constDecl"])
+    grammar.add_rule("compUnit", ["$"])
 
     # 打印文法
-    print(grammar)
+    print(f"打印的内容：\n{grammar}")
 
-    # 获取某个非终结符的产生式
-    print("Productions for 'compUnit':")
-    productions = grammar.get_productions("compUnit")
-    for production in productions:
-        print(production)
+    print(f"使用get_rule()方法获取文法规则：{grammar.get_rule()}")
+
+    # # 获取某个非终结符的产生式
+    # print("Productions for 'compUnit':")
+    # productions = grammar.get_productions()
+    # for production in productions:
+    #     print(production)

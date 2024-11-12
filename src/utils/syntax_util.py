@@ -28,4 +28,7 @@ def load_from_file(file_path):
 if __name__ == '__main__':
     
     grammars = load_from_file("../../input/grammars.txt")
-    print(grammars)
+    i =1
+    for grammar in grammars:
+        print(f"{i}. {grammar}")
+        i+=1
