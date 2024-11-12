@@ -4,7 +4,7 @@ from src.Syntax.grammar import Grammar
 
 
 def load_from_file(file_path):
-    grammars=[]
+    grammars=[]#返回值
     with open(file_path, 'r', encoding='utf-8') as file:
         for line in file:
             line = line.strip()
