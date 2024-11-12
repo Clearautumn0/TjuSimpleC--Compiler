@@ -26,4 +26,9 @@
 │   │   ├── __init__.py
 │   │   └── utils.py
 │   │
-│   └── main.py             # 入口文件，用于执行词法分析和语法分析
+│   │     
+    ├── test/               # 测试用例
+    │   ├── __init__.py
+    │   ├── test_lexer.py
+    │   ├── test_parser.py
+    
