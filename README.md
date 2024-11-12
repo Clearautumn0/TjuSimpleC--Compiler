@@ -15,9 +15,9 @@
 │   │   ├── lexer.py        # 词法分析器的实现
 │   │   └── token.py        # 定义Token类
 │   │
-│   ├── Grammar/            # 语法分析的相关模块
+│   ├── Syntax/            # 语法分析的相关模块
 │   │   ├── __init__.py     # 初始化Grammar模块
-│   │   ├── grammar.py      # 语法规则和文法定义
+│   │   ├── grammar.py      # 文法定义
 │   │   ├── parser.py       # 语法分析器的实现
 │   │   ├── ast.py          # 抽象语法树定义
 │   │   └── error.py        # 错误处理
