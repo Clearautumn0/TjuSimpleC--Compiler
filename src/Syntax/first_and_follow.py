@@ -21,13 +21,9 @@
 from grammar import Grammar
 
 
-<<<<<<< HEAD:src/Syntax/parser.py
-class Parser:
-    def __init__(self, grammar,start_symbol,end_symbol="#"):
-=======
+
 class FirstAndFollow:
     def __init__(self, grammar,space_symbol,start_symbol,end_symbol):
->>>>>>> 50bb845aefd1869daccc6b763a29e65272cd7102:src/Syntax/first_and_follow.py
         self.grammar = grammar.rules  # 文法规则
         self.terminals = self.compute_terminals(grammar,space_symbol)  # 计算终结符
         self.non_terminals = self.compute_non_terminals(grammar)  # 计算非终结符
