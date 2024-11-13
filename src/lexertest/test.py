@@ -139,17 +139,25 @@ def nfa_determinization(NFA):
                 continue
 
             if frozenset(next_states) not in state_to_id:
+                next_id += 1
                 state_to_id[frozenset(next_states)] = next_id
                 DFA.states.add(next_id)
                 processing_set.append(frozenset(next_states))
-                next_id += 1
+                # next_id += 1
 
-                if any(state in NFA.final for state in next_states):
-                    DFA.final.add(next_id)
-                    for state in next_states:
-                        if state in NFA.final:
-                            DFA.state_labels[next_id] = NFA.state_labels[state]
-                            break
+                for state in frozenset(next_states):
+                    if state in NFA.final:
+                        DFA.final.add(next_id)
+                        DFA.state_labels[next_id] = NFA.state_labels[state]
+                        break
+
+
+                # if any(state in NFA.final for state in next_states):
+                #     DFA.final.add(next_id)
+                #     for state in next_states:
+                #         if state in NFA.final:
+                #             DFA.state_labels[next_id] = NFA.state_labels[state]
+                #             break
 
             DFA.trans_map.add(TransformMap(ch, current_id, state_to_id[frozenset(next_states)]))
 
