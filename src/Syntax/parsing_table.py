@@ -9,33 +9,35 @@
 
 '''
 from collections import defaultdict
-
-def is_terminal(symbol):
-    return symbol.islower()
-
+from grammar import Grammar
+from first_and_follow import FirstAndFollow
 
 
 
 
 
 
-def build_parsing_table(FIRST, FOLLOW, G):
+
+def list_to_string(list):
+    """将列表转换为字符串"""
+    # 使用 str.join() 方法将列表中的元素连接成一个字符串
+    return ''.join(map(str, list))
+
+
+
+
+
+
+def build_parsing_table(first, follw, grammar):
     M = defaultdict(lambda: defaultdict(list))
-
-    for A, ruls in G.items() :
-        for alpha in ruls:
-            for a in alpha:
-                if is_terminal(a):
-                    M[A][a].append({A: [alpha]})
-            if '$' in alpha:
-                for b in FOLLOW[A]:
-                    M[A][b].append({A: ["$"]})
-
-
-
-    return M
-
-
+    for A, productions in grammar.items():
+        for alpha_list in productions:
+            alpha = list_to_string(alpha_list)
+            for a in first[alpha]:
+                M[A][a].append({A:alpha_list})
+            if '$' in first[alpha]:
+                for b in follw[A]:
+                    M[A][b].append({A:['$']})
 
 
 
@@ -47,25 +49,60 @@ def print_parsing_table(M):
         for a in M[A]:
             rules = M[A][a]
             print(f"M[{A}, {a}] = {rules if rules else '出错标志'}")
-if __name__ == '__main__':
-    G = {
-        'S': ['AB', 'a'],
-        'A': ['aA', '$'],
-        'B': ['bB', '$']
-    }
-    FIRST = {
-    'S': {'a', '$'},
-    'A': {'a', '$'},
-    'B': {'b'}
-    }
 
-    FOLLOW = {
-        'S': {'#'},
-        'A': {'b', '#'},
-        'B': {'#'}
-    }
-    M = build_parsing_table(FIRST, FOLLOW, G)
-    print (M)
+
+
+if __name__ == '__main__':
+    grammar = Grammar()
+
+    # 添加文法规则
+    grammar.add_rule("E", ["T", "E'"])
+    grammar.add_rule("E'", ["+", "T", "E'"])
+    grammar.add_rule("E'", ["$"])
+    grammar.add_rule("T", ["F", "T'"])
+    grammar.add_rule("T'", ["*", "F", "T'"])
+    grammar.add_rule("T'", ["$"])
+    grammar.add_rule("F", ["(", "E", ")"])
+    grammar.add_rule("F", ["i"])
+
+    # 创建解析器对象
+    new_parser = FirstAndFollow(grammar, 'ε', "E", "#")
+
+    first = {
+        "E": {')', '#'},
+        "E'": {')', '#'},
+        "T": {'$', '+'},
+        "T'": {'$', '+'},
+        "F": {'$', '*'}
+        "TE'"
+
+
+
+
+
+         }
+
+
+
+    follow = new_parser.follow_sets
+
+    print("First sets:")
+    for key, value in first.items():
+        print(f"{key}: {value}")
+
+    print("Follow sets:")
+    for key, value in follow.items():
+        print(f"{key}: {value}")
+
+    print("grammar rules:")
+    for key, value in grammar.rules.items():
+        print(f"{key}: {value}")
+    # 构造分析表
+    M = build_parsing_table(first, follow, grammar.rules)
+    # 打印分析表
     print_parsing_table(M)
+
+
+
 
     
