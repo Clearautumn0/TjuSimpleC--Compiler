@@ -1,5 +1,7 @@
-int a;
+
 void func(){
-	a=10;
+	1 == 2;
+	int a;
+	float b = 1.0;
 	return 0;
 }

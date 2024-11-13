@@ -54,6 +54,40 @@ symbols_table = {
     ",": "SE"
 }
 
+# 定义字符映射表
+symbols = {
+    "int": 1,
+    "float": 2,
+    "char": 3,
+    "void": 4,
+    "return": 5,
+    "const": 6,
+    "main": 7,
+    # 运算符 OP
+    "!": 8,
+    "+": 9,
+    "-": 10,
+    "*": 11,
+    "/": 12,
+    "%": 13,
+    "=": 14,
+    ">": 15,
+    "<": 16,
+    "==": 17,
+    "<=": 18,
+    ">=": 19,
+    "!=": 20,
+    "&&": 21,
+    "||": 22    ,
+    # 界符 SE
+    "(": 23,
+    ")": 24,
+    "{": 25,
+    "}": 26,
+    ";": 27,
+    ",": 28
+}
+
 processed_symbols_table = {}
 
 lex_input_symbols = ['n', 'l', 'o', 's', '_', '0', '=', '>', '<', '!', '&', '|', '-', '.']
@@ -279,11 +313,11 @@ def get_tokens(state, str_token, DFA):
     if label == "FLOAT":
         return f"<FLOAT,{str_token}>"
     if label == "SE":
-        return f"<SE,{state}>"
+        return f"<SE,{symbols.get(str_token)}>"
     if label == "OP":
         return f"<OP,{state}>"
     if label == "I&K" and symbols_table.get(str_token) == "KW":
-        return f"<KW,{state}>"
+        return f"<KW,{symbols.get(str_token)}>"
     return f"<IDN,{str_token}>"
 
   
