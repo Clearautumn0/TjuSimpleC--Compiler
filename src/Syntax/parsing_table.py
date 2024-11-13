@@ -101,7 +101,7 @@ def convert_keys_to_string(original_dict):
 
     for key, value in original_dict.items():
         # 判断键是否是列表形式
-        if isinstance(key, list):
+        if isinstance(key, set):
             # 如果键是列表形式，则转换成字符串形式
             key_str = ''.join(key)
             new_dict[key_str] = value
@@ -132,21 +132,21 @@ if __name__ == '__main__':
     # 创建解析器对象
     new_parser = FirstAndFollow(grammar, '$', "E", "#")
 
-    first = {
-        "E": {'(', 'i'},
-        "E'": {'+', '$'},
-        "T": {'(', 'i'},
-        "T'": {'*', '$'},
-        "F": {'(', 'i'},
-        "TE'":{'(','i'},
-        "+TE'":{'+'},
-        "FT'":{'(','i'},
-        "*FT'":{'*'},
-        "(E)":{'(' },
-        "i":{'i'}
-      }
-
-
+    # first = {
+    #     "E": {'(', 'i'},
+    #     "E'": {'+', '$'},
+    #     "T": {'(', 'i'},
+    #     "T'": {'*', '$'},
+    #     "F": {'(', 'i'},
+    #     "TE'":{'(','i'},
+    #     "+TE'":{'+'},
+    #     "FT'":{'(','i'},
+    #     "*FT'":{'*'},
+    #     "(E)":{'(' },
+    #     "i":{'i'}
+    #   }
+    #
+    first = new_parser.production_first_sets
 
     follow = new_parser.follow_sets
 
