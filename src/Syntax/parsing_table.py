@@ -132,21 +132,21 @@ if __name__ == '__main__':
     # 创建解析器对象
     new_parser = FirstAndFollow(grammar, '$', "E", "#")
 
-    # first = {
-    #     "E": {'(', 'i'},
-    #     "E'": {'+', '$'},
-    #     "T": {'(', 'i'},
-    #     "T'": {'*', '$'},
-    #     "F": {'(', 'i'},
-    #     "TE'":{'(','i'},
-    #     "+TE'":{'+'},
-    #     "FT'":{'(','i'},
-    #     "*FT'":{'*'},
-    #     "(E)":{'(' },
-    #     "i":{'i'}
-    #   }
-    #
-    first = new_parser.production_first_sets
+    first = {
+        "E": {'(', 'i'},
+        "E'": {'+', '$'},
+        "T": {'(', 'i'},
+        "T'": {'*', '$'},
+        "F": {'(', 'i'},
+        "TE'":{'(','i'},
+        "+TE'":{'+'},
+        "FT'":{'(','i'},
+        "*FT'":{'*'},
+        "(E)":{'(' },
+        "i":{'i'}
+      }
+
+    # first = new_parser.production_first_sets
 
     follow = new_parser.follow_sets
 
