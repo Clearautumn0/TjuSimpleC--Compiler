@@ -79,19 +79,19 @@ def NFAdeterminization(NFA):
     return DFA
 
 
-# 定义转换和NFA
-transitions = [
-    TransformMap('ε', 0, 1),
-    TransformMap('a', 1, 2),
-    TransformMap('ε', 2, 0),
-    TransformMap('b', 2, 3)
-]
+# # 定义转换和NFA
+# transitions = [
+#     TransformMap('ε', 0, 1),
+#     TransformMap('a', 1, 2),
+#     TransformMap('ε', 2, 0),
+#     TransformMap('b', 2, 3)
+# ]
 
-NFA = FA(start_state=0, final_states={3}, transitions=transitions, input_symbols={'ε'})
+# NFA = FA(start_state=0, final_states={3}, transitions=transitions, input_symbols={'ε'})
 
-# 进行NFA确定化
-DFA = NFAdeterminization(NFA)
+# # 进行NFA确定化
+# DFA = NFAdeterminization(NFA)
 
-# 输出DFA的状态转换
-for trans in DFA.transitions:
-    print(f"DFA Transition: {trans.now} --{trans.rec}--> {trans.next}")
+# # 输出DFA的状态转换
+# for trans in DFA.transitions:
+#     print(f"DFA Transition: {trans.now} --{trans.rec}--> {trans.next}")
