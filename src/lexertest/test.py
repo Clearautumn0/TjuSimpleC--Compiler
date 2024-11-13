@@ -244,12 +244,19 @@ def lexical_analysis():
 
     DFA = nfa_determinization(NFA)
     min_DFA = minimize(DFA)
-
-    lexical_analysis_helper("01_var_defn.sy", min_DFA, "1_1")
+ 
+    lexical_analysis_helper("D:/000编译原理/labend/TjuSimpleC--Compiler/input/lex_input/01_var_defn.sy", min_DFA, "1_1")
+    lexical_analysis_helper("D:/000编译原理/labend/TjuSimpleC--Compiler/input/lex_input/02_var_defn.sy", min_DFA, "1_2")
+    lexical_analysis_helper("D:/000编译原理/labend/TjuSimpleC--Compiler/input/lex_input/03_var_defn.sy", min_DFA, "1_3")
+    lexical_analysis_helper("D:/000编译原理/labend/TjuSimpleC--Compiler/input/lex_input/04_var_defn.sy", min_DFA, "1_4")
+    lexical_analysis_helper("D:/000编译原理/labend/TjuSimpleC--Compiler/input/lex_input/05_var_defn.sy", min_DFA, "1_5")
 
 
 def lexical_analysis_helper(address, DFA, x):
-    with open(address, 'r') as test_sample, open(f"./lex{x}.txt", 'w') as record_tokens:
+    output_dir = "D:/000编译原理/labend/TjuSimpleC--Compiler/output/lex_output"
+    output_filename = f"lex{x}.txt"
+    output_path = os.path.join(output_dir, output_filename)
+    with open(address, 'r') as test_sample, open(output_path, 'w') as record_tokens:
         if not test_sample or not record_tokens:
             print("文件打开失败")
             return
