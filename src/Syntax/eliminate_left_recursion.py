@@ -120,6 +120,6 @@ class LeftRecursionEliminator:
 if __name__ == "__main__":
     test_path = "../../input/test_grammars.txt"
     path = "../../input/grammars.txt"
-    oldGrammar = load_from_file(test_path)
+    oldGrammar = load_from_file(path)
     newGrammar = LeftRecursionEliminator(oldGrammar)
     print(newGrammar.new_productions)
