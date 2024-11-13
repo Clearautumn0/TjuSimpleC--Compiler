@@ -1,13 +1,33 @@
+"""
+    FIRST 和 FOLLOW 集合计算器
+
+    该类用于计算上下文无关文法（CFG）的 FIRST 集合和 FOLLOW 集合。
+
+    该类提供了以下方法：
+    - `__init__(self, grammar, space_symbol, start_symbol, end_symbol)`: 构造函数，用于初始化类实例。
+    - `compute_non_terminals(self, grammar)`: 计算非终结符集合。
+    - `compute_terminals(self, grammar, space_symbol)`: 计算终结符集合。
+    - `compute_first(self, grammar, space_symbol)`: 计算 FIRST 集合。
+    - `compute_follow(self, grammar, first_sets, space_symbol, start_symbol, end_symbol)`: 计算 FOLLOW 集合。
+
+    参数说明：
+    - `grammar`: `Grammar` 类的实例，包含文法的产生式规则。
+    - `space_symbol`: 空串符号，通常用 'ε' 表示。
+    - `start_symbol`: 文法的开始符号。
+    - `end_symbol`: 结束符号，通常用 '#' 表示，用于表示输入结束。
+
+    @author: <聂哲浩>
+    """
 from grammar import Grammar
 
 
-class Parser:
-    def __init__(self, grammar,start_symbol,end_symbol):
+class FirstAndFollow:
+    def __init__(self, grammar,space_symbol,start_symbol,end_symbol):
         self.grammar = grammar.rules  # 文法规则
-        self.terminals = self.compute_terminals(grammar)  # 计算终结符
+        self.terminals = self.compute_terminals(grammar,space_symbol)  # 计算终结符
         self.non_terminals = self.compute_non_terminals(grammar)  # 计算非终结符
-        self.first_sets = self.compute_first(grammar)  # 计算 FIRST 集
-        self.follow_sets = self.compute_follow(grammar, self.first_sets, start_symbol,end_symbol)  # 计算 FOLLOW 集
+        self.first_sets = self.compute_first(grammar,space_symbol)  # 计算 FIRST 集
+        self.follow_sets = self.compute_follow(grammar, self.first_sets, space_symbol, start_symbol, end_symbol)  # 计算 FOLLOW 集
 
 
     # 计算非终结符
@@ -16,7 +36,7 @@ class Parser:
         return set(grammar.rules.keys())
 
     # 计算终结符
-    def compute_terminals(self, grammar):
+    def compute_terminals(self, grammar,space_symbol):
         # 获取文法中的所有非终结符
         non_terminals = set(grammar.rules.keys())
         terminals = set()
@@ -29,11 +49,11 @@ class Parser:
                     if symbol not in non_terminals:
                         terminals.add(symbol)
 
-        terminals.add('ε')  # 添加 EOF 符号（表示输入的结束）
+        terminals.add(space_symbol)  # 添加 空串 终结符
         return terminals
 
     # 计算 FIRST 集
-    def compute_first(self, grammar):
+    def compute_first(self, grammar,space_symbol):
         # 初始化非终结符的 FIRST 集
         first_sets = {non_terminal: set() for non_terminal in grammar.rules.keys()}
 
@@ -50,30 +70,30 @@ class Parser:
                                 changed = True
                             break  # 只处理第一个终结符或非终结符
                         elif symbol in first_sets:  # 如果是非终结符
-                            if 'ε' not in first_sets[symbol]:  # 如果 FIRST 集不包含空串
+                            if space_symbol not in first_sets[symbol]:  # 如果 FIRST 集不包含空串
                                 for char in first_sets[symbol]:
-                                    if char != 'ε' and char not in first_sets[non_terminal]:
+                                    if char != space_symbol and char not in first_sets[non_terminal]:
                                         first_sets[non_terminal].add(char)  # 将 FIRST 集加入当前非终结符的 FIRST 集
                                         changed = True
                                 break  # 只处理第一个非终结符
                             else:  # 如果包含空串，则继续添加 FIRST 集合的内容
                                 for char in first_sets[symbol]:
-                                    if char != 'ε' and char not in first_sets[non_terminal]:
+                                    if char != space_symbol and char not in first_sets[non_terminal]:
                                         first_sets[non_terminal].add(char)  # 将 FIRST 集加入当前非终结符的 FIRST 集
                                         changed = True
                                 if index == len(production) - 1:  # 如果是生产式最后一个符号
-                                    if 'ε' not in first_sets[non_terminal]:
-                                        first_sets[non_terminal].add('ε')  # 如果能推导空串，添加空串
+                                    if space_symbol not in first_sets[non_terminal]:
+                                        first_sets[non_terminal].add(space_symbol)  # 如果能推导空串，添加空串
                                         changed = True
                                 continue  # 继续查看下一个符号
-                    if all(symbol == 'ε' for symbol in production):  # 如果整个产生式是空串
-                        if 'ε' not in first_sets[non_terminal]:
-                            first_sets[non_terminal].add('ε')  # 添加空串
+                    if all(symbol == space_symbol for symbol in production):  # 如果整个产生式是空串
+                        if space_symbol not in first_sets[non_terminal]:
+                            first_sets[non_terminal].add(space_symbol)  # 添加空串
                             changed = True
 
         return first_sets
 
-    def compute_follow(self, grammar, first_sets, start_symbol,end_symbol):
+    def compute_follow(self, grammar, first_sets,space_symbol, start_symbol,end_symbol):
         # 初始化 FOLLOW 集合
         follow_sets = {non_terminal: set() for non_terminal in grammar.rules.keys()}
         follow_sets[start_symbol].add(end_symbol)  # 开始符号的 FOLLOW 集包含 EOF
@@ -102,17 +122,17 @@ class Parser:
 
                                 # 如果是非终结符，将其 FIRST 集（除去空串）加入 FOLLOW 集合
                                 if next_symbol in first_sets:
-                                    follow_to_add.update(first_sets[next_symbol] - {'ε'})
+                                    follow_to_add.update(first_sets[next_symbol] - {space_symbol})
 
                                 # 如果 next_symbol 的 FIRST 集包含空串，继续检查下一个符号
-                                if 'ε' in first_sets.get(next_symbol, set()):
+                                if space_symbol in first_sets.get(next_symbol, set()):
                                     continue
                                 else:
                                     break
 
                             # 3. 如果当前符号是产生式的最后一个非终结符
                             if i == len(production) - 1 or all(
-                                    symbol in self.non_terminals and 'ε' in first_sets.get(symbol, set())
+                                    symbol in self.non_terminals and space_symbol in first_sets.get(symbol, set())
                                     for symbol in production[i + 1:]
                             ):
                                 follow_to_add.update(follow_sets[non_terminal])
@@ -140,7 +160,7 @@ if __name__ == '__main__':
     grammar.add_rule("F", ["i"])
 
     # 创建解析器对象
-    new_parser = Parser(grammar, "E", "#")
+    new_parser = FirstAndFollow(grammar, 'ε', "E", "#")
 
     # 输出解析结果
     print("Non-terminals:", new_parser.grammar.keys())  # 输出非终结符
