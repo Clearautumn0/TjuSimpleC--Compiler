@@ -72,45 +72,56 @@ class Parser:
 
         return first_sets
 
-    # 计算 FOLLOW 集
     def compute_follow(self, grammar, first_sets, start_symbol):
-        # 初始化非终结符的 FOLLOW 集
+        # 初始化 FOLLOW 集合
         follow_sets = {non_terminal: set() for non_terminal in grammar.rules.keys()}
-        follow_sets[start_symbol].add('#')  # 开始符号的 FOLLOW 集合包含 EOF（#）
+        follow_sets[start_symbol].add('$')  # 开始符号的 FOLLOW 集包含 EOF
 
-        # 用来标记 FOLLOW 集是否有改变
         changed = True
         while changed:
             changed = False
+            # 遍历所有的非终结符和产生式
             for non_terminal, productions in grammar.rules.items():
                 for production in productions:
-                    for i in range(len(production) - 1):
-                        current_symbol = production[i]
-                        next_symbol = production[i + 1]
+                    # 遍历产生式右侧的每个符号
+                    for i, current_symbol in enumerate(production):
+                        # 1. 当前符号是非终结符
+                        if current_symbol in self.non_terminals:
+                            # 获取当前符号之后的符号集合
+                            follow_to_add = set()
 
-                        # 1. 当前符号是非终结符，且下一个符号是非终结符
-                        if current_symbol in self.non_terminals and next_symbol in self.non_terminals:
-                            # 将 next_symbol 的 FIRST 集（去除空串）加入到 current_symbol 的 FOLLOW 集合中
-                            new_elements = first_sets[next_symbol] - {'$'}
-                            if new_elements - follow_sets[current_symbol]:
-                                follow_sets[current_symbol].update(new_elements)
+                            # 2. 如果当前符号后面有其他符号
+                            for j in range(i + 1, len(production)):
+                                next_symbol = production[j]
+
+                                # 如果下一个符号是终结符，直接加入 FOLLOW 集合
+                                if next_symbol in self.terminals:
+                                    follow_to_add.add(next_symbol)
+                                    break
+
+                                # 如果是非终结符，将其 FIRST 集（除去空串）加入 FOLLOW 集合
+                                if next_symbol in first_sets:
+                                    follow_to_add.update(first_sets[next_symbol] - {'$'})
+
+                                # 如果 next_symbol 的 FIRST 集包含空串，继续检查下一个符号
+                                if '$' in first_sets.get(next_symbol, set()):
+                                    continue
+                                else:
+                                    break
+
+                            # 3. 如果当前符号是产生式的最后一个非终结符
+                            if i == len(production) - 1 or all(
+                                    symbol in self.non_terminals and '$' in first_sets.get(symbol, set())
+                                    for symbol in production[i + 1:]
+                            ):
+                                follow_to_add.update(follow_sets[non_terminal])
+
+                            # 更新 FOLLOW 集合并标记变化
+                            if follow_to_add - follow_sets[current_symbol]:
+                                follow_sets[current_symbol].update(follow_to_add)
                                 changed = True
-
-                        # 2. 当前符号是非终结符，且下一个符号是终结符
-                        elif current_symbol in self.non_terminals and next_symbol in self.terminals:
-                            if next_symbol not in follow_sets[current_symbol]:
-                                follow_sets[current_symbol].add(next_symbol)
-                                changed = True
-
-                    # 3. 处理产生式右侧最后一个符号是非终结符的情况
-                    if production[-1] in self.non_terminals:
-                        # 将 FOLLOW(non_terminal) 中的所有元素加入到 production[-1] 的 FOLLOW 集合中
-                        if follow_sets[non_terminal] - follow_sets[production[-1]]:
-                            follow_sets[production[-1]].update(follow_sets[non_terminal])
-                            changed = True
 
         return follow_sets
-
 
 # 测试
 if __name__ == '__main__':
