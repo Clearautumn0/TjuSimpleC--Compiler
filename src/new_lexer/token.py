@@ -34,21 +34,3 @@ INT = "INT"
 FLOAT = "FLOAT"
 CHAR = "CHAR"
 STRING = "STRING"
-
-def get_tokens(state, str_token, DFA):
-    # 获取当前符号的 token 字符串表示
-    state_label = DFA.state_labels[state]
-    
-    if state_label == "INT":
-        return f"<INT,{str_token}>"
-    if state_label == "FLOAT":
-        return f"<FLOAT,{str_token}>"
-    if state_label == "SE":
-        return f"<SE,{state}>"
-    if state_label == "OP":
-        return f"<OP,{state}>"
-    if state_label == "I&K" and symbols_table.get(str_token) == "KW":
-        return f"<KW,{state}>"
-    
-    # 如果是标识符
-    return f"<IDN,{str_token}>"

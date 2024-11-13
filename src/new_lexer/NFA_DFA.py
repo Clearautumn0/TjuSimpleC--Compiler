@@ -1,6 +1,7 @@
 from collections import deque, defaultdict
 from src.new_lexer.FA import FA
 from src.new_lexer.transform_map import TransformMap
+from src.new_lexer.symbols_table import lex_trans_map
 
 def getClosure(nows, NFA):
     closure = set(nows)  # 初始化闭包为当前状态集
@@ -87,11 +88,11 @@ def NFAdeterminization(NFA):
 #     TransformMap('b', 2, 3)
 # ]
 
-# NFA = FA(start_state=0, final_states={3}, transitions=transitions, input_symbols={'ε'})
+NFA = FA(start_state=0, final_states={3}, transitions=lex_trans_map, input_symbols={'ε'})
 
-# # 进行NFA确定化
-# DFA = NFAdeterminization(NFA)
+# 进行NFA确定化
+DFA = NFAdeterminization(NFA)
 
-# # 输出DFA的状态转换
-# for trans in DFA.transitions:
-#     print(f"DFA Transition: {trans.now} --{trans.rec}--> {trans.next}")
+# 输出DFA的状态转换
+for trans in DFA.transitions:
+    print(f"DFA Transition: {trans.now} --{trans.rec}--> {trans.next}")
