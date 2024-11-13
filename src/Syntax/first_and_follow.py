@@ -29,7 +29,6 @@ class FirstAndFollow:
         self.first_sets = self.compute_first(grammar,space_symbol)  # 计算 FIRST 集
         self.follow_sets = self.compute_follow(grammar, self.first_sets, space_symbol, start_symbol, end_symbol)  # 计算 FOLLOW 集
 
-
     # 计算非终结符
     def compute_non_terminals(self, grammar):
         # 非终结符即文法规则中的左侧部分
