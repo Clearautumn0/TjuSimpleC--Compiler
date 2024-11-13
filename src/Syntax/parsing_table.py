@@ -8,9 +8,26 @@
 
 
 '''
+from collections import defaultdict
+
+
+def build_parsing_table(FIRST, FOLLOW, G):
+    M = defaultdict(lambda: defaultdict(list))
+    for A, rules in G.items():
+        for rule in rules:
+            for a in FIRST(rule.rhs):
+                M[A, a].append(rule)
+            if '$' in FIRST(rule.rhs):
+                for b in FOLLOW(A):
+                    M[A, b].append(rule)
+    for A, rules in M.items():
+        for a, rules_list in rules.items():
+            if not rules_list:
+                M[A, a] = 'error'
+    return M
 
 
 
-def build_parsing_table(FIRST, FOLLOW, grammar):
+
 
     

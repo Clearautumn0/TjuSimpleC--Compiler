@@ -15,6 +15,7 @@
 - get_rule(): 获取文法规则字典
 - add_rule(lhs, rhs): 添加一条文法规则
 - get_productions(lhs): 获取给定非终结符的所有产生式
+- output_grammar(path): 输出文法到文件
 - __str__(): 返回文法规则的字符串表示
 
 
@@ -47,6 +48,15 @@ class Grammar:
         :return: 右侧产生式列表
         """
         return self.rules[slf]
+    def output_grammar(self,path="../../output/grammar_rules.txt"):
+        """
+        输出文法到文件
+        :param path: 文件路径
+        """
+        with open(path, 'w', encoding='utf-8') as f:
+            for key, value in self.rules.items():
+                # 将字典的每一对 key 和 value 写入文件
+                f.write(f"{key}: {value}\n")
 
     def __str__(self):
         """
@@ -86,7 +96,7 @@ if __name__ == "__main__":
 
 
 
-
+    grammar.output_grammar()
     # 打印文法
     print(f"打印的内容：\n{grammar}")
 

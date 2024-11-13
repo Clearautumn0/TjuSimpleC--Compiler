@@ -1,0 +1,7 @@
+compUnit: [['decl', 'compUnit'], ['funcDef', 'compUnit'], ['$']]
+decl: [['typeSpec', 'varDeclList', ';']]
+typeSpec: [['int']]
+varDeclList: [['varDecl', ',', 'varDeclList'], ['varDecl']]
+varDecl: [['id', '[', 'num', ']', '=', 'num'], ['id', '=', 'num']]
+funcDef: [['typeSpec', 'id', '(', 'params', ')', '{', 'compUnit', '}']]
+params: [['param', ',', 'params']]
