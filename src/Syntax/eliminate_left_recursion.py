@@ -93,17 +93,25 @@ class LeftRecursionEliminator:
         self.new_productions.rules[lhs] = non_left_recursive
         self.new_productions.rules[new_lhs] = left_recursive
 
+    # 删除无用产生式
     def remove_useless_productions(self):
         non_terminals = set(self.non_terminal_symbols)
         reachable = {symbol: False for symbol in non_terminals}
         reachable[self.start_symbol] = True
-        for symbol, is_reachable in reachable.items():
-            if is_reachable:
-                for prod in self.new_productions.rules[symbol]:
-                    for token in prod:
-                        if token in reachable.keys():
-                            reachable[token] = True
-
+        pre_cond = {}
+        cur_cond = reachable
+        while cur_cond != pre_cond:
+            pre_cond = dict(cur_cond)
+            for symbol, is_reachable in reachable.items():
+                if is_reachable:
+                    for prod in self.new_productions.rules[symbol]:
+                        for token in prod:
+                            if token in reachable.keys():
+                                reachable[token] = True
+            cur_cond = reachable
+        for k, v in reachable.items():
+            if not v:
+                del self.new_productions.rules[k]
 
 
 
@@ -112,6 +120,6 @@ class LeftRecursionEliminator:
 if __name__ == "__main__":
     test_path = "../../input/test_grammars.txt"
     path = "../../input/grammars.txt"
-    oldGrammar = load_from_file(path)
+    oldGrammar = load_from_file(test_path)
     newGrammar = LeftRecursionEliminator(oldGrammar)
     print(newGrammar.new_productions)

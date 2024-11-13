@@ -1,60 +1,53 @@
 program -> compUnit
-compUnit -> funcDef compUnit
 compUnit -> decl compUnit
 compUnit -> $
-decl -> constDecl
+compUnit -> funcDef compUnit
 decl -> varDecl
+decl -> constDecl
 constDecl -> const bType constDef argConst ;
-argConst -> , constDef argConst
 argConst -> $
+argConst -> , constDef argConst
 constDef -> Ident = constInitVal
 constInitVal -> constExp
 varDecl -> bType varDef argVarDecl ;
-argVarDecl -> , varDef argVarDecl
 argVarDecl -> $
+argVarDecl -> , varDef argVarDecl
 varDef -> Ident argVarDef
-argVarDef -> = initVal
 argVarDef -> $
+argVarDef -> = initVal
 initVal -> exp
-bType -> float
 bType -> char
 bType -> int
+bType -> float
 funcDef -> funcType Ident ( funcFParams ) block
 funcType -> void
-funcFParams -> funcFParam argFunctionF
 funcFParams -> $
+funcFParams -> funcFParam argFunctionF
 argFunctionF -> , funcFParam argFunctionF
 argFunctionF -> $
-funcFParam -> int Ident
-funcFParam -> char Ident
 funcFParam -> float Ident
+funcFParam -> char Ident
+funcFParam -> int Ident
 block -> { blockItem }
-blockItem -> char varDef argVarDecl ; blockItem
-blockItem -> $
+blockItem -> int varDef argVarDecl ; blockItem
 blockItem -> stmt blockItem
 blockItem -> const bType constDef argConst ; blockItem
-blockItem -> int varDef argVarDecl ; blockItem
+blockItem -> char varDef argVarDecl ; blockItem
+blockItem -> $
 blockItem -> float varDef argVarDecl ; blockItem
+stmt -> ;
 stmt -> exp ;
 stmt -> { blockItem }
-stmt -> ;
 stmt -> return argExp ;
 argExp -> exp
 argExp -> $
 exp -> assignExp
-lVal -> Ident
-primaryExp -> number
-primaryExp -> ( exp )
-number -> INT
-unaryOp -> +
-unaryOp -> -
-unaryOp -> !
-unaryExp -> Ident callFunc
-unaryExp -> INT
-unaryExp -> ! unaryExp
 unaryExp -> + unaryExp
 unaryExp -> ( exp )
+unaryExp -> Ident callFunc
 unaryExp -> - unaryExp
+unaryExp -> INT
+unaryExp -> ! unaryExp
 callFunc -> ( funcRParams )
 callFunc -> $
 funcRParams -> funcRParam argFunctionR
@@ -62,56 +55,56 @@ funcRParams -> $
 argFunctionR -> , funcRParam argFunctionR
 argFunctionR -> $
 funcRParam -> assignExp
-mulExp -> INT mulExpAtom
+mulExp -> ( exp ) mulExpAtom
 mulExp -> Ident callFunc mulExpAtom
+mulExp -> INT mulExpAtom
 mulExp -> - unaryExp mulExpAtom
 mulExp -> ! unaryExp mulExpAtom
-mulExp -> ( exp ) mulExpAtom
 mulExp -> + unaryExp mulExpAtom
 mulExpAtom -> % unaryExp mulExpAtom
-mulExpAtom -> * unaryExp mulExpAtom
-mulExpAtom -> / unaryExp mulExpAtom
 mulExpAtom -> $
+mulExpAtom -> / unaryExp mulExpAtom
+mulExpAtom -> * unaryExp mulExpAtom
+addExp -> ( exp ) mulExpAtom addExpAtom
+addExp -> + unaryExp mulExpAtom addExpAtom
+addExp -> - unaryExp mulExpAtom addExpAtom
+addExp -> ! unaryExp mulExpAtom addExpAtom
 addExp -> INT mulExpAtom addExpAtom
 addExp -> Ident callFunc mulExpAtom addExpAtom
-addExp -> - unaryExp mulExpAtom addExpAtom
-addExp -> + unaryExp mulExpAtom addExpAtom
-addExp -> ( exp ) mulExpAtom addExpAtom
-addExp -> ! unaryExp mulExpAtom addExpAtom
-addExpAtom -> - mulExp addExpAtom
 addExpAtom -> + mulExp addExpAtom
+addExpAtom -> - mulExp addExpAtom
 addExpAtom -> $
-relExp -> INT mulExpAtom addExpAtom relExpAtom
-relExp -> + unaryExp mulExpAtom addExpAtom relExpAtom
-relExp -> ! unaryExp mulExpAtom addExpAtom relExpAtom
 relExp -> - unaryExp mulExpAtom addExpAtom relExpAtom
-relExp -> Ident callFunc mulExpAtom addExpAtom relExpAtom
 relExp -> ( exp ) mulExpAtom addExpAtom relExpAtom
-relExpAtom -> >= addExp relExpAtom
-relExpAtom -> $
+relExp -> INT mulExpAtom addExpAtom relExpAtom
+relExp -> ! unaryExp mulExpAtom addExpAtom relExpAtom
+relExp -> + unaryExp mulExpAtom addExpAtom relExpAtom
+relExp -> Ident callFunc mulExpAtom addExpAtom relExpAtom
 relExpAtom -> < addExp relExpAtom
 relExpAtom -> > addExp relExpAtom
 relExpAtom -> <= addExp relExpAtom
-eqExp -> Ident callFunc mulExpAtom addExpAtom relExpAtom eqExpAtom
-eqExp -> ( exp ) mulExpAtom addExpAtom relExpAtom eqExpAtom
-eqExp -> ! unaryExp mulExpAtom addExpAtom relExpAtom eqExpAtom
-eqExp -> INT mulExpAtom addExpAtom relExpAtom eqExpAtom
+relExpAtom -> $
+relExpAtom -> >= addExp relExpAtom
 eqExp -> - unaryExp mulExpAtom addExpAtom relExpAtom eqExpAtom
 eqExp -> + unaryExp mulExpAtom addExpAtom relExpAtom eqExpAtom
-eqExpAtom -> $
+eqExp -> ! unaryExp mulExpAtom addExpAtom relExpAtom eqExpAtom
+eqExp -> ( exp ) mulExpAtom addExpAtom relExpAtom eqExpAtom
+eqExp -> INT mulExpAtom addExpAtom relExpAtom eqExpAtom
+eqExp -> Ident callFunc mulExpAtom addExpAtom relExpAtom eqExpAtom
 eqExpAtom -> == relExp eqExpAtom
+eqExpAtom -> $
 eqExpAtom -> != relExp eqExpAtom
-assignExp -> ( exp ) mulExpAtom addExpAtom relExpAtom eqExpAtom assignExpAtom
 assignExp -> INT mulExpAtom addExpAtom relExpAtom eqExpAtom assignExpAtom
 assignExp -> Ident callFunc mulExpAtom addExpAtom relExpAtom eqExpAtom assignExpAtom
-assignExp -> ! unaryExp mulExpAtom addExpAtom relExpAtom eqExpAtom assignExpAtom
+assignExp -> ( exp ) mulExpAtom addExpAtom relExpAtom eqExpAtom assignExpAtom
 assignExp -> - unaryExp mulExpAtom addExpAtom relExpAtom eqExpAtom assignExpAtom
 assignExp -> + unaryExp mulExpAtom addExpAtom relExpAtom eqExpAtom assignExpAtom
-assignExpAtom -> = eqExp assignExpAtom
+assignExp -> ! unaryExp mulExpAtom addExpAtom relExpAtom eqExpAtom assignExpAtom
 assignExpAtom -> $
-constExp -> ( exp ) mulExpAtom addExpAtom relExpAtom eqExpAtom assignExpAtom
+assignExpAtom -> = eqExp assignExpAtom
 constExp -> INT mulExpAtom addExpAtom relExpAtom eqExpAtom assignExpAtom
 constExp -> Ident callFunc mulExpAtom addExpAtom relExpAtom eqExpAtom assignExpAtom
-constExp -> ! unaryExp mulExpAtom addExpAtom relExpAtom eqExpAtom assignExpAtom
+constExp -> ( exp ) mulExpAtom addExpAtom relExpAtom eqExpAtom assignExpAtom
 constExp -> - unaryExp mulExpAtom addExpAtom relExpAtom eqExpAtom assignExpAtom
 constExp -> + unaryExp mulExpAtom addExpAtom relExpAtom eqExpAtom assignExpAtom
+constExp -> ! unaryExp mulExpAtom addExpAtom relExpAtom eqExpAtom assignExpAtom
