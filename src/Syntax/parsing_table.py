@@ -10,24 +10,59 @@
 '''
 from collections import defaultdict
 
+def is_terminal(symbol):
+    return symbol.islower()
+
+
+
+
+
+
 
 def build_parsing_table(FIRST, FOLLOW, G):
     M = defaultdict(lambda: defaultdict(list))
-    for A, rules in G.items():
-        for alpha in rules:
-            for a in FIRST(alpha):
-                M[A, a].append({A: [alpha]})
-            if '$' in FIRST(alpha):
-                for b in FOLLOW(A):
-                    M[A, b].append({A: ['$']})
-    for A, rules in M.items():
-        for a, rules_list in rules.items():
-            if not rules_list:
-                M[A, a] = 'error'
+
+    for A, ruls in G.items() :
+        for alpha in ruls:
+            for a in FIRST[alpha] :
+                if is_terminal(a):
+                    M[A][a].append({A: [alpha]})
+            if '$' in FIRST[alpha]:
+                for b in FOLLOW[A]:
+                    M[A][b].append({A: ["$"]})
     return M
 
 
 
 
+
+
+
+def print_parsing_table(M):
+    print("Parsing Table:")
+    for A in M:
+        for a in M[A]:
+            rules = M[A][a]
+            print(f"M[{A}, {a}] = {rules if rules else '出错标志'}")
+if __name__ == '__main__':
+    G = {
+        'S': ['AB', 'a'],
+        'A': ['aA', '$'],
+        'B': ['bB', '$']
+    }
+    FIRST = {
+    'S': {'a', '$'},
+    'A': {'a', '$'},
+    'B': {'b'}
+    }
+
+    FOLLOW = {
+        'S': {'#'},
+        'A': {'b', '#'},
+        'B': {'#'}
+    }
+    M = build_parsing_table(FIRST, FOLLOW, G)
+    print (M)
+    print_parsing_table(M)
 
     
