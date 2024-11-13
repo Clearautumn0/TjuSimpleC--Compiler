@@ -2,7 +2,7 @@ from grammar import Grammar
 
 
 class Parser:
-    def __init__(self, grammar,start_symbol,end_symbol):
+    def __init__(self, grammar,start_symbol,end_symbol="#"):
         self.grammar = grammar.rules  # 文法规则
         self.terminals = self.compute_terminals(grammar)  # 计算终结符
         self.non_terminals = self.compute_non_terminals(grammar)  # 计算非终结符
