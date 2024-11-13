@@ -1,3 +1,5 @@
+#DFA最小化，输出的是最小化后的状态集合
+
 from collections import defaultdict
 
 class MinimizedDFA:
@@ -49,7 +51,6 @@ class MinimizedDFA:
                 self.transitions[index][symbol] = target_partition
 
     def display_minimized_dfa(self):
-        print("Minimized DFA Transitions:")
         for state, transitions in self.transitions.items():
             for symbol, target in transitions.items():
                 print(f"State {state} --{symbol}--> State {target}")

@@ -1,3 +1,6 @@
+#nfa生成
+#输出的结果是一个transactions列表，里面记录的是 【token -> 下一个状态】这样的小组合
+
 class NFAState:
     def __init__(self, is_accept=False):
         self.transitions = {}

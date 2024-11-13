@@ -1,10 +1,11 @@
-# test.py
-from src.Lexer.dfa import nfa_to_dfa
-from src.Lexer.lextest import MinimizedDFA
-from src.Lexer.nfa import NFAGenerator
-from src.Lexer.Lex import Lexer
+# 可以用来进行测试
+# test目录下的也可以进行测试
 
-# 测试代码
+from Lex import Lexer
+from nfa import NFAGenerator
+from dfa import nfa_to_dfa
+from minimize_dfa import MinimizedDFA
+
 # code = "int main() { return 0; }"
 input_filepath = r'D:\000编译原理\labend\TjuSimpleC--Compiler\input\lexer.txt'
 output_filepath = r'D:\000编译原理\labend\TjuSimpleC--Compiler\output\lexer_output.txt'
