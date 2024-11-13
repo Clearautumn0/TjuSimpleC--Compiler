@@ -1,4 +1,3 @@
-
 from grammar import Grammar
 from src.utils.syntax_util import load_from_file
 
@@ -9,6 +8,7 @@ class LeftRecursionEliminator:
         self.new_productions = self.old_productions
         self.non_terminal_symbols = []
         self.terminal_symbols = []
+        self.start_symbol = None
         self.get_symbols()
         self.eliminate_left_recursion()
 
@@ -25,8 +25,8 @@ class LeftRecursionEliminator:
                 for symbol in rhs:
                     if symbol not in non_terminal_symbols and symbol != "$":
                         terminal_symbols.add(symbol)
-
-        self.non_terminal_symbols = non_terminal_symbols[::-1]
+        self.non_terminal_symbols = non_terminal_symbols
+        self.start_symbol = self.non_terminal_symbols[0]
         self.terminal_symbols = list(terminal_symbols)
 
     # 消除左递归
@@ -40,32 +40,33 @@ class LeftRecursionEliminator:
                 self.new_productions.rules[i_mark] = self.expand_grammar(i_mark, i_rules, j_mark, j_rules)
             # print(self.new_productions.rules)
             self.eliminate_direct_left_recursion_for_one_rule(i_mark, self.new_productions.rules[i_mark])
-        print(self.new_productions)
+        self.remove_useless_productions()
+        # print(self.new_productions)
 
     # 实现规则改写
-    def expand_grammar(self, i_mark, i_rules, j_mark, j_rules):
+    def expand_grammar(self, i_mark:str, i_rules:list, j_mark:str, j_rules:list):
         # 创建新的 program 规则列表
-        new_rules = []
+        new_rules = set()
         for target_rule in i_rules:
             # j能由i推导出
-            if j_mark in target_rule:
+            if j_mark == target_rule[0]:
                 for source_rule in j_rules:
                     new_rule = []
-                    for t in target_rule:
-                        if t != j_mark:
-                            new_rule.append(t)
-                        else:
-                            for s in source_rule:
-                                new_rule.append(s)
+                    new_rule.extend(source_rule)
+                    new_rule.extend(target_rule[1:])
+
                     if new_rule != ['$']:
                         while '$' in new_rule:
                             new_rule.remove('$')
                     # print(new_rules)
-                    new_rules.append(new_rule)
+                    new_rules.add(tuple(new_rule))
             else:
-                new_rules.append(target_rule)
+                new_rules.add(tuple(target_rule))
+        # print(new_rules)
+        # print('---------------')
+        res_list = [list(r) for r in new_rules]
 
-        return list(new_rules)
+        return res_list
 
     # 消除直接左递归
     def eliminate_direct_left_recursion_for_one_rule(self, lhs:str, rhs_rules:list[list]):
@@ -92,6 +93,25 @@ class LeftRecursionEliminator:
         self.new_productions.rules[lhs] = non_left_recursive
         self.new_productions.rules[new_lhs] = left_recursive
 
+    # 删除无用产生式
+    def remove_useless_productions(self):
+        non_terminals = set(self.non_terminal_symbols)
+        reachable = {symbol: False for symbol in non_terminals}
+        reachable[self.start_symbol] = True
+        pre_cond = {}
+        cur_cond = reachable
+        while cur_cond != pre_cond:
+            pre_cond = dict(cur_cond)
+            for symbol, is_reachable in reachable.items():
+                if is_reachable:
+                    for prod in self.new_productions.rules[symbol]:
+                        for token in prod:
+                            if token in reachable.keys():
+                                reachable[token] = True
+            cur_cond = reachable
+        for k, v in reachable.items():
+            if not v:
+                del self.new_productions.rules[k]
 
 
 
@@ -100,6 +120,6 @@ class LeftRecursionEliminator:
 if __name__ == "__main__":
     test_path = "../../input/test_grammars.txt"
     path = "../../input/grammars.txt"
-    oldGrammar = load_from_file(test_path)
+    oldGrammar = load_from_file(path)
     newGrammar = LeftRecursionEliminator(oldGrammar)
     print(newGrammar.new_productions)
