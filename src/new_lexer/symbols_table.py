@@ -50,3 +50,41 @@ lex_trans_map = {
     TransformMap('-', 17, 18), TransformMap('.', 13, 20), TransformMap('ε', 20, 20),
     TransformMap('n', 20, 20)
 }
+
+# 字符识别函数
+def get_char_type(ch, next_ch):
+    if '0' <= ch <= '9':  # 判断数字字符
+        return 'n'
+    if ch == '.':  # 判断小数点
+        return '.'
+    if ('A' <= ch <= 'Z') or ('a' <= ch <= 'z'):  # 判断字母字符
+        return 'l'
+    if ch in ['+', '-', '*', '/', '%']:  # 判断运算符
+        return 'o'
+    if ch in ['(', ')', '{', '}', ';', ',']:  # 判断分隔符
+        return 's'
+    # 如果是小数点，但下一个字符不是数字，则抛出错误
+    if ch == '.' and (not ('0' <= next_ch <= '9')):
+        raise ValueError("浮点数输入错误")
+    return ch  # 返回原字符（如果不属于上述任何类型）
+
+# 生成符号表
+def generate_symbol_table(state, str_token, DFA):
+    # 根据状态标签和符号表更新符号表
+    state_label = DFA.state_labels[state]
+    
+    # 如果符号是 INT, SE, 或 OP 并且没有处理过
+    if state_label in ["INT", "SE", "OP"] and str_token not in processed_symbols_table:
+        processed_symbols_table.add(str_token)
+        # 可以根据需求将符号加入到符号表中
+        symbols_table[str_token] = state_label
+        
+    # 处理 "I&K" 和关键字 KW 的情况
+    elif state_label == "I&K" and symbols_table.get(str_token) == "KW" and "KW" not in processed_symbols_table:
+        processed_symbols_table.add(str_token)
+        symbols_table[str_token] = state_label
+
+    # 如果符号没有出现在已处理的符号表中，则将其视为标识符 "IDN"
+    elif str_token not in processed_symbols_table:
+        processed_symbols_table.add(str_token)
+        symbols_table[str_token] = "IDN"
