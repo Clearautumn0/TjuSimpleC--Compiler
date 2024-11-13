@@ -1,0 +1,14 @@
+int <FLOAT,int>
+a <INT,a>
+; <OP,6>
+void <FLOAT,void>
+func <FLOAT,func>
+( <OP,6>
+) <OP,6>
+{ <OP,6>
+a <INT,a>
+= <IDN,=>
+10; <OP,6>
+return <FLOAT,return>
+0; <OP,6>
+} <OP,6>
