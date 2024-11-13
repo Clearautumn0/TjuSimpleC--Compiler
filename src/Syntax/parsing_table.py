@@ -29,15 +29,23 @@ def list_to_string(list):
 
 
 def build_parsing_table(first, follw, grammar):
+    """构造分析表"""
     M = defaultdict(lambda: defaultdict(list))
     for A, productions in grammar.items():
         for alpha_list in productions:
+            print(f"alpha_list = {alpha_list}")
             alpha = list_to_string(alpha_list)
-            for a in first[alpha]:
-                M[A][a].append({A:alpha_list})
-            if '$' in first[alpha]:
-                for b in follw[A]:
-                    M[A][b].append({A:['$']})
+            # print(f"first_keys= {first.keys()}")
+            if alpha in first.keys():
+                print(f"first[{alpha}] = {first[alpha]}")
+                for a in first[alpha]:
+                    if is_terminal(a):
+                        M[A][a].append({A:alpha_list})
+                        print(f"M[{A}, {a}] = {M[A][a]}")
+                if '$' in first[alpha]:
+                    for b in follw[A]:
+                        M[A][b].append({A:['$']})
+                        print(f"M[{A}, {b}] = {M[A][b]}")
 
 
 
@@ -51,6 +59,14 @@ def print_parsing_table(M):
             print(f"M[{A}, {a}] = {rules if rules else '出错标志'}")
 
 
+
+def is_terminal(symbol):
+    new_parser = FirstAndFollow(grammar, '$', "E", "#")
+    """判断符号是否为终结符"""
+    if symbol in new_parser.terminals:
+        return True
+    else:
+        return False
 
 if __name__ == '__main__':
     grammar = Grammar()
@@ -73,14 +89,14 @@ if __name__ == '__main__':
         "E'": {')', '#'},
         "T": {'$', '+'},
         "T'": {'$', '+'},
-        "F": {'$', '*'}
-        "TE'"
-
-
-
-
-
-         }
+        "F": {'$', '*'},
+        "TF;":{'(','i'},
+        "+TE'":{'+'},
+        "FT'":{'(','i'},
+        "*FT'":{'*'},
+        "(E)":{'(' },
+        "i":{'i'}
+      }
 
 
 
@@ -98,9 +114,11 @@ if __name__ == '__main__':
     for key, value in grammar.rules.items():
         print(f"{key}: {value}")
     # 构造分析表
+
+    print(" parsing table:")
     M = build_parsing_table(first, follow, grammar.rules)
     # 打印分析表
-    print_parsing_table(M)
+    # print_parsing_table(M)
 
 
 
