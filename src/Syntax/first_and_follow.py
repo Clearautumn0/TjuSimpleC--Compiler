@@ -1,6 +1,7 @@
 from grammar import Grammar
 
 
+
 class FirstAndFollow:
     def __init__(self, grammar, space_symbol, start_symbol, end_symbol):
         self.grammar = grammar.rules  # 文法规则
