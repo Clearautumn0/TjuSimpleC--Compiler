@@ -26,7 +26,7 @@ class LeftRecursionEliminator:
                     if symbol not in non_terminal_symbols and symbol != "$":
                         terminal_symbols.add(symbol)
 
-        self.non_terminal_symbols = non_terminal_symbols
+        self.non_terminal_symbols = non_terminal_symbols[::-1]
         self.terminal_symbols = list(terminal_symbols)
 
     # 消除左递归
@@ -38,13 +38,14 @@ class LeftRecursionEliminator:
                 i_rules = self.new_productions.rules[i_mark]
                 j_rules = self.new_productions.rules[j_mark]
                 self.new_productions.rules[i_mark] = self.expand_grammar(i_mark, i_rules, j_mark, j_rules)
+            # print(self.new_productions.rules)
             self.eliminate_direct_left_recursion_for_one_rule(i_mark, self.new_productions.rules[i_mark])
-        # print(self.new_productions)
+        print(self.new_productions)
 
-    # 实现带入
+    # 实现规则改写
     def expand_grammar(self, i_mark, i_rules, j_mark, j_rules):
         # 创建新的 program 规则列表
-        new_rules = set()
+        new_rules = []
         for target_rule in i_rules:
             # j能由i推导出
             if j_mark in target_rule:
@@ -60,9 +61,9 @@ class LeftRecursionEliminator:
                         while '$' in new_rule:
                             new_rule.remove('$')
                     # print(new_rules)
-                    new_rules.add(tuple(new_rule))
+                    new_rules.append(new_rule)
             else:
-                new_rules.add(tuple(target_rule))
+                new_rules.append(target_rule)
 
         return list(new_rules)
 

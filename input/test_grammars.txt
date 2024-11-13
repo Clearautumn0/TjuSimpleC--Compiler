@@ -25,12 +25,3 @@ funcFParams -> funcFParam argFunctionF
 funcFParams -> $
 argFunctionF -> , funcFParam argFunctionF
 argFunctionF -> $
-funcFParam -> bType Ident
-block -> { blockItem }
-blockItem -> decl blockItem
-blockItem -> stmt blockItem
-blockItem -> $
-stmt -> exp ;
-stmt -> ;
-stmt -> block
-stmt -> return argExp ;
