@@ -24,12 +24,15 @@ def build_parsing_table(FIRST, FOLLOW, G):
 
     for A, ruls in G.items() :
         for alpha in ruls:
-            for a in FIRST[alpha] :
+            for a in alpha:
                 if is_terminal(a):
                     M[A][a].append({A: [alpha]})
-            if '$' in FIRST[alpha]:
+            if '$' in alpha:
                 for b in FOLLOW[A]:
                     M[A][b].append({A: ["$"]})
+
+
+
     return M
 
 
