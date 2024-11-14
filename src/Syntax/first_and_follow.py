@@ -10,7 +10,11 @@ class FirstAndFollow:
         self.first_sets = self.compute_first(grammar, space_symbol)  # 计算 FIRST 集
         self.follow_sets = self.compute_follow(grammar, self.first_sets, space_symbol, start_symbol, end_symbol)  # 计算 FOLLOW 集
         self.production_first_sets = self.compute_production_first(grammar, space_symbol)  # 计算产生式的 FIRST 集
-
+        self.first_all=merge_dicts(self.first_sets,self.production_first_sets) #合并FIRST集和产生式的FIRST集
+    def get_first_set(self):
+        return self.first_all
+    def get_follow_set(self):
+        return self.follow_sets
     # 计算非终结符
     def compute_non_terminals(self, grammar):
         return set(grammar.rules.keys())  # 返回文法中的非终结符集合
@@ -150,6 +154,15 @@ class FirstAndFollow:
                                 changed = True
 
         return follow_sets
+
+
+def merge_dicts(dict1, dict2):
+    """合并两个字典"""
+    merged_dict = dict1.copy()  # 先复制第一个字典
+    merged_dict.update(dict2)    # 更新为第二个字典的内容
+    return merged_dict
+
+
 
 
 # 测试
