@@ -1,0 +1,112 @@
+program -> compUnit
+compUnit -> decl compUnit
+compUnit -> funcDef compUnit
+compUnit -> $
+decl -> constDecl
+decl -> varDecl
+constDecl -> const bType constDef argConst ;
+argConst -> , constDef argConst
+argConst -> $
+constDef -> Ident = constInitVal
+constInitVal -> constExp
+varDecl -> bType varDef argVarDecl ;
+argVarDecl -> , varDef argVarDecl
+argVarDecl -> $
+varDef -> Ident argVarDef
+argVarDef -> = initVal
+argVarDef -> $
+initVal -> exp
+bType -> int
+bType -> float
+bType -> char
+funcDef -> funcType Ident ( funcFParams ) block
+funcType -> void
+funcFParams -> funcFParam argFunctionF
+funcFParams -> $
+argFunctionF -> , funcFParam argFunctionF
+argFunctionF -> $
+funcFParam -> bType Ident
+block -> { blockItem }
+blockItem -> decl blockItem
+blockItem -> stmt blockItem
+blockItem -> $
+stmt -> exp ;
+stmt -> ;
+stmt -> block
+stmt -> return argExp ;
+argExp -> $
+argExp -> exp
+exp -> assignExp
+lVal -> Ident
+primaryExp -> ( exp )
+primaryExp -> number
+number -> INT
+unaryOp -> +
+unaryOp -> -
+unaryOp -> !
+unaryExp -> unaryOp unaryExp
+unaryExp -> Ident callFunc
+callFunc -> ( funcRParams )
+callFunc -> $
+unaryExp -> primaryExp
+funcRParams -> funcRParam argFunctionR
+funcRParams -> $
+argFunctionR -> , funcRParam argFunctionR
+argFunctionR -> $
+funcRParam -> exp
+mulExp -> unaryExp mulExpAtom
+mulExpAtom -> * unaryExp mulExpAtom
+mulExpAtom -> / unaryExp mulExpAtom
+mulExpAtom -> % unaryExp mulExpAtom
+mulExpAtom -> $
+addExp -> mulExp addExpAtom
+addExpAtom -> + mulExp addExpAtom
+addExpAtom -> - mulExp addExpAtom
+addExpAtom -> $
+relExp -> addExp relExpAtom
+relExpAtom -> < addExp relExpAtom
+relExpAtom -> > addExp relExpAtom
+relExpAtom -> <= addExp relExpAtom
+relExpAtom -> >= addExp relExpAtom
+relExpAtom -> $
+eqExp -> relExp eqExpAtom
+eqExpAtom -> == relExp eqExpAtom
+eqExpAtom -> != relExp eqExpAtom
+eqExpAtom -> $
+assignExp -> eqExp assignExpAtom
+assignExpAtom -> = eqExp assignExpAtom
+assignExpAtom -> $
+constExp -> assignExp
+compUnit -> switchBlock compUnit
+switchBlock -> switch ( unaryExp ) { caseBlock argCaseBlock defaultBlock }
+caseBlock -> case constExp : { switchBlockElem }
+argCaseBlock -> caseBlock argCaseBlock
+argCaseBlock -> $
+defaultBlock -> default : { switchBlockElem }
+defaultBlock -> $
+switchBlockElem -> stmt switchBlockElem
+switchBlockElem -> $
+stmt -> break
+compUnit -> structDef compUnit
+structDef -> struct structType { structBlockElem } structVar ;
+structType -> Ident
+structBlockElem -> decl structBlockElem
+structBlockElem -> funcDef structBlockElem
+structBlockElem -> $
+structVar -> Ident argStructVar
+structVar -> $
+argStructVar -> , Ident argStructVar
+argStructVar -> $
+decl -> structDecl
+structDecl -> struct structType Ident ;
+compUnit -> unionDef compUnit
+unionDef -> union unionType { unionBlockElem } unionVar ;
+unionType -> Ident
+unionBlockElem -> decl unionBlockElem
+unionBlockElem -> $
+unionVar -> Ident argUnionVar
+unionVar -> $
+argUnionVar -> , Ident argUnionVar
+argUnionVar -> $
+decl -> unionDecl
+unionDecl -> union unionType Ident ;

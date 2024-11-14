@@ -74,9 +74,20 @@ class FirstAndFollow:
 
         for non_terminal, productions in grammar.rules.items():
             for production in productions:
-                # 使用元组表示产生式的右部
-                production_tuple = tuple(production)
 
+                # print("production:", production)
+                # print("space_symbol:", space_symbol)
+                #处理空串
+                if space_symbol in production:
+                    continue
+
+                if len(production) == 1:
+                    production_tuple = (production[0])  # 仅有一个元素时，显式地加上逗号
+                else:
+                    production_tuple = tuple(production)
+                # 使用元组表示产生式的右部
+                # production_tuple = tuple(production)
+                # print("production_tuple:", production_tuple)
                 # 计算右边符号序列的 FIRST 集
                 production_first_sets[production_tuple] = set()
 
@@ -95,8 +106,8 @@ class FirstAndFollow:
                             break
                     # 如果遇到空串 $
                     elif symbol == space_symbol:
-                        if space_symbol not in production_first_sets[production_tuple]:
-                            production_first_sets[production_tuple].add(space_symbol)
+                        # if space_symbol not in production_first_sets[production_tuple]:
+                        #     production_first_sets[production_tuple].add(space_symbol)
                         break
 
         return production_first_sets
@@ -150,13 +161,16 @@ if __name__ == '__main__':
     grammar.add_rule("E", ["T", "E'"])
     grammar.add_rule("E'", ["+", "T", "E'"])
     grammar.add_rule("E'", ["$"])
+    grammar.add_rule("E'", ["$"])
     grammar.add_rule("T", ["F", "T'"])
     grammar.add_rule("T'", ["*", "F", "T'"])
+    grammar.add_rule("T'", ["$"])
     grammar.add_rule("T'", ["$"])
     grammar.add_rule("F", ["(", "E", ")"])
     grammar.add_rule("F", ["i"])
 
     # 创建解析器对象
+    new_parser = FirstAndFollow(grammar, '$', "E", "#")
     new_parser = FirstAndFollow(grammar, '$', "E", "#")
 
     # 输出解析结果
