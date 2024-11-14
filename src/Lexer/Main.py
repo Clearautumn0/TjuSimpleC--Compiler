@@ -16,6 +16,7 @@ from src.Lexer.Minimize_DFA import minimize
 from src.Lexer.Lexer import lexical_analysis_helper
 
 def lexical_analysis():
+    print('++\n++')
     NFA = FA()
     NFA.input_symbols = lex_input_symbols
     NFA.start = lex_start
@@ -26,12 +27,14 @@ def lexical_analysis():
     DFA = nfa_determinization(NFA)
     min_DFA = minimize(DFA)
  
-    lexical_analysis_helper("/input/lex_input/01_var_defn.sy", min_DFA, "1_1")
-    lexical_analysis_helper("/input/lex_input/02_var_defn.sy", min_DFA, "1_2")
-    lexical_analysis_helper("/input/lex_input/03_var_defn.sy", min_DFA, "1_3")
-    lexical_analysis_helper("/input/lex_input/04_var_defn.sy", min_DFA, "1_4")
-    lexical_analysis_helper("/input/lex_input/05_var_defn.sy", min_DFA, "1_5")
-    lexical_analysis_helper("/input/lex_input/ifelse.sy", min_DFA, "1_5")
+    # lexical_analysis_helper("/input/lex_input/01_var_defn.sy", min_DFA, "1_1")
+    # lexical_analysis_helper("/input/lex_input/02_var_defn.sy", min_DFA, "1_2")
+    # lexical_analysis_helper("/input/lex_input/03_var_defn.sy", min_DFA, "1_3")
+    # lexical_analysis_helper("/input/lex_input/04_var_defn.sy", min_DFA, "1_4")
+    # lexical_analysis_helper("/input/lex_input/05_var_defn.sy", min_DFA, "1_5")
+    # lexical_analysis_helper("D:\000编译原理\labend\TjuSimpleC--Compiler\input\lex_input\ifelse.sy", min_DFA, "1_6")
+    lexical_analysis_helper("D:/000编译原理/labend/TjuSimpleC--Compiler/input/lex_input/switch.sy", min_DFA, "1_7")
+
 
 if __name__ == "__main__":
     lexical_analysis()

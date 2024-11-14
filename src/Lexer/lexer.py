@@ -29,6 +29,7 @@ def lexical_analysis_helper(address, DFA, x):
             i = 0  # 初始化索引
             while i < len(line):
                 ch = line[i]  # 当前字符
+                print(f"+ {ch} +")
                 if ch not in string.whitespace:  # 忽略空白字符
                     ch_type = get_char_type(ch)  # 获取当前字符的类型
                     matched = False  # 标记是否有匹配的状态转移
@@ -37,6 +38,7 @@ def lexical_analysis_helper(address, DFA, x):
                             current_state = tm.next
                             str_token += ch  # 将字符加到当前的 token 中
                             matched = True
+                            print(f"+ {current_state} + {str_token} + ")
                             break
                     
                     if matched:  # 如果找到了匹配的状态转移
