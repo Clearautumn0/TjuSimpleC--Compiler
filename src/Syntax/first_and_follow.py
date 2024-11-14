@@ -61,7 +61,7 @@ class FirstAndFollow:
                                         first_sets[non_terminal].add(space_symbol)
                                         changed = True
                                 continue  # 继续查看下一个符号
-                    if all(symbol == space_symbol for symbol in production):  # 如果产生式为 ε
+                    if all(symbol == space_symbol for symbol in production):  # 如果产生式为 $
                         if space_symbol not in first_sets[non_terminal]:
                             first_sets[non_terminal].add(space_symbol)
                             changed = True
@@ -104,7 +104,7 @@ class FirstAndFollow:
                             continue
                         else:
                             break
-                    # 如果遇到空串
+                    # 如果遇到空串 $
                     elif symbol == space_symbol:
                         # if space_symbol not in production_first_sets[production_tuple]:
                         #     production_first_sets[production_tuple].add(space_symbol)
@@ -161,13 +161,16 @@ if __name__ == '__main__':
     grammar.add_rule("E", ["T", "E'"])
     grammar.add_rule("E'", ["+", "T", "E'"])
     grammar.add_rule("E'", ["$"])
+    grammar.add_rule("E'", ["$"])
     grammar.add_rule("T", ["F", "T'"])
     grammar.add_rule("T'", ["*", "F", "T'"])
+    grammar.add_rule("T'", ["$"])
     grammar.add_rule("T'", ["$"])
     grammar.add_rule("F", ["(", "E", ")"])
     grammar.add_rule("F", ["i"])
 
     # 创建解析器对象
+    new_parser = FirstAndFollow(grammar, '$', "E", "#")
     new_parser = FirstAndFollow(grammar, '$', "E", "#")
 
     # 输出解析结果

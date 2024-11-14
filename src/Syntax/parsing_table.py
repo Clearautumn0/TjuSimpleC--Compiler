@@ -70,6 +70,12 @@ class ParsingTable:
             # 处理情况，比如返回一个默认值或抛出异常
             return "error"  # 或者 raise KeyError(f"Key {L} or {R} not found in table")
 
+
+
+
+
+
+
     def print_parsing_table(self):
         """打印分析表"""
         M = self.M
@@ -105,6 +111,14 @@ def convert_keys_to_string(original_dict):
     return new_dict
 
 
+def merge_dicts(dict1, dict2):
+    """合并两个字典"""
+    merged_dict = dict1.copy()  # 先复制第一个字典
+    merged_dict.update(dict2)    # 更新为第二个字典的内容
+    return merged_dict
+
+
+
 if __name__ == '__main__':
     grammar = Grammar()
 
@@ -121,20 +135,24 @@ if __name__ == '__main__':
     # 创建解析器对象
     new_parser = FirstAndFollow(grammar, '$', "E", "#")
 
-    first = {
-        "E": {'(', 'i'},
-        "E'": {'+', '$'},
-        "T": {'(', 'i'},
-        "T'": {'*', '$'},
-        "F": {'(', 'i'},
-        "TE'":{'(','i'},
-        "+TE'":{'+'},
-        "FT'":{'(','i'},
-        "*FT'":{'*'},
-        "(E)":{'(' },
-        "i":{'i'}
-      }
+    # first = {
+    #     "E": {'(', 'i'},
+    #     "E'": {'+', '$'},
+    #     "T": {'(', 'i'},
+    #     "T'": {'*', '$'},
+    #     "F": {'(', 'i'},
+    #     "TE'":{'(','i'},
+    #     "+TE'":{'+'},
+    #     "FT'":{'(','i'},
+    #     "*FT'":{'*'},
+    #     "(E)":{'(' },
+    #     "i":{'i'}
+    #   }
 
+    # first = new_parser.production_first_sets
+    first1= new_parser.first_sets
+    first2 =new_parser.production_first_sets
+    first = merge_dicts(first1,first2)
     follow = new_parser.follow_sets
 
     print("First sets:")
@@ -151,7 +169,7 @@ if __name__ == '__main__':
     # 构造分析表
 
     print(" parsing table:")
-    t  = ParsingTable(first, follow, grammar)
+    t  = ParsingTable(first, follow, grammar.rules)
     M = t.build_parsing_table()
 
 
