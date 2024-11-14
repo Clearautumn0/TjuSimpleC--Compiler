@@ -30,17 +30,18 @@ def list_to_string(list):
 
 
 class ParsingTable:
-    def __init__(self,first_set,follw_set,grammar):
+    def __init__(self,first_set, follow_set, grammar:Grammar):
 
         self.first_set = first_set
-        self.follw_set = follw_set
+        self.follow_set = follow_set
         self.grammar = grammar
         self.M = self.build_parsing_table()
+
     def build_parsing_table(self):
         """构造分析表"""
-        grammar = self.grammar
+        grammar = self.grammar.rules
         first_set = convert_keys_to_string(self.first_set)
-        follw_set = self.follw_set
+        follow_set = self.follow_set
         M = defaultdict(lambda: defaultdict(list))
         for A, productions in grammar.items():
             for alpha_list in productions:
@@ -51,11 +52,11 @@ class ParsingTable:
                     # print(f"alpha = {alpha}")
                     # print(f"first[{alpha}]={first[alpha]}")
                     for a in first_set[alpha]:
-                        if is_terminal(a):
+                        if self.is_terminal(a):
                             M[A][a].append({A:alpha_list})
                             print(f"M[{A}, {a}] = {M[A][a]}")
                         if '$' in first_set[A]:
-                            for b in follw_set[A]:
+                            for b in follow_set[A]:
                                 M[A][b].append({A:['$']})
                                 print(f"M[{A}, {b}] = {M[A][b]}")
         return M
@@ -69,12 +70,6 @@ class ParsingTable:
             # 处理情况，比如返回一个默认值或抛出异常
             return "error"  # 或者 raise KeyError(f"Key {L} or {R} not found in table")
 
-
-
-
-
-
-
     def print_parsing_table(self):
         """打印分析表"""
         M = self.M
@@ -84,15 +79,13 @@ class ParsingTable:
                 rules = M[A][a]
                 print(f"M[{A}, {a}] = {rules if rules else '出错标志'}")
 
-
-
-def is_terminal(symbol):
-    new_parser = FirstAndFollow(grammar, '$', "E", "#")
-    """判断符号是否为终结符"""
-    if symbol in new_parser.terminals:
-        return True
-    else:
-        return False
+    def is_terminal(self, symbol):
+        new_parser = FirstAndFollow(self.grammar, '$', "E", "#")
+        """判断符号是否为终结符"""
+        if symbol in new_parser.terminals:
+            return True
+        else:
+            return False
 
 
 def convert_keys_to_string(original_dict):
@@ -110,10 +103,6 @@ def convert_keys_to_string(original_dict):
             new_dict[key] = value
 
     return new_dict
-
-
-
-
 
 
 if __name__ == '__main__':
@@ -146,8 +135,6 @@ if __name__ == '__main__':
         "i":{'i'}
       }
 
-
-
     follow = new_parser.follow_sets
 
     print("First sets:")
@@ -164,7 +151,7 @@ if __name__ == '__main__':
     # 构造分析表
 
     print(" parsing table:")
-    t  = ParsingTable(first, follow, grammar.rules)
+    t  = ParsingTable(first, follow, grammar)
     M = t.build_parsing_table()
 
 

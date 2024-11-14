@@ -1,34 +1,34 @@
 from grammar import Grammar
-
+from src.utils.syntax_util import get_non_terminal_symbols, get_terminal_symbols
 
 
 class FirstAndFollow:
     def __init__(self, grammar, space_symbol, start_symbol, end_symbol):
         self.grammar = grammar.rules  # 文法规则
-        self.terminals = self.compute_terminals(grammar, space_symbol)  # 计算终结符
-        self.non_terminals = self.compute_non_terminals(grammar)  # 计算非终结符
+        self.terminals = set(get_terminal_symbols(grammar, space_symbol))  # 计算终结符
+        self.non_terminals = set(get_non_terminal_symbols(grammar))  # 计算非终结符
         self.first_sets = self.compute_first(grammar, space_symbol)  # 计算 FIRST 集
         self.follow_sets = self.compute_follow(grammar, self.first_sets, space_symbol, start_symbol, end_symbol)  # 计算 FOLLOW 集
         self.production_first_sets = self.compute_production_first(grammar, space_symbol)  # 计算产生式的 FIRST 集
 
-    # 计算非终结符
-    def compute_non_terminals(self, grammar):
-        return set(grammar.rules.keys())  # 返回文法中的非终结符集合
-
-    # 计算终结符
-    def compute_terminals(self, grammar, space_symbol):
-        non_terminals = set(grammar.rules.keys())
-        terminals = set()
-
-        # 遍历文法规则，识别终结符
-        for lhs, productions in grammar.rules.items():
-            for production in productions:
-                for symbol in production:
-                    if symbol not in non_terminals:  # 如果符号不是非终结符，说明它是终结符
-                        terminals.add(symbol)
-
-        terminals.add(space_symbol)  # 添加空串符号
-        return terminals
+    # # 计算非终结符
+    # def compute_non_terminals(self, grammar):
+    #     return set(grammar.rules.keys())  # 返回文法中的非终结符集合
+    #
+    # # 计算终结符
+    # def compute_terminals(self, grammar, space_symbol):
+    #     non_terminals = set(grammar.rules.keys())
+    #     terminals = set()
+    #
+    #     # 遍历文法规则，识别终结符
+    #     for lhs, productions in grammar.rules.items():
+    #         for production in productions:
+    #             for symbol in production:
+    #                 if symbol not in non_terminals:  # 如果符号不是非终结符，说明它是终结符
+    #                     terminals.add(symbol)
+    #
+    #     terminals.add(space_symbol)  # 添加空串符号
+    #     return terminals
 
     # 计算 FIRST 集
     def compute_first(self, grammar, space_symbol):
