@@ -7,6 +7,27 @@
 (4) 把所有无定义的M[A, a]标上“出错标志”。
 
 
+新建一个ParsingTable类，包含两个成员变量：
+构造时要求传入参数
+
+- first_set: 字典，保存FIRST集合
+- follw_set: 字典，保存FOLLOW集合
+- grammar: 文法对象
+- M: 分析表，字典，保存A→α的推导式，以字典形式保存，键为A，值为字典，键为非终结符，值为推导式列表
+
+
+
+
+构建分析表的函数：first_set,follw_set,grammar
+注意!!!:这里的follw_set包含单非终结符以及多个符号元组的情况
+即需要在传入之前对从first_and_follow.py中得到的first_sets和production_first_sets进行处理,将其合并为一个字典
+示例用法:
+    new_parser = FirstAndFollow(grammar, '$', "E", "#")
+
+    first1= new_parser.first_sets
+    first2 =new_parser.production_first_sets
+    first = merge_dicts(first1,first2)
+
 
 
 
@@ -95,17 +116,17 @@ class ParsingTable:
 
 
 def convert_keys_to_string(original_dict):
-    """检查字典的键是否为列表，如果是列表则转换为字符串"""
+    """将字典中的键从元组形式转换为字符串形式"""
     new_dict = {}
 
     for key, value in original_dict.items():
-        # 判断键是否是列表形式
-        if isinstance(key, list):
-            # 如果键是列表形式，则转换成字符串形式
-            key_str = ''.join(key)
+        # 判断键是否是元组形式
+        if isinstance(key, tuple):
+            # 如果键是元组，则转换成字符串形式
+            key_str = ''.join(key)  # 使用逗号将元组元素连接为字符串
             new_dict[key_str] = value
         else:
-            # 如果键不是列表，则直接添加到新字典
+            # 如果键不是元组，则直接添加到新字典
             new_dict[key] = value
 
     return new_dict
@@ -135,24 +156,10 @@ if __name__ == '__main__':
     # 创建解析器对象
     new_parser = FirstAndFollow(grammar, '$', "E", "#")
 
-    # first = {
-    #     "E": {'(', 'i'},
-    #     "E'": {'+', '$'},
-    #     "T": {'(', 'i'},
-    #     "T'": {'*', '$'},
-    #     "F": {'(', 'i'},
-    #     "TE'":{'(','i'},
-    #     "+TE'":{'+'},
-    #     "FT'":{'(','i'},
-    #     "*FT'":{'*'},
-    #     "(E)":{'(' },
-    #     "i":{'i'}
-    #   }
-
-    # first = new_parser.production_first_sets
     first1= new_parser.first_sets
     first2 =new_parser.production_first_sets
     first = merge_dicts(first1,first2)
+
     follow = new_parser.follow_sets
 
     print("First sets:")
