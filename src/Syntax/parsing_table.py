@@ -96,23 +96,27 @@ def is_terminal(symbol):
 
 
 def convert_keys_to_string(original_dict):
-    """检查字典的键是否为列表，如果是列表则转换为字符串"""
+    """将字典中的键从元组形式转换为字符串形式"""
     new_dict = {}
 
     for key, value in original_dict.items():
-        # 判断键是否是列表形式
-        if isinstance(key, set):
-            # 如果键是列表形式，则转换成字符串形式
-            key_str = ''.join(key)
+        # 判断键是否是元组形式
+        if isinstance(key, tuple):
+            # 如果键是元组，则转换成字符串形式
+            key_str = ','.join(key)  # 使用逗号将元组元素连接为字符串
             new_dict[key_str] = value
         else:
-            # 如果键不是列表，则直接添加到新字典
+            # 如果键不是元组，则直接添加到新字典
             new_dict[key] = value
 
     return new_dict
 
 
-
+def merge_dicts(dict1, dict2):
+    """合并两个字典"""
+    merged_dict = dict1.copy()  # 先复制第一个字典
+    merged_dict.update(dict2)    # 更新为第二个字典的内容
+    return merged_dict
 
 
 
@@ -132,22 +136,24 @@ if __name__ == '__main__':
     # 创建解析器对象
     new_parser = FirstAndFollow(grammar, '$', "E", "#")
 
-    first = {
-        "E": {'(', 'i'},
-        "E'": {'+', '$'},
-        "T": {'(', 'i'},
-        "T'": {'*', '$'},
-        "F": {'(', 'i'},
-        "TE'":{'(','i'},
-        "+TE'":{'+'},
-        "FT'":{'(','i'},
-        "*FT'":{'*'},
-        "(E)":{'(' },
-        "i":{'i'}
-      }
+    # first = {
+    #     "E": {'(', 'i'},
+    #     "E'": {'+', '$'},
+    #     "T": {'(', 'i'},
+    #     "T'": {'*', '$'},
+    #     "F": {'(', 'i'},
+    #     "TE'":{'(','i'},
+    #     "+TE'":{'+'},
+    #     "FT'":{'(','i'},
+    #     "*FT'":{'*'},
+    #     "(E)":{'(' },
+    #     "i":{'i'}
+    #   }
 
     # first = new_parser.production_first_sets
-
+    first1= new_parser.first_sets
+    first2 =new_parser.production_first_sets
+    first = merge_dicts(first1,first2)
     follow = new_parser.follow_sets
 
     print("First sets:")
