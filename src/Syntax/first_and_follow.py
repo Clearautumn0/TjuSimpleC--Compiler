@@ -1,34 +1,34 @@
 from grammar import Grammar
-
+from src.utils.syntax_util import get_non_terminal_symbols, get_terminal_symbols
 
 
 class FirstAndFollow:
     def __init__(self, grammar, space_symbol, start_symbol, end_symbol):
         self.grammar = grammar.rules  # 文法规则
-        self.terminals = self.compute_terminals(grammar, space_symbol)  # 计算终结符
-        self.non_terminals = self.compute_non_terminals(grammar)  # 计算非终结符
+        self.terminals = set(get_terminal_symbols(grammar, space_symbol))  # 计算终结符
+        self.non_terminals = set(get_non_terminal_symbols(grammar))  # 计算非终结符
         self.first_sets = self.compute_first(grammar, space_symbol)  # 计算 FIRST 集
         self.follow_sets = self.compute_follow(grammar, self.first_sets, space_symbol, start_symbol, end_symbol)  # 计算 FOLLOW 集
         self.production_first_sets = self.compute_production_first(grammar, space_symbol)  # 计算产生式的 FIRST 集
 
-    # 计算非终结符
-    def compute_non_terminals(self, grammar):
-        return set(grammar.rules.keys())  # 返回文法中的非终结符集合
-
-    # 计算终结符
-    def compute_terminals(self, grammar, space_symbol):
-        non_terminals = set(grammar.rules.keys())
-        terminals = set()
-
-        # 遍历文法规则，识别终结符
-        for lhs, productions in grammar.rules.items():
-            for production in productions:
-                for symbol in production:
-                    if symbol not in non_terminals:  # 如果符号不是非终结符，说明它是终结符
-                        terminals.add(symbol)
-
-        terminals.add(space_symbol)  # 添加空串符号
-        return terminals
+    # # 计算非终结符
+    # def compute_non_terminals(self, grammar):
+    #     return set(grammar.rules.keys())  # 返回文法中的非终结符集合
+    #
+    # # 计算终结符
+    # def compute_terminals(self, grammar, space_symbol):
+    #     non_terminals = set(grammar.rules.keys())
+    #     terminals = set()
+    #
+    #     # 遍历文法规则，识别终结符
+    #     for lhs, productions in grammar.rules.items():
+    #         for production in productions:
+    #             for symbol in production:
+    #                 if symbol not in non_terminals:  # 如果符号不是非终结符，说明它是终结符
+    #                     terminals.add(symbol)
+    #
+    #     terminals.add(space_symbol)  # 添加空串符号
+    #     return terminals
 
     # 计算 FIRST 集
     def compute_first(self, grammar, space_symbol):
@@ -61,7 +61,7 @@ class FirstAndFollow:
                                         first_sets[non_terminal].add(space_symbol)
                                         changed = True
                                 continue  # 继续查看下一个符号
-                    if all(symbol == space_symbol for symbol in production):  # 如果产生式为 ε
+                    if all(symbol == space_symbol for symbol in production):  # 如果产生式为 $
                         if space_symbol not in first_sets[non_terminal]:
                             first_sets[non_terminal].add(space_symbol)
                             changed = True
@@ -74,9 +74,20 @@ class FirstAndFollow:
 
         for non_terminal, productions in grammar.rules.items():
             for production in productions:
-                # 使用元组表示产生式的右部
-                production_tuple = tuple(production)
 
+                # print("production:", production)
+                # print("space_symbol:", space_symbol)
+                #处理空串
+                if space_symbol in production:
+                    continue
+
+                if len(production) == 1:
+                    production_tuple = (production[0])  # 仅有一个元素时，显式地加上逗号
+                else:
+                    production_tuple = tuple(production)
+                # 使用元组表示产生式的右部
+                # production_tuple = tuple(production)
+                # print("production_tuple:", production_tuple)
                 # 计算右边符号序列的 FIRST 集
                 production_first_sets[production_tuple] = set()
 
@@ -93,10 +104,10 @@ class FirstAndFollow:
                             continue
                         else:
                             break
-                    # 如果遇到空串 ε
+                    # 如果遇到空串 $
                     elif symbol == space_symbol:
-                        if space_symbol not in production_first_sets[production_tuple]:
-                            production_first_sets[production_tuple].add(space_symbol)
+                        # if space_symbol not in production_first_sets[production_tuple]:
+                        #     production_first_sets[production_tuple].add(space_symbol)
                         break
 
         return production_first_sets
@@ -149,15 +160,18 @@ if __name__ == '__main__':
     # 添加文法规则
     grammar.add_rule("E", ["T", "E'"])
     grammar.add_rule("E'", ["+", "T", "E'"])
-    grammar.add_rule("E'", ["ε"])
+    grammar.add_rule("E'", ["$"])
+    grammar.add_rule("E'", ["$"])
     grammar.add_rule("T", ["F", "T'"])
     grammar.add_rule("T'", ["*", "F", "T'"])
-    grammar.add_rule("T'", ["ε"])
+    grammar.add_rule("T'", ["$"])
+    grammar.add_rule("T'", ["$"])
     grammar.add_rule("F", ["(", "E", ")"])
     grammar.add_rule("F", ["i"])
 
     # 创建解析器对象
-    new_parser = FirstAndFollow(grammar, 'ε', "E", "#")
+    new_parser = FirstAndFollow(grammar, '$', "E", "#")
+    new_parser = FirstAndFollow(grammar, '$', "E", "#")
 
     # 输出解析结果
     print("Non-terminals:", new_parser.grammar.keys())  # 输出非终结符

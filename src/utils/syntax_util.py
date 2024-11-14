@@ -18,7 +18,7 @@
 
 from src.Syntax.grammar import Grammar
 
-
+# 加载文法
 def load_from_file(file_path):
     grammar = Grammar()
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -37,6 +37,27 @@ def load_from_file(file_path):
                 # 直接用 rhs 包含分号
                 grammar.add_rule(lhs, rhs.strip().split())
     return grammar
+
+# 获取非终结符
+def get_non_terminal_symbols(grammar:Grammar):
+    # 非终结符集合
+    return list(grammar.get_rules().keys())
+
+# 获取终结符
+def get_terminal_symbols(grammar:Grammar, space_symbol:str):
+    non_terminals = get_non_terminal_symbols(grammar)
+    terminals = set()
+    # 遍历文法规则，识别终结符
+    for lhs, productions in grammar.rules.items():
+        for production in productions:
+            for symbol in production:
+                if symbol not in non_terminals:  # 如果符号不是非终结符，说明它是终结符
+                    terminals.add(symbol)
+    terminals.add(space_symbol)  # 添加空串符号
+    return list(terminals)
+
+# def load_token_from_file(file_path):
+
             
             
 if __name__ == '__main__':
