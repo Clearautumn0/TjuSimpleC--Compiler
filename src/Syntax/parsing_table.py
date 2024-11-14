@@ -25,7 +25,7 @@
     follow = new_parser.get_follow_set()
 
     构造分析表类：
-    pt = ParsingTable(first, follow, grammar.rules)
+    pt = ParsingTable(first, follow, grammar)
     调用getter即可获得分析表实体
     M = pt.get_parsing_table()
 
@@ -43,16 +43,13 @@
 
 
 
-
+@author:  覃邱维
+状态：完成
 '''
 from collections import defaultdict
 from grammar import Grammar
 from first_and_follow import FirstAndFollow
-
-
-
-
-
+from src.utils.syntax_util import is_terminal
 
 
 def list_to_string(list):
@@ -61,15 +58,13 @@ def list_to_string(list):
     return ''.join(map(str, list))
 
 
-
 class ParsingTable:
-    def __init__(self,first_set, follow_set, grammar:Grammar):
+    def __init__(self, first_set, follow_set, grammar: Grammar):
 
         self.first_set = first_set
         self.follow_set = follow_set
         self.grammar = grammar
         self.M = self.build_parsing_table()
-
 
     def get_parsing_table(self):
         """获取分析表"""
@@ -83,23 +78,20 @@ class ParsingTable:
         M = defaultdict(lambda: defaultdict(list))
         for A, productions in grammar.items():
             for alpha_list in productions:
-                # print(f"alpha_list = {alpha_list}")
                 alpha = list_to_string(alpha_list)
 
                 if alpha in first_set.keys():
-                    # print(f"alpha = {alpha}")
-                    # print(f"first[{alpha}]={first[alpha]}")
                     for a in first_set[alpha]:
-                        if self.is_terminal(a):
-                            M[A][a].append({A:alpha_list})
-                            print(f"M[{A}, {a}] = {M[A][a]}")
+                        if is_terminal(a, self.grammar):
+                            M[A][a].append({A: alpha_list})
+                            # print(f"M[{A}, {a}] = {M[A][a]}")
                         if '$' in first_set[A]:
                             for b in follow_set[A]:
-                                M[A][b].append({A:['$']})
-                                print(f"M[{A}, {b}] = {M[A][b]}")
+                                M[A][b].append({A: ['$']})
+                                # print(f"M[{A}, {b}] = {M[A][b]}")
         return M
 
-    def get_production_from_table(self,L,R):
+    def get_production_from_table(self, L, R):
         """获取分析表中某一行的某一列的值 字典形式"""
         M = self.M
         if L in M and R in M[L]:
@@ -107,12 +99,6 @@ class ParsingTable:
         else:
             # 处理情况，比如返回一个默认值或抛出异常
             return "error"  # 或者 raise KeyError(f"Key {L} or {R} not found in table")
-
-
-
-
-
-
 
     def print_parsing_table(self):
         """打印分析表"""
@@ -122,14 +108,6 @@ class ParsingTable:
             for a in M[A]:
                 rules = M[A][a]
                 print(f"M[{A}, {a}] = {rules if rules else '出错标志'}")
-
-    def is_terminal(self, symbol):
-        new_parser = FirstAndFollow(self.grammar, '$', "E", "#")
-        """判断符号是否为终结符"""
-        if symbol in new_parser.terminals:
-            return True
-        else:
-            return False
 
 
 def convert_keys_to_string(original_dict):
@@ -147,9 +125,6 @@ def convert_keys_to_string(original_dict):
             new_dict[key] = value
 
     return new_dict
-
-
-
 
 
 if __name__ == '__main__':
@@ -185,17 +160,13 @@ if __name__ == '__main__':
         print(f"{key}: {value}")
     # 构造分析表
 
-    print(" parsing table:")
-    t  = ParsingTable(first, follow, grammar)
+
+    # print(" parsing table:")
+    t = ParsingTable(first, follow, grammar)
+
     M = t.build_parsing_table()
 
-
     t.print_parsing_table()
-    print ("测试获取分析表中某一行的某一列的值")
-    print(t.get_production_from_table("E","i"))
+    print("测试获取分析表中某一行的某一列的值")
+    print(t.get_production_from_table("E", "i"))
     # 打印分析表
-
-
-
-
-    
