@@ -49,7 +49,7 @@ class PredictiveParser:
 
             else:  # 如果栈顶元素是终结符
                 if top == current_input:  # 如果栈顶元素和当前输入匹配
-                    if top == '#' or "EOF":  # 如果栈顶元素是结束符，则说明输入字符串已经全部匹配完毕，成功结束
+                    if top == '#' or top == "EOF":  # 如果栈顶元素是结束符，则说明输入字符串已经全部匹配完毕，成功结束
                         stack.pop()  # 匹配成功，弹出栈顶元素
                         index += 1  # 移动输入指针
                         action = f"accept"  # 当前操作为接受
