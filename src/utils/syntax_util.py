@@ -113,6 +113,7 @@ def get_terminal_symbols(grammar:Grammar, space_symbol:str):
     return list(terminals)
 
 # def load_token_from_file(file_path):
+
 # 判断字符串是否是终结符
 def is_terminal(symbol, grammar:Grammar):
     non_terminals = get_non_terminal_symbols(grammar)

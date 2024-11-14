@@ -49,7 +49,7 @@
 from collections import defaultdict
 from grammar import Grammar
 from first_and_follow import FirstAndFollow
-from utils.syntax_util import is_terminal
+from src.utils.syntax_util import is_terminal
 
 
 def list_to_string(list):
@@ -160,8 +160,10 @@ if __name__ == '__main__':
         print(f"{key}: {value}")
     # 构造分析表
 
+
     # print(" parsing table:")
     t = ParsingTable(first, follow, grammar)
+
     M = t.build_parsing_table()
 
     t.print_parsing_table()
