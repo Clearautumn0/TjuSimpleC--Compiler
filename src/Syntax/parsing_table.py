@@ -63,10 +63,10 @@ def list_to_string(list):
 
 
 class ParsingTable:
-    def __init__(self,first_set,follw_set,grammar):
+    def __init__(self,first_set, follow_set, grammar:Grammar):
 
         self.first_set = first_set
-        self.follw_set = follw_set
+        self.follow_set = follow_set
         self.grammar = grammar
         self.M = self.build_parsing_table()
 
@@ -74,11 +74,12 @@ class ParsingTable:
     def get_parsing_table(self):
         """获取分析表"""
         return self.M
+
     def build_parsing_table(self):
         """构造分析表"""
-        grammar = self.grammar
+        grammar = self.grammar.rules
         first_set = convert_keys_to_string(self.first_set)
-        follw_set = self.follw_set
+        follow_set = self.follow_set
         M = defaultdict(lambda: defaultdict(list))
         for A, productions in grammar.items():
             for alpha_list in productions:
@@ -89,11 +90,11 @@ class ParsingTable:
                     # print(f"alpha = {alpha}")
                     # print(f"first[{alpha}]={first[alpha]}")
                     for a in first_set[alpha]:
-                        if is_terminal(a):
+                        if self.is_terminal(a):
                             M[A][a].append({A:alpha_list})
                             print(f"M[{A}, {a}] = {M[A][a]}")
                         if '$' in first_set[A]:
-                            for b in follw_set[A]:
+                            for b in follow_set[A]:
                                 M[A][b].append({A:['$']})
                                 print(f"M[{A}, {b}] = {M[A][b]}")
         return M
@@ -122,19 +123,17 @@ class ParsingTable:
                 rules = M[A][a]
                 print(f"M[{A}, {a}] = {rules if rules else '出错标志'}")
 
-
-
-def is_terminal(symbol):
-    new_parser = FirstAndFollow(grammar, '$', "E", "#")
-    """判断符号是否为终结符"""
-    if symbol in new_parser.terminals:
-        return True
-    else:
-        return False
+    def is_terminal(self, symbol):
+        new_parser = FirstAndFollow(self.grammar, '$', "E", "#")
+        """判断符号是否为终结符"""
+        if symbol in new_parser.terminals:
+            return True
+        else:
+            return False
 
 
 def convert_keys_to_string(original_dict):
-    """将字典中的键从元组形式转换为字符串形式"""
+    """检查字典的键是否为列表，如果是列表则转换为字符串"""
     new_dict = {}
 
     for key, value in original_dict.items():
@@ -144,7 +143,7 @@ def convert_keys_to_string(original_dict):
             key_str = ''.join(key)  # 使用逗号将元组元素连接为字符串
             new_dict[key_str] = value
         else:
-            # 如果键不是元组，则直接添加到新字典
+            # 如果键不是列表，则直接添加到新字典
             new_dict[key] = value
 
     return new_dict

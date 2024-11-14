@@ -34,7 +34,7 @@ token对应的输出格式
 import os
 import string
 
-from src.lexertest.Date_Deal import symbols_table, symbols, processed_symbols_table, lex_input_symbols, lex_start, lex_final, lex_state_labels, lex_states, lex_trans_map
+from src.Lexer.Data_Deal import symbols_table, symbols, processed_symbols_table, lex_input_symbols, lex_start, lex_final, lex_state_labels, lex_states, lex_trans_map
 
 def get_closure(current_states, NFA):
     closure = set(current_states)  # 初始闭包为当前状态集合

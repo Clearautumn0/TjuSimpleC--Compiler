@@ -1,36 +1,18 @@
 from grammar import Grammar
-from src.utils.syntax_util import load_from_file
+from src.utils.syntax_util import load_from_file, get_non_terminal_symbols, get_terminal_symbols
 
-'''
-消除左递归，传入Grammar类对象
-get_symbols(grammar): 获取非终结符和终结符集合，传入Grammar类对象，返回两个list（非终结符，终结符）
-eliminate_left_recursion(non_terminal_symbols, grammar): 传入非终结符list，Grammar类对象，返回去除左递归的Grammar对象
-'''
+
 class LeftRecursionEliminator:
+    """
+    消除左递归，传入Grammar类对象
+    eliminate_left_recursion(non_terminal_symbols, grammar): 传入非终结符list，Grammar类对象，返回去除左递归的Grammar对象
+    """
     def __init__(self, old_productions:Grammar):
         self.old_productions = old_productions
         self.new_productions = self.old_productions
-        self.non_terminal_symbols, self.terminal_symbols = self.get_symbols(self.old_productions)
+        self.non_terminal_symbols = get_non_terminal_symbols(self.new_productions)
+        self.terminal_symbols = get_terminal_symbols(self.new_productions, "$")
         self.new_productions = self.eliminate_left_recursion(self.non_terminal_symbols, self.new_productions)
-
-    # 获取非终结符与终结符集合
-    def get_symbols(self, grammar:Grammar):
-        """
-        :param grammar:Grammar类对象
-        :return: 非终结符列表，终结符列表
-        """
-        # 非终结符集合
-        non_terminal_symbols = []
-        for lhs in grammar.get_rules().keys():
-            non_terminal_symbols.append(lhs)
-        # 终结符集合
-        terminal_symbols = set()
-        for rhs_list in grammar.get_rules().values():
-            for rhs in rhs_list:
-                for symbol in rhs:
-                    if symbol not in non_terminal_symbols and symbol != "$":
-                        terminal_symbols.add(symbol)
-        return non_terminal_symbols, list(terminal_symbols)
 
     # 消除左递归
     def eliminate_left_recursion(self, non_terminal_symbols:list, grammar:Grammar):
@@ -125,7 +107,10 @@ if __name__ == "__main__":
     ext_path = "../../input/extended_grammars.txt"
     output_path = "../../output/grammar_without_left_recursion.txt"
 
-    oldGrammar = load_from_file(ext_path)
-    newGrammar = LeftRecursionEliminator(oldGrammar).new_productions
+    oldGrammar = load_from_file(test_path)
+    eliminator = LeftRecursionEliminator(oldGrammar)
+    newGrammar = eliminator.new_productions
+    terminal_symbols = eliminator.terminal_symbols
     newGrammar.output_grammar(output_path)
     # print(newGrammar)
+    print(terminal_symbols)

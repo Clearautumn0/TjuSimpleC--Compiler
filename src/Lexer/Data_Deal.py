@@ -1,5 +1,5 @@
-from src.lexertest.TransformMap import TransformMap
-from src.lexertest.FA import FA
+from src.Lexer.TransformMap import TransformMap
+from src.Lexer.FA import FA
 
 # 定义符号表
 symbols_table = {
@@ -30,7 +30,14 @@ symbols_table = {
     "{": "SE", 
     "}": "SE", 
     ";": "SE", 
-    ",": "SE"
+    ",": "SE",
+    # 新增部分
+    "struct": "KW",
+    "union": "KW",
+    "switch": "KW",
+    "case": "KW",
+    "default": "KW",
+    ":": "SE"
 }
 
 # 定义字符映射表
@@ -64,7 +71,11 @@ symbols = {
     "{": 25,
     "}": 26,
     ";": 27,
-    ",": 28
+    ",": 28,
+    # 新增部分
+    "struct": 29,
+    "union": 30,
+    "switch": 31
 }
 
 processed_symbols_table = {}

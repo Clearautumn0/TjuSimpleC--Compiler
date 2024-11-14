@@ -1,6 +1,6 @@
-R -> S a
-R -> a
-Q -> R b
-Q -> b
-S -> Q c
-S -> c
+E -> E + T
+E -> T
+T -> T * F
+T -> F
+F -> ( E )
+F -> i
