@@ -1,56 +1,50 @@
-#DFA最小化，输出的是最小化后的状态集合
+'''
+DFA最小化
+传入DFA, 返回最小化后的DFA
 
-from collections import defaultdict
+'''
 
-class MinimizedDFA:
-    def __init__(self, dfa):
-        self.dfa = dfa
-        self.minimized_states = []
-        self.transitions = {}
+import os
+import string
 
-    def minimize(self):
-        accept_states = {state_id for state_id, state in self.dfa.states.items() if state.is_accept}
-        non_accept_states = set(self.dfa.states) - accept_states
-        partitions = [accept_states, non_accept_states]
+from src.Lexer.TransformMap import TransformMap
+from src.Lexer.FA import FA
+from src.Lexer.Data_Deal import symbols_table, symbols, processed_symbols_table, lex_input_symbols, lex_start, lex_final, lex_state_labels, lex_states, lex_trans_map
+from src.Lexer.Helper_Func import get_closure, get_next_state
+from src.Lexer.DFA import nfa_determinization
 
-        while True:
-            new_partitions = []
-            for group in partitions:
-                split_map = defaultdict(set)
-                for state in group:
-                    key = tuple(self._find_target_partition(state, symbol, partitions) 
-                                for symbol in self.dfa.states[state].transitions.keys())
-                    split_map[key].add(state)
-                new_partitions.extend(split_map.values())
 
-            if new_partitions == partitions:
-                break
-            partitions = new_partitions
+def minimize(DFA):
+    min_DFA = FA()
+    state_mapping = {}
+    non_final_states = set()
+    final_states_by_label = set()
 
-        self._build_minimized_dfa(partitions)
+    for state in DFA.states:
+        if state in DFA.final:
+            final_states_by_label.add(state)
+        else:
+            non_final_states.add(state)
 
-    def _find_target_partition(self, state, symbol, partitions):
-        target_state = self.dfa.states[state].transitions.get(symbol)
-        for index, group in enumerate(partitions):
-            if target_state in group:
-                return index
-        return None
+    new_state_id = 0
+    for state in non_final_states:
+        state_mapping[state] = new_state_id
+        new_state_id += 1
+    for state in final_states_by_label:
+        state_mapping[state] = new_state_id
+        new_state_id += 1
 
-    def _build_minimized_dfa(self, partitions):
-        state_mapping = {}
-        for index, group in enumerate(partitions):
-            is_accept = any(self.dfa.states[state].is_accept for state in group)
-            state_mapping[frozenset(group)] = index
-            self.minimized_states.append(index)
-            self.transitions[index] = {}
+    for old_state, new_state in state_mapping.items():
+        min_DFA.states.add(new_state)
+        if old_state in DFA.start:
+            min_DFA.start.add(new_state)
+        if old_state in DFA.final:
+            min_DFA.final.add(new_state)
+            min_DFA.state_labels[new_state] = DFA.state_labels[old_state]
 
-        for index, group in enumerate(partitions):
-            representative = next(iter(group))
-            for symbol, target_state in self.dfa.states[representative].transitions.items():
-                target_partition = self._find_target_partition(representative, symbol, partitions)
-                self.transitions[index][symbol] = target_partition
+    for tm in DFA.trans_map:
+        new_now = state_mapping[tm.now]
+        new_next = state_mapping[tm.next]
+        min_DFA.trans_map.add(TransformMap(tm.rec, new_now, new_next))
 
-    def display_minimized_dfa(self):
-        for state, transitions in self.transitions.items():
-            for symbol, target in transitions.items():
-                print(f"State {state} --{symbol}--> State {target}")
+    return min_DFA

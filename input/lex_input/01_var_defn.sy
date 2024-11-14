@@ -1,0 +1,7 @@
+
+void func(){
+	1 == 2;
+	int a;
+	float b = 1.0;
+	return 0;
+}

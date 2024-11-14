@@ -1,0 +1,6 @@
+int a = 3;
+int b = 5;
+const int a = 6;
+void func(){
+    return a + b;
+}
