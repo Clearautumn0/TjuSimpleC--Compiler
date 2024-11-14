@@ -1,67 +1,63 @@
-#DFA生成，随后输出结果是DFA对象，包含了DFA的起始状态和它所有的状态
+'''
+NFA确定化
+
+nfa_determinization函数接受传入的NFA
+返回确定化后的DFA
+'''
 
 
-from collections import defaultdict
 
-class DFAState:
-    def __init__(self, nfa_states):
-        self.nfa_states = frozenset(nfa_states) # 使用不可变集合来唯一标识DFA状态
-        self.transitions = {} # 存储DFA状态的转移关系
-        self.is_accept = any(state.is_accept for state in nfa_states) # 判断是否为接受状态
+import os
+import string
 
-class DFA:
-    def __init__(self, start_state):
-        self.start_state = start_state  # DFA 的起始状态
-        self.states = {}  # 保存所有DFA状态
-        self._build_dfa()  # 自动构建DFA
+from src.Lexer.TransformMap import TransformMap
+from src.Lexer.FA import FA
+from src.Lexer.Data_Deal import symbols_table, symbols, processed_symbols_table, lex_input_symbols, lex_start, lex_final, lex_state_labels, lex_states, lex_trans_map
+from src.Lexer.Helper_Func import get_closure, get_next_state
 
-    def _build_dfa(self):
-        queue = [self.start_state]
-        visited = set()
-        visited.add(self.start_state.nfa_states) # 记录已经访问过的DFA状态
-        
-        while queue:
-            current_dfa_state = queue.pop(0)
-            self.states[current_dfa_state.nfa_states] = current_dfa_state # 将状态添加到字典中
 
-            symbol_to_states = defaultdict(set)
-            for nfa_state in current_dfa_state.nfa_states: #对于当前的 DFA 状态，遍历其包含的所有 NFA 状态，收集所有符号（非 ε）的目标状态。
-                for symbol, next_states in nfa_state.transitions.items():
-                    if symbol != "ε": # 忽略 ε 转移
-                        symbol_to_states[symbol].update(next_states) # 收集每个符号对应的NFA目标状态集
+def nfa_determinization(NFA):
+    DFA = FA()
+    processing_set = []  # 使用队列
+    state_to_id = {}  # 状态集合到唯一ID的映射
+    next_id = 1  # 下一个可用的状态ID
 
-            for symbol, nfa_target_states in symbol_to_states.items():
-                new_dfa_state = DFAState(nfa_target_states)
-                current_dfa_state.transitions[symbol] = new_dfa_state
+    DFA.input_symbols = NFA.input_symbols
+    DFA.start = {1}
+    DFA.states = {1}
+    state_to_id[frozenset(get_closure(NFA.start, NFA))] = 1
+    processing_set.append(frozenset(get_closure(NFA.start, NFA)))
 
-                if new_dfa_state.nfa_states not in visited:
-                    visited.add(new_dfa_state.nfa_states)
-                    queue.append(new_dfa_state)
+    while processing_set:
+        current_states = processing_set.pop(0)
+        current_id = state_to_id[frozenset(current_states)]
 
-    def display_dfa(self):
-        for dfa_state in self.states.values():
-            for symbol, next_dfa_state in dfa_state.transitions.items():
-                print(f"DFA State {dfa_state.nfa_states} --{symbol}--> DFA State {next_dfa_state.nfa_states}")
-"""
-使用栈(stack) 来进行深度优先搜索,以找到从给定状态集合通过 ε 转移可以到达的所有状态。
-closure 用于存储最终的 ε 闭包结果。
-对于每个状态，检查是否存在 ε 转移，如果有，则将目标状态添加到 closure 中，并继续对目标状态计算 ε 闭包。
-"""
-def epsilon_closure(nfa_states):
-    stack = list(nfa_states)
-    closure = set(nfa_states)
-    
-    while stack:
-        state = stack.pop()
-        if "ε" in state.transitions:
-            for next_state in state.transitions["ε"]:
-                if next_state not in closure:
-                    closure.add(next_state)
-                    stack.append(next_state)
-    return closure
+        for ch in NFA.input_symbols:
+            next_states = get_next_state(current_states, ch, NFA)
+            if not next_states:
+                continue
 
-def nfa_to_dfa(nfa_start_state):
-    start_states = epsilon_closure({nfa_start_state})
-    start_dfa_state = DFAState(start_states)
-    dfa = DFA(start_dfa_state)
-    return dfa
+            if frozenset(next_states) not in state_to_id:
+                next_id += 1
+                state_to_id[frozenset(next_states)] = next_id
+                DFA.states.add(next_id)
+                processing_set.append(frozenset(next_states))
+                # next_id += 1
+
+                for state in frozenset(next_states):
+                    if state in NFA.final:
+                        DFA.final.add(next_id)
+                        DFA.state_labels[next_id] = NFA.state_labels[state]
+                        break
+
+
+                # if any(state in NFA.final for state in next_states):
+                #     DFA.final.add(next_id)
+                #     for state in next_states:
+                #         if state in NFA.final:
+                #             DFA.state_labels[next_id] = NFA.state_labels[state]
+                #             break
+
+            DFA.trans_map.add(TransformMap(ch, current_id, state_to_id[frozenset(next_states)]))
+
+    return DFA
