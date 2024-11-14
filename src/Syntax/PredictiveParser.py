@@ -1,17 +1,19 @@
 from src.Syntax.first_and_follow import FirstAndFollow
 from src.Syntax.grammar import Grammar
 from src.Syntax.parsing_table import ParsingTable
-from src.utils.syntax_util import get_non_terminal_symbols
+from src.utils.syntax_util import get_non_terminal_symbols, load_from_file, load_tokens, get_terminal_symbols
+from src.Syntax.lexer_token import LexerToken
 
 
 class PredictiveParser:
-    def __init__(self, parsing_table, non_terminals):
+    def __init__(self, parsing_table, non_terminals, terminals):
         self.parsing_table = parsing_table  # 解析表
         self.non_terminals = non_terminals  # 非终结符集合
+        self.terminals = terminals
 
-    def parse(self, input_string):
-        input_string += '#'  # 添加结束符号
-        stack = ['#', 'E']  # 栈顶元素为结束符，栈底元素为开始符号
+    def parse(self, input_string:list[LexerToken], start_token:str):
+        input_string.append(LexerToken("#", "EOF", 0))  # 添加结束符号
+        stack = ['#', start_token]  # 栈顶元素为结束符，栈底元素为开始符号
         # print(len(stack))
         index = 0
 
@@ -21,13 +23,15 @@ class PredictiveParser:
         while len(stack) > 0:
             # print(len(stack))
             top = stack[-1]  # 获取栈顶元素
-            current_input = input_string[index]  # 获取当前输入字符
+            current_input = input_string[index].type  # 获取当前输入字符
+            if current_input not in self.terminals+self.non_terminals+["#"]:
+                current_input = input_string[index].value
 
             if top in self.non_terminals:  # 如果栈顶元素是非终结符
                 # 从解析表中查找对应的产生式
                 production_rules = self.parsing_table.get((top, current_input))
 
-                if not production_rules:  # 如果没有找到对应的产生式
+                if not production_rules:  # 如果仍未找到
                     raise SyntaxError(f"Unexpected symbol: {current_input} at position {index}")
 
                 # 假设每个规则只有一个产生式，获取该产生式
@@ -42,9 +46,10 @@ class PredictiveParser:
                 action = f"reduction"  # 当前操作为归约
                 steps.append((step_number, top, current_input, action))  # 记录当前步骤
                 step_number += 1
+
             else:  # 如果栈顶元素是终结符
                 if top == current_input:  # 如果栈顶元素和当前输入匹配
-                    if top == '#':  # 如果栈顶元素是结束符，则说明输入字符串已经全部匹配完毕，成功结束
+                    if top == '#' or "EOF":  # 如果栈顶元素是结束符，则说明输入字符串已经全部匹配完毕，成功结束
                         stack.pop()  # 匹配成功，弹出栈顶元素
                         index += 1  # 移动输入指针
                         action = f"accept"  # 当前操作为接受
@@ -65,36 +70,24 @@ class PredictiveParser:
 
 
 if __name__ == '__main__':
-    grammar = Grammar()
 
-    # 添加文法规则
-    grammar.add_rule("E", ["T", "E'"])
-    grammar.add_rule("E'", ["+", "T", "E'"])
-    grammar.add_rule("E'", ["$"])
-    grammar.add_rule("T", ["F", "T'"])
-    grammar.add_rule("T'", ["*", "F", "T'"])
-    grammar.add_rule("T'", ["$"])
-    grammar.add_rule("F", ["(", "E", ")"])
-    grammar.add_rule("F", ["i"])
+    ext_path = "../../input/extended_grammars.txt"
+    tokens_path = "../../output/lex_output/lex1_2.txt"
+
+    grammar = load_from_file(ext_path)
+
+    start_token = "program"
 
     # 创建解析器对象
-    new_parser = FirstAndFollow(grammar, '$', "E", "#")
-
+    new_parser = FirstAndFollow(grammar, '$', start_token, "#")
     first = new_parser.get_first_set()
-
     follow = new_parser.get_follow_set()
 
     t = ParsingTable(first, follow, grammar)
     M = t.build_parsing_table()
 
     non_terminals = get_non_terminal_symbols(grammar)
-    # t.print_parsing_table()
-    #
-    # print("测试获取分析表中某一行的某一列的值")
-    # print(t.get_production_from_table("E", "i"))
-
-    # print(M)
-
+    terminals = get_terminal_symbols(grammar, "$")
 
     parsing_table = {}
 
@@ -102,16 +95,15 @@ if __name__ == '__main__':
         for a in M[A]:
             tuples = (A, a)
             parsing_table[tuples] = M[A][a]
-            # print(tuples, M[A][a])
 
 
-    # 输入字符串
-    input_string = "i*i+i"
+    # 输入串
+    input_tokens = load_tokens(tokens_path)
 
-    # 创建解析器并解析输入字符串
-    parser = PredictiveParser(parsing_table, non_terminals)
+    # 创建解析器并解析输入串
+    parser = PredictiveParser(parsing_table, non_terminals, terminals)
     try:
-        steps = parser.parse(input_string)
+        steps = parser.parse(input_tokens, start_token)
         for step in steps:
             print(f"{step[0]}\t{step[1]}#{step[2]}\t{step[3]}")  # 打印解析步骤
     except SyntaxError as e:
