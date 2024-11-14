@@ -60,7 +60,7 @@ def get_terminal_symbols(grammar:Grammar, space_symbol:str):
 # 判断字符串是否是终结符
 def is_terminal(symbol, grammar:Grammar):
     non_terminals = get_non_terminal_symbols(grammar)
-    return symbol not in non_terminals
+    return symbol not in non_terminal
             
             
 if __name__ == '__main__':

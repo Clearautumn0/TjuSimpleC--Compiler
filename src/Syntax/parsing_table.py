@@ -186,7 +186,7 @@ if __name__ == '__main__':
     # 构造分析表
 
     print(" parsing table:")
-    t  = ParsingTable(first, follow, grammar.rules)
+    t  = ParsingTable(first, follow, grammar)
     M = t.build_parsing_table()
 
 
