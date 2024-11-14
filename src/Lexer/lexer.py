@@ -32,13 +32,16 @@ def lexical_analysis_helper(address, DFA, x):
                 print(f"+ {ch} +")
                 if ch not in string.whitespace:  # 忽略空白字符
                     ch_type = get_char_type(ch)  # 获取当前字符的类型
+                    # print(f"--{ch_type}--")
                     matched = False  # 标记是否有匹配的状态转移
+                    # print(DFA.trans_map)
                     for tm in DFA.trans_map:
+                        # print(f"{current_state} + {tm.now} + {tm.rec}")
                         if current_state == tm.now and ch_type == tm.rec:
                             current_state = tm.next
                             str_token += ch  # 将字符加到当前的 token 中
                             matched = True
-                            print(f"+ {current_state} + {str_token} + ")
+                            # print(f"+ {current_state} + {str_token} + ")
                             break
                     
                     if matched:  # 如果找到了匹配的状态转移

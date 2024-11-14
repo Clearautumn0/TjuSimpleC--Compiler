@@ -72,12 +72,14 @@ def get_char_type(ch):
         return 's'
     if ch == '\'': # 识别字符的第一个单引号
         return '\''
+    if ch == "\\":
+        return '\\'
     return ch
 
 
 def get_tokens(state, str_token, DFA):
     label = DFA.state_labels.get(state, "")
-    print(f"++{DFA.state_labels}++")
+    # print(f"++{DFA.state_labels}++")
     if label == "INT":
         return f"<INT,{str_token}>"
     if label == "FLOAT":
