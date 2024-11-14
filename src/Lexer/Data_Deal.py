@@ -37,6 +37,7 @@ symbols_table = {
     "switch": "KW",
     "case": "KW",
     "default": "KW",
+    "break": "KW",
     ":": "SE"
 }
 
@@ -75,7 +76,11 @@ symbols = {
     # 新增部分
     "struct": 29,
     "union": 30,
-    "switch": 31
+    "switch": 31,
+    "default": 32,
+    "case": 33,
+    "break": 34,
+    ":": 35
 }
 
 processed_symbols_table = {}
