@@ -1,3 +1,45 @@
+"""
+    本文件是 FIRST 和 FOLLOW 集合计算器的类。
+    该类用于计算上下文无关文法（CFG）的 FIRST 集合和 FOLLOW 集合。
+
+    该类提供了以下方法：
+
+    - `__init__(self, grammar, space_symbol, start_symbol, end_symbol)`: 构造函数，用于初始化类实例。
+      初始化时会计算文法的 FIRST 集合和 FOLLOW 集合，以及产生式的 FIRST 集合。
+
+    - `compute_non_terminals(self, grammar)`: 计算非终结符集合。
+      遍历文法的产生式规则，找出所有的非终结符。
+
+    - `compute_terminals(self, grammar, space_symbol)`: 计算终结符集合。
+      遍历文法的产生式规则，找出所有的终结符。
+
+    - `compute_first(self, grammar, space_symbol)`: 计算 FIRST 集合。
+      对文法进行递归计算，得出每个非终结符的 FIRST 集合。
+
+    - `compute_follow(self, grammar, first_sets, space_symbol, start_symbol, end_symbol)`: 计算 FOLLOW 集合。
+      通过递归计算 FOLLOW 集合，根据 FIRST 集合的计算结果推导 FOLLOW 集合。
+
+    - `compute_production_first(self, grammar, space_symbol)`: 计算产生式的 FIRST 集合。
+      通过遍历每个产生式，计算出其 FIRST 集合。
+
+    - `merge_dicts(self, dict1, dict2)`: 合并两个字典。
+      将两个字典的内容合并为一个字典。
+
+    参数说明：
+
+    - `grammar`: `Grammar` 类的实例，包含文法的产生式规则。
+    - `space_symbol`: 空串符号，通常用 'ε' 表示。
+    - `start_symbol`: 文法的开始符号。
+    - `end_symbol`: 结束符号，通常用 '#' 表示，用于表示输入结束。
+
+    返回值说明：
+
+    - `first_sets`: 字典，包含每个非终结符的 FIRST 集合。
+    - `follow_sets`: 字典，包含每个非终结符的 FOLLOW 集合。
+    - `production_first_sets`: 字典，包含每个产生式的 FIRST 集合。
+
+    @author: <聂哲浩>
+"""
 from grammar import Grammar
 from src.utils.syntax_util import get_non_terminal_symbols, get_terminal_symbols
 
@@ -15,24 +57,6 @@ class FirstAndFollow:
         return self.first_all
     def get_follow_set(self):
         return self.follow_sets
-    # # 计算非终结符
-    # def compute_non_terminals(self, grammar):
-    #     return set(grammar.rules.keys())  # 返回文法中的非终结符集合
-    #
-    # # 计算终结符
-    # def compute_terminals(self, grammar, space_symbol):
-    #     non_terminals = set(grammar.rules.keys())
-    #     terminals = set()
-    #
-    #     # 遍历文法规则，识别终结符
-    #     for lhs, productions in grammar.rules.items():
-    #         for production in productions:
-    #             for symbol in production:
-    #                 if symbol not in non_terminals:  # 如果符号不是非终结符，说明它是终结符
-    #                     terminals.add(symbol)
-    #
-    #     terminals.add(space_symbol)  # 添加空串符号
-    #     return terminals
 
     # 计算 FIRST 集
     def compute_first(self, grammar, space_symbol):
@@ -79,8 +103,6 @@ class FirstAndFollow:
         for non_terminal, productions in grammar.rules.items():
             for production in productions:
 
-                # print("production:", production)
-                # print("space_symbol:", space_symbol)
                 #处理空串
                 if space_symbol in production:
                     continue
@@ -89,10 +111,7 @@ class FirstAndFollow:
                     production_tuple = (production[0])  # 仅有一个元素时，显式地加上逗号
                 else:
                     production_tuple = tuple(production)
-                # 使用元组表示产生式的右部
-                # production_tuple = tuple(production)
-                # print("production_tuple:", production_tuple)
-                # 计算右边符号序列的 FIRST 集
+
                 production_first_sets[production_tuple] = set()
 
                 for index, symbol in enumerate(production):
