@@ -32,8 +32,9 @@ class PredictiveParser:
                 # 从解析表中查找对应的产生式
                 production_rules = self.parsing_table.get((top, current_input))
 
-                if not production_rules:  # 如果仍未找到
-                    raise SyntaxError(f"Unexpected symbol: {current_input} at position {index}")
+                if not production_rules:  # 如果未找到
+                    print(top)
+                    raise SyntaxError(f"Unexpected symbol: {current_input} at position {index} non_terminal")
 
                 # 假设每个规则只有一个产生式，获取该产生式
                 production = next(iter(production_rules))  # 获取字典中的第一个产生式
@@ -49,6 +50,7 @@ class PredictiveParser:
                 step_number += 1
 
             else:  # 如果栈顶元素是终结符
+                print(f"栈顶元素:{top}，当前输入:{current_input}")
                 if top == current_input:  # 如果栈顶元素和当前输入匹配
                     if top == '#' or top == "EOF":  # 如果栈顶元素是结束符，则说明输入字符串已经全部匹配完毕，成功结束
                         stack.pop()  # 匹配成功，弹出栈顶元素
@@ -63,7 +65,8 @@ class PredictiveParser:
                         steps.append((step_number, top, current_input, action))  # 记录当前步骤
                         step_number += 1
                 else:
-                    raise SyntaxError(f"Unexpected symbol: {current_input} at position {index}")
+                    print(top)
+                    raise SyntaxError(f"Unexpected symbol: {current_input} at position {index} terminal")
 
         return steps
 

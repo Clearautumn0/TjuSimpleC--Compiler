@@ -4,22 +4,12 @@
 实现语法分析器
 读入文法
 读入词法分析器输出的token流，进行语法分析，生成抽象语法树。
-
-
-
-
-
-
-
-
-
-
 '''
 from src.Syntax.PredictiveParser import PredictiveParser
 from src.Syntax.eliminate_left_recursion import LeftRecursionEliminator
 from src.Syntax.first_and_follow import FirstAndFollow
 from src.Syntax.parsing_table import ParsingTable
-from src.utils.syntax_util import load_from_file, load_tokens, get_non_terminal_symbols, get_terminal_symbols
+from src.utils.syntax_util import load_from_file, load_tokens, get_non_terminal_symbols, get_terminal_symbols, convert_analysis_table
 from src.config import GRAMMAR_INPUT_DIR, LEX_OUTPUT_FILE
 
 def parser():
@@ -33,19 +23,8 @@ def parser():
     first_set=new_parser.get_first_set()
     follow_set=new_parser.get_follow_set()
     t = ParsingTable(first_set, follow_set, grammar)
-
-    M = t.build_parsing_table()
-
-    parsing_table = {}
-
-    for A in M:
-        for a in M[A]:
-            tuples = (A, a)
-            parsing_table[tuples] = M[A][a]
-
-
     t.print_parsing_table()
-
+    parsing_table = convert_analysis_table(t)
 
 
     non_terminals = get_non_terminal_symbols(grammar)
@@ -54,9 +33,6 @@ def parser():
     input_tokens = load_tokens(LEX_OUTPUT_FILE)
     parser = PredictiveParser(parsing_table, non_terminals, terminals)
     print("解析结果:")
-
-
-
 
     try:
         steps = parser.parse(input_tokens, "program")
