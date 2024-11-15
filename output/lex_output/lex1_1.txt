@@ -3,13 +3,14 @@ a <IDN,a>
 = <OP,12>
 10 <INT,10>
 ; <SE,27>
-int <KW,1>
-main <KW,7>
+void <KW,4>
+main <IDN,7>
 ( <SE,23>
 ) <SE,24>
 { <SE,25>
 a <IDN,a>
-=10 <INT,=10>
+= <OP,12>
+10 <INT,10>
 ; <SE,27>
 return <KW,5>
 0 <INT,0>

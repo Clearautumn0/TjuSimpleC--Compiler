@@ -1,5 +1,5 @@
 LEX_OUTPUT_DIR = "../output/lex_output"
-GRAMMAR_INPUT_DIR = "../input/grammars.txt"
+GRAMMAR_INPUT_DIR = "../input/extended_grammars.txt"
 TEST_CODE_DIR = "../input/test_code"
 TOKEN_INPUT_DIR = "../input/lex_input/test1.c"
 LEX_ID="1_1"

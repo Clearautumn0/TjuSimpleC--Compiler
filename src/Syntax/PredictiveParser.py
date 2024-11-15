@@ -72,7 +72,7 @@ class PredictiveParser:
 if __name__ == '__main__':
 
     ext_path = "../../input/extended_grammars.txt"
-    tokens_path = "../../output/lex_output/lex1_2.txt"
+    tokens_path = "../../output/lex_output/lex1_1.txt"
 
     grammar = load_from_file(ext_path)
 
