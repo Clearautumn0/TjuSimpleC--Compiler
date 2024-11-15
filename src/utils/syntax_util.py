@@ -36,8 +36,7 @@ func    <IDN, func>
 '''
 
 from src.Syntax.grammar import Grammar
-from src.Syntax.token import Token
-# from src.Syntax.parsing_table import ParsingTable
+from src.Syntax.lexer_token import LexerToken
 
 
 # 加载tokens文件
@@ -53,24 +52,10 @@ def load_tokens(filename):
                 type_part, value_id_part = line.split(' <')
                 value, token_id = value_id_part[:-1].split(',')  # 去掉尾部的 > 并拆分
                 token_id = token_id.strip()  # 清理可能的空白字符
-                token = Token(type_part.strip(), value.strip(), token_id.strip())
+                token = LexerToken(type_part.strip(), value.strip(), token_id.strip())
                 tokens.append(token)
 
     return tokens
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # 加载文法
 def load_from_file(file_path):
@@ -110,8 +95,6 @@ def get_terminal_symbols(grammar:Grammar, space_symbol:str):
     terminals.add(space_symbol)  # 添加空串符号
     return list(terminals)
 
-# def load_token_from_file(file_path):
-
 # 判断字符串是否是终结符
 def is_terminal(symbol, grammar:Grammar):
     non_terminals = get_non_terminal_symbols(grammar)
@@ -136,15 +119,18 @@ def print_reduction_sequence(file_path, steps):
 
             
 if __name__ == '__main__':
-    grammars = load_from_file("../../input/grammars.txt")
-    print(grammars)
+    # grammars = load_from_file("../../input/grammars.txt")
+    # print(grammars)
+    #
+    # for key, value in grammars.get_rules().items():
+    #     print(key, "->", value)
 
-    for key, value in grammars.get_rules().items():
-        print(key, "->", value)
 
-
-    tokens_path="../../output\lex_output\lex1_1.txt"
+    tokens_path="../../output/lex_output/lex1_1.txt"
     tokens = load_tokens(tokens_path)
+    print(tokens[1].type)
+    print(tokens[1].value)
+    print(tokens[1].id)
     print("测试token加载：")
     for token in tokens:
         print(token)

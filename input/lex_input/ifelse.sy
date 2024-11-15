@@ -1,7 +1,0 @@
-void func(1){
-    if (1 == 2){
-        int a = 2;
-    } else{
-        int b = 1;
-    }
-}

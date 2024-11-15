@@ -111,7 +111,7 @@ class ParsingTable:
 
 
 def convert_keys_to_string(original_dict):
-    """检查字典的键是否为列表，如果是列表则转换为字符串"""
+    """将字典中的键从元组形式转换为字符串形式"""
     new_dict = {}
 
     for key, value in original_dict.items():
@@ -121,7 +121,7 @@ def convert_keys_to_string(original_dict):
             key_str = ''.join(key)  # 使用逗号将元组元素连接为字符串
             new_dict[key_str] = value
         else:
-            # 如果键不是列表，则直接添加到新字典
+            # 如果键不是元组，则直接添加到新字典
             new_dict[key] = value
 
     return new_dict
