@@ -9,14 +9,19 @@ import string
 from src.Lexer.TransformMap import TransformMap
 from src.Lexer.FA import FA
 from src.Lexer.Data_Deal import symbols_table, symbols, processed_symbols_table, lex_input_symbols, lex_start, lex_final, lex_state_labels, lex_states, lex_trans_map
-from src.Lexer.Helper_Func import get_closure, get_next_state, get_char_type, get_tokens
-from src.Lexer.DFA import nfa_determinization
-from src.Lexer.Minimize_DFA import minimize
+from src.Lexer.helper_func import get_closure, get_next_state, get_char_type, get_tokens
+from src.Lexer.dfa import nfa_determinization
+from src.Lexer.minimize_dfa import minimize
+from src.config import LEX_OUTPUT_DIR,LEX_ID,TOKEN_INPUT_DIR
 
 
-def lexical_analysis_helper(address, DFA, x):
-    output_dir = "D:/000编译原理/labend/TjuSimpleC--Compiler/output/lex_output"
-    output_filename = f"lex{x}.txt"
+
+
+
+def lexical_analysis_helper( DFA):
+    address=TOKEN_INPUT_DIR
+    output_dir = LEX_OUTPUT_DIR
+    output_filename = f"lex{LEX_ID}.txt"
     output_path = os.path.join(output_dir, output_filename)
     with open(address, 'r') as test_sample, open(output_path, 'w') as record_tokens:
         if not test_sample or not record_tokens:

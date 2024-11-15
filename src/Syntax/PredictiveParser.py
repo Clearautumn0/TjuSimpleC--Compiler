@@ -72,7 +72,7 @@ class PredictiveParser:
 if __name__ == '__main__':
 
     ext_path = "../../input/extended_grammars.txt"
-    tokens_path = "../../output/lex_output/lex1_2.txt"
+    tokens_path = "../../output/lex_output/lex1_1.txt"
 
     grammar = load_from_file(ext_path)
 
@@ -102,6 +102,7 @@ if __name__ == '__main__':
 
     # 创建解析器并解析输入串
     parser = PredictiveParser(parsing_table, non_terminals, terminals)
+    print("解析结果")
     try:
         steps = parser.parse(input_tokens, start_token)
         for step in steps:

@@ -1,2 +1,9 @@
 .idea/
 .xml/
+.pyc/
+.class/
+.iml/
+.ipr/
+.iws/
+.gradle/
+build/

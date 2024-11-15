@@ -1,3 +1,7 @@
+'''
+单文件实现
+'''
+
 import os
 import string
 
