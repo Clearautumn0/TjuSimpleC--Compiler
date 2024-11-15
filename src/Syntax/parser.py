@@ -27,10 +27,14 @@ def parser():
     grammar = load_from_file(grammar_file_path)
     eliminator = LeftRecursionEliminator(grammar)
     grammar = eliminator.new_productions
+    print(f"消除左递归后的文法:{grammar}")
+
     new_parser = FirstAndFollow(grammar, '$', "program", "#")
     first_set=new_parser.get_first_set()
     follow_set=new_parser.get_follow_set()
     t = ParsingTable(first_set, follow_set, grammar)
+
+    t.print_parsing_table()
     non_terminals = get_non_terminal_symbols(grammar)
     terminals = get_terminal_symbols(grammar, "$")
     input_tokens = load_tokens(LEX_OUTPUT_FILE)
