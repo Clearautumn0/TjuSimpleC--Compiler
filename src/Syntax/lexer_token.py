@@ -10,7 +10,7 @@ id: 词法单元的序号
 __str__方法用于打印Token对象
 
 
-
+@Author: <覃邱维>
 '''
 class LexerToken:
     def __init__(self, type, value, id):

@@ -10,8 +10,8 @@ import string
 from src.Lexer.TransformMap import TransformMap
 from src.Lexer.FA import FA
 from src.Lexer.Data_Deal import symbols_table, symbols, processed_symbols_table, lex_input_symbols, lex_start, lex_final, lex_state_labels, lex_states, lex_trans_map
-from src.Lexer.Helper_Func import get_closure, get_next_state
-from src.Lexer.DFA import nfa_determinization
+from src.Lexer.helper_func import get_closure, get_next_state
+from src.Lexer.dfa import nfa_determinization
 
 
 def minimize(DFA):

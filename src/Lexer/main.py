@@ -10,10 +10,10 @@ import string
 from src.Lexer.TransformMap import TransformMap
 from src.Lexer.FA import FA
 from src.Lexer.Data_Deal import symbols_table, symbols, processed_symbols_table, lex_input_symbols, lex_start, lex_final, lex_state_labels, lex_states, lex_trans_map
-from src.Lexer.Helper_Func import get_closure, get_next_state, get_char_type, get_tokens
-from src.Lexer.DFA import nfa_determinization
-from src.Lexer.Minimize_DFA import minimize
-from src.Lexer.Lexer import lexical_analysis_helper
+from src.Lexer.helper_func import get_closure, get_next_state, get_char_type, get_tokens
+from src.Lexer.dfa import nfa_determinization
+from src.Lexer.minimize_dfa import minimize
+from src.Lexer.lexer import lexical_analysis_helper
 
 def lexical_analysis():
     print('++\n++')
@@ -33,7 +33,7 @@ def lexical_analysis():
     # lexical_analysis_helper("/input/lex_input/04_var_defn.sy", min_DFA, "1_4")
     # lexical_analysis_helper("/input/lex_input/05_var_defn.sy", min_DFA, "1_5")
     # lexical_analysis_helper("D:\000编译原理\labend\TjuSimpleC--Compiler\input\lex_input\ifelse.sy", min_DFA, "1_6")
-    lexical_analysis_helper("D:/000编译原理/labend/TjuSimpleC--Compiler/input/lex_input/switch.sy", min_DFA, "1_7")
+    lexical_analysis_helper( min_DFA)
 
 
 if __name__ == "__main__":

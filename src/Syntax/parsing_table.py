@@ -141,7 +141,7 @@ if __name__ == '__main__':
     grammar.add_rule("F", ["i"])
 
     # 创建解析器对象
-    new_parser = FirstAndFollow(grammar, '$', "E", "#")
+    new_parser = FirstAndFollow(grammar, '$', "program", "#")
 
     first = new_parser.get_first_set()
 
