@@ -1,5 +1,8 @@
-int a = 10;
-void main(){
-    a= 10;
-return 0;
-}
+
+
+struct my_struct {};
+struct my_struct1 {
+    int a;
+    int b;
+
+};
