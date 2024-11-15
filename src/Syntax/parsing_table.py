@@ -75,6 +75,7 @@ class ParsingTable:
         grammar = self.grammar.rules
         first_set = convert_keys_to_string(self.first_set)
         follow_set = self.follow_set
+        print(first_set)
         M = defaultdict(lambda: defaultdict(list))
         for A, productions in grammar.items():
             for alpha_list in productions:
@@ -83,12 +84,14 @@ class ParsingTable:
                 if alpha in first_set.keys():
                     for a in first_set[alpha]:
                         if is_terminal(a, self.grammar):
-                            M[A][a].append({A: alpha_list})
+                            # M[A][a].append({A: alpha_list})
+                            M[A][a] = [{A: alpha_list}]
                             # print(f"M[{A}, {a}] = {M[A][a]}")
-                        if '$' in first_set[A]:
-                            for b in follow_set[A]:
-                                M[A][b].append({A: ['$']})
-                                # print(f"M[{A}, {b}] = {M[A][b]}")
+                    if '$' in first_set[alpha]:
+                        for b in follow_set[A]:
+                            # M[A][b].append({A: ['$']})
+                            M[A][b] = [{A: ['$']}]
+                            # print(f"M[{A}, {b}] = {M[A][b]}")
         return M
 
     def get_production_from_table(self, L, R):
