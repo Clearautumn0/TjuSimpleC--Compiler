@@ -1,7 +1,8 @@
 from src.Syntax.first_and_follow import FirstAndFollow
 from src.Syntax.grammar import Grammar
 from src.Syntax.parsing_table import ParsingTable
-from src.utils.syntax_util import get_non_terminal_symbols, load_from_file, load_tokens, get_terminal_symbols
+from src.utils.syntax_util import get_non_terminal_symbols, load_from_file, load_tokens, get_terminal_symbols, \
+    convert_analysis_table
 from src.Syntax.lexer_token import LexerToken
 
 
@@ -89,12 +90,9 @@ if __name__ == '__main__':
     non_terminals = get_non_terminal_symbols(grammar)
     terminals = get_terminal_symbols(grammar, "$")
 
-    parsing_table = {}
+    parsing_table = convert_analysis_table(t)
 
-    for A in M:
-        for a in M[A]:
-            tuples = (A, a)
-            parsing_table[tuples] = M[A][a]
+
 
 
     # 输入串

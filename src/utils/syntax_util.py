@@ -38,6 +38,7 @@ func    <IDN, func>
 from src.Syntax.grammar import Grammar
 from src.Syntax.lexer_token import LexerToken
 
+
 # 加载tokens文件
 def load_tokens(filename):
     """从文件中读取 token，返回 Token 实例的列表"""
@@ -98,7 +99,24 @@ def get_terminal_symbols(grammar:Grammar, space_symbol:str):
 def is_terminal(symbol, grammar:Grammar):
     non_terminals = get_non_terminal_symbols(grammar)
     return symbol not in non_terminals
-            
+
+# 转换分析表形式
+def convert_analysis_table(parsing_table):
+    M = parsing_table.get_parsing_table()
+    result_table = {}
+    for A in M:
+        for a in M[A]:
+            tuples = (A, a)
+            result_table[tuples] = M[A][a]
+    return result_table
+
+# 打印规约序列
+def print_reduction_sequence(file_path, steps):
+    with open(file_path, 'w', encoding='utf-8') as file:
+        for step in steps:
+            file.write(f"{step[0]}\t{step[1]}#{step[2]}\t{step[3]}\n")# 打印解析步骤
+
+
             
 if __name__ == '__main__':
     # grammars = load_from_file("../../input/grammars.txt")
