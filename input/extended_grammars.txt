@@ -77,6 +77,12 @@ assignExp -> eqExp assignExpAtom
 assignExpAtom -> = eqExp assignExpAtom
 assignExpAtom -> $
 constExp -> assignExp
+
+
+
+
+
+
 compUnit -> switchBlock compUnit
 switchBlock -> switch ( unaryExp ) { caseBlock argCaseBlock defaultBlock }
 caseBlock -> case constExp : { switchBlockElem }
@@ -87,6 +93,9 @@ defaultBlock -> $
 switchBlockElem -> stmt switchBlockElem
 switchBlockElem -> $
 stmt -> break
+
+
+
 compUnit -> structDef compUnit
 structDef -> struct structType { structBlockElem } structVar ;
 structType -> Ident
@@ -99,6 +108,7 @@ argStructVar -> , Ident argStructVar
 argStructVar -> $
 decl -> structDecl
 structDecl -> struct structType Ident ;
+
 compUnit -> unionDef compUnit
 unionDef -> union unionType { unionBlockElem } unionVar ;
 unionType -> Ident
