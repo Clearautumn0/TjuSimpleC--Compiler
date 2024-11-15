@@ -41,7 +41,7 @@ def lexical_analysis_helper(address, DFA, x):
                             current_state = tm.next
                             str_token += ch  # 将字符加到当前的 token 中
                             matched = True
-                            # print(f"+ {current_state} + {str_token} + ")
+                            print(f"+ {current_state} + {str_token} + ")
                             break
                     
                     if matched:  # 如果找到了匹配的状态转移

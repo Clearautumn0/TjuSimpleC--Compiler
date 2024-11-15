@@ -7,7 +7,7 @@ symbols_table = {
     "void": "KW",
     "return": "KW", 
     "const": "KW", 
-    "main": "KW", 
+    # "main": "KW", 
     "float": "KW", 
     "if": "KW", 
     "else": "KW",
@@ -120,10 +120,10 @@ lex_trans_map = {
     TransformMap('_', 15, 15), TransformMap('n', 15, 15), TransformMap('ε', 4, 14), TransformMap('ε', 3, 16),
     TransformMap('ε', 5, 15), TransformMap('ε', 7, 16), TransformMap('ε', 8, 16), TransformMap('=', 7, 16),
     TransformMap('=', 8, 16), TransformMap('ε', 9, 16), TransformMap('=', 9, 16), TransformMap('=', 10, 16),
-    TransformMap('&', 11, 16), TransformMap('|', 12, 16), TransformMap('n', 16, 13), TransformMap('n', 17, 1),
+    TransformMap('&', 11, 16), TransformMap('|', 12, 16), TransformMap('n', 18, 13), TransformMap('n', 17, 1),
     TransformMap('l', 17, 2), TransformMap('o', 17, 3), TransformMap('s', 17, 4), TransformMap('_', 17, 5),
     TransformMap('=', 17, 7), TransformMap('>', 17, 8), TransformMap('<', 17, 9), TransformMap('!', 17, 10),
-    TransformMap('&', 17, 11), TransformMap('|', 17, 12), TransformMap('-', 17, 16), TransformMap('.', 13, 20),
+    TransformMap('&', 17, 11), TransformMap('|', 17, 12), TransformMap('-', 17, 18), TransformMap('.', 13, 20),
     TransformMap('ε', 20, 20), TransformMap('n', 20, 20),
     TransformMap('\'', 17, 22), # 读取第一个单引号
     TransformMap('l', 22, 23), TransformMap('\'', 23, 21), # 字符为字母

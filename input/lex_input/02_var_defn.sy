@@ -1,6 +1,11 @@
-int a = 3;
-int b = 5;
-const int a = 6;
-void func(){
-    return a + b;
+int a=1;
+int b =1+1;
+int c =1 +1;
+int d =1+ 1;
+char e ='1';
+char f = '1';
+float g =1.1;
+float h= 1.1+1.2;
+int main(){
+    return 0;
 }

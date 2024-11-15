@@ -79,7 +79,9 @@ def get_char_type(ch):
 
 def get_tokens(state, str_token, DFA):
     label = DFA.state_labels.get(state, "")
-    # print(f"++{DFA.state_labels}++")
+    print(f"++{DFA.state_labels}++")
+    # for it in DFA.trans_map:
+    #     print(f"+{it.now} ++ {it.rec} ++ {it.next}+")
     if label == "INT":
         return f"<INT,{str_token}>"
     if label == "FLOAT":
