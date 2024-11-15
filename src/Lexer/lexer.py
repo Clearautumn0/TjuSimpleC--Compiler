@@ -16,7 +16,7 @@ from src.Lexer.minimize_dfa import minimize
 from src.utils.lexer_util import lexical_analysis_helper
 
 def lexical_analysis():
-    print('++\n++')
+    # print('++\n++')
     NFA = FA()
     NFA.input_symbols = lex_input_symbols
     NFA.start = lex_start

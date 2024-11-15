@@ -4,7 +4,7 @@ a <IDN,a>
 10 <INT,10>
 ; <SE,27>
 void <KW,4>
-main <IDN,7>
+main <IDN,main>
 ( <SE,23>
 ) <SE,24>
 { <SE,25>
