@@ -1,0 +1,17 @@
+0	E#i	reduction
+1	T#i	reduction
+2	F#i	reduction
+3	i#i	move
+4	T'#*	reduction
+5	*#*	move
+6	F#i	reduction
+7	i#i	move
+8	T'#+	reduction
+9	E'#+	reduction
+10	+#+	move
+11	T#i	reduction
+12	F#i	reduction
+13	i#i	move
+14	T'##	reduction
+15	E'##	reduction
+16	###	accept

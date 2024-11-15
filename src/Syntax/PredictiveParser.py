@@ -1,7 +1,7 @@
 from src.Syntax.first_and_follow import FirstAndFollow
 from src.Syntax.grammar import Grammar
 from src.Syntax.parsing_table import ParsingTable
-from src.utils.syntax_util import get_non_terminal_symbols
+from src.utils.syntax_util import get_non_terminal_symbols,convert_analysis_table,print_reduction_sequence
 
 
 class PredictiveParser:
@@ -96,13 +96,9 @@ if __name__ == '__main__':
     # print(M)
 
 
-    parsing_table = {}
+    parsing_table = convert_analysis_table(t)
 
-    for A in M:
-        for a in M[A]:
-            tuples = (A, a)
-            parsing_table[tuples] = M[A][a]
-            # print(tuples, M[A][a])
+
 
 
     # 输入字符串
@@ -112,7 +108,8 @@ if __name__ == '__main__':
     parser = PredictiveParser(parsing_table, non_terminals)
     try:
         steps = parser.parse(input_string)
-        for step in steps:
-            print(f"{step[0]}\t{step[1]}#{step[2]}\t{step[3]}")  # 打印解析步骤
+        print_reduction_sequence('../../output/predictive_parser.txt',steps)
+        # for step in steps:
+        #     print(f"{step[0]}\t{step[1]}#{step[2]}\t{step[3]}")  # 打印解析步骤
     except SyntaxError as e:
         print(e)  # 输出语法错误信息
