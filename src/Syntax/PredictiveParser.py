@@ -62,9 +62,13 @@ class PredictiveParser:
                 current_input = input_string[index].value
 
             if top in self.non_terminals:  # 如果栈顶元素是非终结符
-                production_rules = self.parsing_table.get((top, current_input))  # 从解析表中查找产生式
-                if not production_rules:
-                    raise SyntaxError(f"Unexpected symbol: {current_input} at position {index}")
+
+                # 从解析表中查找对应的产生式
+                production_rules = self.parsing_table.get((top, current_input))
+
+                if not production_rules:  # 如果未找到
+                    print(top)
+                    raise SyntaxError(f"Unexpected symbol: {current_input} at position {index} non_terminal")
 
                 production = next(iter(production_rules))  # 获取第一个产生式
                 production = production[top]  # 提取产生式右部
@@ -77,18 +81,25 @@ class PredictiveParser:
                 steps.append((step_number, top, current_input, action))
                 step_number += 1
 
-            else:  # 栈顶元素是终结符
-                if top == current_input:  # 匹配当前输入符号
-                    stack.pop()  # 弹出栈顶元素
-                    index += 1  # 移动输入指针
-                    if top == '#' or top == "EOF":  # 输入匹配完成
-                        action = "accept"  # 当前操作为接受
-                    else:
-                        action = "move"  # 当前操作为移动
-                    steps.append((step_number, top, current_input, action))
-                    step_number += 1
+            else:  # 如果栈顶元素是终结符
+                print(f"栈顶元素:{top}，当前输入:{current_input}")
+                if top == current_input:  # 如果栈顶元素和当前输入匹配
+                    if top == '#' or top == "EOF":  # 如果栈顶元素是结束符，则说明输入字符串已经全部匹配完毕，成功结束
+                        stack.pop()  # 匹配成功，弹出栈顶元素
+                        index += 1  # 移动输入指针
+                        action = f"accept"  # 当前操作为接受
+                        steps.append((step_number, top, current_input, action))  # 记录当前步骤
+                        step_number += 1
+                    else:  # 栈顶元素不是结束符，则说明匹配成功
+                        stack.pop()  # 匹配成功，弹出栈顶元素
+                        index += 1  # 移动输入指针
+                        action = f"move"  # 当前操作为移动
+                        steps.append((step_number, top, current_input, action))  # 记录当前步骤
+                        step_number += 1
+
                 else:
-                    raise SyntaxError(f"Unexpected symbol: {current_input} at position {index}")
+                    print(top)
+                    raise SyntaxError(f"Unexpected symbol: {current_input} at position {index} terminal")
 
         return steps
 

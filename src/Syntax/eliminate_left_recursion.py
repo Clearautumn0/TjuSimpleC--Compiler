@@ -1,5 +1,5 @@
 from grammar import Grammar
-from src.utils.syntax_util import load_from_file, get_non_terminal_symbols, get_terminal_symbols
+from src.utils.syntax_util import load_from_file, get_non_terminal_symbols, get_terminal_symbols, remove_duplicates
 
 
 class LeftRecursionEliminator:
@@ -17,7 +17,6 @@ class LeftRecursionEliminator:
     # 消除左递归
     def eliminate_left_recursion(self, non_terminal_symbols:list, grammar:Grammar):
         """
-
         :param non_terminal_symbols: 非终结符列表
         :param grammar: Grammar对象
         :return: 消除左递归后的Grammar对象
@@ -36,7 +35,7 @@ class LeftRecursionEliminator:
     # 实现规则改写
     def __expand_grammar(self, i_mark:str, i_rules:list, j_mark:str, j_rules:list):
         # 创建新的 program 规则列表
-        new_rules = set()
+        new_rules = []
         for target_rule in i_rules:
             # j能由i推导出
             if j_mark == target_rule[0]:
@@ -49,11 +48,12 @@ class LeftRecursionEliminator:
                         while '$' in new_rule:
                             new_rule.remove('$')
                     # print(new_rules)
-                    new_rules.add(tuple(new_rule))
+                    new_rules.append(tuple(new_rule))
             else:
-                new_rules.add(tuple(target_rule))
-        res_list = [list(r) for r in new_rules]
+                new_rules.append(tuple(target_rule))
 
+        remove_duplicates(new_rules)
+        res_list = [list(r) for r in new_rules]
         return res_list
 
     # 消除直接左递归
@@ -80,7 +80,7 @@ class LeftRecursionEliminator:
 
     # 删除无用产生式
     def __remove_useless_productions(self, non_terminal_symbols:list, new_productions:Grammar):
-        non_terminals = set(non_terminal_symbols)
+        non_terminals = non_terminal_symbols
         reachable = {symbol: False for symbol in non_terminals}
         reachable[non_terminal_symbols[0]] = True
         pre_cond = {}

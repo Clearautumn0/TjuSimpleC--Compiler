@@ -47,8 +47,8 @@ from src.utils.syntax_util import get_non_terminal_symbols, get_terminal_symbols
 class FirstAndFollow:
     def __init__(self, grammar, space_symbol, start_symbol, end_symbol):
         self.grammar = grammar.rules  # 文法规则
-        self.terminals = set(get_terminal_symbols(grammar, space_symbol))  # 计算终结符
-        self.non_terminals = set(get_non_terminal_symbols(grammar))  # 计算非终结符
+        self.terminals = get_terminal_symbols(grammar, space_symbol)  # 计算终结符
+        self.non_terminals = get_non_terminal_symbols(grammar)  # 计算非终结符
         self.first_sets = self.compute_first(grammar, space_symbol)  # 计算 FIRST 集
         self.follow_sets = self.compute_follow(grammar, self.first_sets, space_symbol, start_symbol, end_symbol)  # 计算 FOLLOW 集
         self.production_first_sets = self.compute_production_first(grammar, space_symbol)  # 计算产生式的 FIRST 集
@@ -103,9 +103,6 @@ class FirstAndFollow:
         for non_terminal, productions in grammar.rules.items():
             for production in productions:
 
-                #处理空串
-                if space_symbol in production:
-                    continue
 
                 if len(production) == 1:
                     production_tuple = (production[0])  # 仅有一个元素时，显式地加上逗号
@@ -113,6 +110,11 @@ class FirstAndFollow:
                     production_tuple = tuple(production)
 
                 production_first_sets[production_tuple] = set()
+
+                # 处理空串
+                if space_symbol in production:
+                    production_first_sets[production_tuple].add(space_symbol)
+                    continue
 
                 for index, symbol in enumerate(production):
                     # 如果是终结符，直接将其加入产生式 FIRST 集

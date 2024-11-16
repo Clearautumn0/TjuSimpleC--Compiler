@@ -85,20 +85,31 @@ def get_non_terminal_symbols(grammar:Grammar):
 # 获取终结符
 def get_terminal_symbols(grammar:Grammar, space_symbol:str):
     non_terminals = get_non_terminal_symbols(grammar)
-    terminals = set()
+    terminals = []
     # 遍历文法规则，识别终结符
     for lhs, productions in grammar.rules.items():
         for production in productions:
             for symbol in production:
                 if symbol not in non_terminals:  # 如果符号不是非终结符，说明它是终结符
-                    terminals.add(symbol)
-    terminals.add(space_symbol)  # 添加空串符号
-    return list(terminals)
+                    terminals.append(symbol)
+    # terminals.add(space_symbol)  # 添加空串符号
+    while space_symbol in terminals:
+        terminals.remove(space_symbol)
+    return remove_duplicates(terminals)
+
+# 去重
+def remove_duplicates(list):
+    seen = set()  # 用于存储已经出现的元素
+    result = []   # 用于存储去重后的结果
+    for item in list:
+        if item not in seen:
+            result.append(item)  # 将没有出现过的元素添加到结果列表
+            seen.add(item)        # 将当前元素添加到已出现的集合中
+    return result
 
 # 判断字符串是否是终结符
 def is_terminal(symbol, grammar:Grammar):
-    non_terminals = get_non_terminal_symbols(grammar)
-    return symbol not in non_terminals
+    return symbol in get_terminal_symbols(grammar, "$")
 
 # 转换分析表形式
 def convert_analysis_table(parsing_table):
