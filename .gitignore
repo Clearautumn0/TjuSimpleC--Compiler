@@ -6,4 +6,5 @@
 .ipr/
 .iws/
 .gradle/
+.pyc/
 build/
