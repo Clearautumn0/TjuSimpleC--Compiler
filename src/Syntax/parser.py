@@ -9,8 +9,9 @@ from src.Syntax.PredictiveParser import PredictiveParser
 from src.Syntax.eliminate_left_recursion import LeftRecursionEliminator
 from src.Syntax.first_and_follow import FirstAndFollow
 from src.Syntax.parsing_table import ParsingTable
-from src.utils.syntax_util import load_from_file, load_tokens, get_non_terminal_symbols, get_terminal_symbols, convert_analysis_table
-from src.config import GRAMMAR_INPUT_DIR, LEX_OUTPUT_FILE
+from src.utils.syntax_util import load_from_file, load_tokens, get_non_terminal_symbols, get_terminal_symbols, convert_analysis_table,print_reduction_sequence
+from src.config import GRAMMAR_INPUT_DIR, LEX_OUTPUT_FILE, PARSER_OUTPUT_FILE
+
 
 def parser():
     grammar_file_path=GRAMMAR_INPUT_DIR
@@ -34,10 +35,10 @@ def parser():
     parser = PredictiveParser(parsing_table, non_terminals, terminals)
     print("解析结果:")
 
+    parser_output_file_path = PARSER_OUTPUT_FILE
     try:
         steps = parser.parse(input_tokens, "program")
-        for step in steps:
-            print(f"{step[0]}\t{step[1]}#{step[2]}\t{step[3]}")  # 打印解析步骤
+        print_reduction_sequence(parser_output_file_path, steps)
     except SyntaxError as e:
         print(e)  # 输出语法错误信息
 
