@@ -24,7 +24,7 @@ def parser():
     first_set=new_parser.get_first_set()
     follow_set=new_parser.get_follow_set()
     t = ParsingTable(first_set, follow_set, grammar)
-    t.print_parsing_table()
+    # t.print_parsing_table()
     parsing_table = convert_analysis_table(t)
 
 

@@ -54,51 +54,61 @@ class PredictiveParser:
 
         steps = []  # 存储解析步骤
         step_number = 0
+        try:
+            while len(stack) > 0:
+                top = stack[-1]  # 获取栈顶元素
+                current_input = input_string[index].type  # 获取当前输入字符
+                if current_input not in self.terminals + self.non_terminals + ["#"]:
+                    current_input = input_string[index].value
 
-        while len(stack) > 0:
-            top = stack[-1]  # 获取栈顶元素
-            current_input = input_string[index].type  # 获取当前输入字符
-            if current_input not in self.terminals + self.non_terminals + ["#"]:
-                current_input = input_string[index].value
+                if top in self.non_terminals:  # 如果栈顶元素是非终结符
 
-            if top in self.non_terminals:  # 如果栈顶元素是非终结符
+                    # 从解析表中查找对应的产生式
+                    production_rules = self.parsing_table.get((top, current_input))
 
-                # 从解析表中查找对应的产生式
-                production_rules = self.parsing_table.get((top, current_input))
+                    if not production_rules:  # 如果未找到
+                        print(top)
+                        raise SyntaxError(f"Unexpected symbol: {current_input} at position {index} non_terminal")
 
-                if not production_rules:  # 如果未找到
-                    print(top)
-                    raise SyntaxError(f"Unexpected symbol: {current_input} at position {index} non_terminal")
+                    production = next(iter(production_rules))  # 获取第一个产生式
+                    production = production[top]  # 提取产生式右部
 
-                production = next(iter(production_rules))  # 获取第一个产生式
-                production = production[top]  # 提取产生式右部
+                    stack.pop()  # 弹出栈顶非终结符
+                    if production != ['$']:  # 如果不是空串，将产生式右部反转后入栈
+                        stack.extend(reversed(production))
 
-                stack.pop()  # 弹出栈顶非终结符
-                if production != ['$']:  # 如果不是空串，将产生式右部反转后入栈
-                    stack.extend(reversed(production))
+                    action = "reduction"  # 当前操作为归约
+                    steps.append((step_number, top, current_input, action))
+                    step_number += 1
 
-                action = "reduction"  # 当前操作为归约
-                steps.append((step_number, top, current_input, action))
-                step_number += 1
+                else:  # 如果栈顶元素是终结符
+                    if top == current_input:  # 如果栈顶元素和当前输入匹配
+                        if top == '#' or top == "EOF":  # 如果栈顶元素是结束符，则说明输入字符串已经全部匹配完毕，成功结束
+                            stack.pop()  # 匹配成功，弹出栈顶元素
+                            index += 1  # 移动输入指针
+                            action = f"accept"  # 当前操作为接受
+                            steps.append((step_number, top, current_input, action))  # 记录当前步骤
+                            step_number += 1
+                        else:  # 栈顶元素不是结束符，则说明匹配成功
+                            stack.pop()  # 匹配成功，弹出栈顶元素
+                            index += 1  # 移动输入指针
+                            action = f"move"  # 当前操作为移动
+                            steps.append((step_number, top, current_input, action))  # 记录当前步骤
+                            step_number += 1
 
-            else:  # 如果栈顶元素是终结符
-                if top == current_input:  # 如果栈顶元素和当前输入匹配
-                    if top == '#' or top == "EOF":  # 如果栈顶元素是结束符，则说明输入字符串已经全部匹配完毕，成功结束
-                        stack.pop()  # 匹配成功，弹出栈顶元素
-                        index += 1  # 移动输入指针
-                        action = f"accept"  # 当前操作为接受
-                        steps.append((step_number, top, current_input, action))  # 记录当前步骤
-                        step_number += 1
-                    else:  # 栈顶元素不是结束符，则说明匹配成功
-                        stack.pop()  # 匹配成功，弹出栈顶元素
-                        index += 1  # 移动输入指针
-                        action = f"move"  # 当前操作为移动
-                        steps.append((step_number, top, current_input, action))  # 记录当前步骤
-                        step_number += 1
+                    else:
+                        print(top)
+                        raise SyntaxError(f"Unexpected symbol: {current_input} at position {index} terminal")
 
-                else:
-                    print(top)
-                    raise SyntaxError(f"Unexpected symbol: {current_input} at position {index} terminal")
+        except SyntaxError as e:
+            # 捕获语法错误，记录当前步骤并设置错误标记
+            action = "error"
+            steps.append((step_number, top, current_input, action))
+            print("语法错误前的规约序列：")
+            for step in steps:
+                print(f"{step[0]}\t{step[1]}#{step[2]}\t{step[3]}")  # 输出规约序列
+            print(f"语法错误: {e}")
+            return steps
 
         return steps
 
