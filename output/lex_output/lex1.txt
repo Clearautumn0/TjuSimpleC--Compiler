@@ -3,6 +3,10 @@ main <IDN,main>
 ( <SE,23>
 ) <SE,24>
 { <SE,25>
+int <KW,1>
+= <OP,12>
+1 <INT,1>
+; <SE,27>
 return <KW,5>
 2 <INT,2>
 ; <SE,27>
