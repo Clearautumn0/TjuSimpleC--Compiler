@@ -82,7 +82,6 @@ class PredictiveParser:
                 step_number += 1
 
             else:  # 如果栈顶元素是终结符
-                print(f"栈顶元素:{top}，当前输入:{current_input}")
                 if top == current_input:  # 如果栈顶元素和当前输入匹配
                     if top == '#' or top == "EOF":  # 如果栈顶元素是结束符，则说明输入字符串已经全部匹配完毕，成功结束
                         stack.pop()  # 匹配成功，弹出栈顶元素

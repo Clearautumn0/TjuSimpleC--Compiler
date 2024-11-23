@@ -51,12 +51,6 @@ def nfa_determinization(NFA):
                         break
 
 
-                # if any(state in NFA.final for state in next_states):
-                #     DFA.final.add(next_id)
-                #     for state in next_states:
-                #         if state in NFA.final:
-                #             DFA.state_labels[next_id] = NFA.state_labels[state]
-                #             break
 
             DFA.trans_map.add(TransformMap(ch, current_id, state_to_id[frozenset(next_states)]))
 
