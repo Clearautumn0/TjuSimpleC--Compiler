@@ -22,7 +22,7 @@ PredictiveParser 类实现了一个基于预测分析表的语法分析器，用
 from src.Syntax.first_and_follow import FirstAndFollow
 from src.Syntax.parsing_table import ParsingTable
 from src.utils.syntax_util import get_non_terminal_symbols, load_from_file, load_tokens, get_terminal_symbols, \
-    convert_analysis_table
+    convert_analysis_table,print_reduction_sequence
 from src.Syntax.lexer_token import LexerToken
 
 
@@ -133,7 +133,8 @@ if __name__ == '__main__':
     print("解析结果")
     try:
         steps = parser.parse(input_tokens, start_token)
-        for step in steps:
-            print(f"{step[0]}\t{step[1]}#{step[2]}\t{step[3]}")  # 打印解析步骤
+        print_reduction_sequence('../../output/predictive_parser.txt',steps)
+        # for step in steps:
+        #     print(f"{step[0]}\t{step[1]}#{step[2]}\t{step[3]}")  # 打印解析步骤
     except SyntaxError as e:
         print(e)  # 输出语法错误信息

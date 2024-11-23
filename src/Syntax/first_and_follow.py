@@ -102,8 +102,6 @@ class FirstAndFollow:
 
         for non_terminal, productions in grammar.rules.items():
             for production in productions:
-
-
                 if len(production) == 1:
                     production_tuple = (production[0])  # 仅有一个元素时，显式地加上逗号
                 else:
