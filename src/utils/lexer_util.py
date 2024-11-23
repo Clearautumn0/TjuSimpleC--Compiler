@@ -18,7 +18,7 @@ from src.config import LEX_OUTPUT_DIR,TEST_ID,TEST_CODE_DIR
 
 
 
-def lexical_analysis_helper( DFA):
+def lexical_analysis_helper(DFA):
     address=TEST_CODE_DIR
     output_dir = LEX_OUTPUT_DIR
     output_filename = f"lex{TEST_ID}.txt"

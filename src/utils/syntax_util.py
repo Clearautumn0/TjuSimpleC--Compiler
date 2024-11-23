@@ -34,6 +34,7 @@ func    <IDN, func>
 @Author2: <王俊哲>
 
 '''
+import os
 
 from src.Syntax.grammar import Grammar
 from src.Syntax.lexer_token import LexerToken
@@ -123,10 +124,16 @@ def convert_analysis_table(parsing_table):
 
 # 打印规约序列
 def print_reduction_sequence(file_path, steps):
+    # 确保路径中的目录存在
+    file_dir = os.path.dirname(file_path)  # 获取目录部分
+    if not os.path.exists(file_dir):  # 检查目录是否存在
+        os.makedirs(file_dir)  # 如果不存在，创建目录
+
+    # 打开文件写入步骤
     with open(file_path, 'w', encoding='utf-8') as file:
         for step in steps:
-            file.write(f"{step[0]}\t{step[1]}#{step[2]}\t{step[3]}\n")# 打印解析步骤
-
+            # 将步骤写入文件
+            file.write(f"{step[0]}\t{step[1]}#{step[2]}\t{step[3]}\n")
 
             
 if __name__ == '__main__':
