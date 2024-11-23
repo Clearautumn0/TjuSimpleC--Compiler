@@ -1,7 +1,4 @@
 void main(){
-    int a, b0, _c;
-    a = 1;
-    b0 = 2;
-    _c = 3;
-    return b0 + _c;
+    const int a = 10, b = 5;
+    return b;
 }

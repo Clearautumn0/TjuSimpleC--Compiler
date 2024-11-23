@@ -3,9 +3,10 @@ GRAMMAR_INPUT_DIR = "../input/extended_grammars.txt"
 
 
 
-TEST_CODE_DIR = "../input/lex_input/test1.c"
-LEX_ID="1_1"
+TEST_CODE_DIR = "../input/lex_input/test_base_1.c"
+TEST_ID= "1"
+PARSER_OUTPUT_DIR = "../output/parser_output"
 
 
-
-LEX_OUTPUT_FILE = f"{LEX_OUTPUT_DIR}/lex{LEX_ID}.txt"
+LEX_OUTPUT_FILE = f"{LEX_OUTPUT_DIR}/lex{TEST_ID}.txt"
+PARSER_OUTPUT_FILE = f"{PARSER_OUTPUT_DIR}/lex{TEST_ID}.txt"

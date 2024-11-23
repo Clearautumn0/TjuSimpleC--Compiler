@@ -1,3 +1,7 @@
-test_base_1.cvoid main(){
-    return 2;
+void main(){
+    int a, b0, _c;
+    a = 1;
+    b0 = 2;
+    _c = 3;
+    return b0 + _c;
 }

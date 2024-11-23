@@ -1,3 +1,6 @@
+int b = 3;
+
 void main(){
-    return 2;
+    int a = 4;
+    return a + b;
 }
