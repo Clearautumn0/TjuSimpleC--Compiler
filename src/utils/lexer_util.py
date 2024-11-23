@@ -12,14 +12,14 @@ from src.Lexer.Data_Deal import symbols_table, symbols, processed_symbols_table,
 from src.Lexer.helper_func import get_closure, get_next_state, get_char_type, get_tokens
 from src.Lexer.dfa import nfa_determinization
 from src.Lexer.minimize_dfa import minimize
-from src.config import LEX_OUTPUT_DIR,LEX_ID,TOKEN_INPUT_DIR
+from src.config import LEX_OUTPUT_DIR,LEX_ID,TEST_CODE_DIR
 
 
 
 
 
 def lexical_analysis_helper( DFA):
-    address=TOKEN_INPUT_DIR
+    address=TEST_CODE_DIR
     output_dir = LEX_OUTPUT_DIR
     output_filename = f"lex{LEX_ID}.txt"
     output_path = os.path.join(output_dir, output_filename)

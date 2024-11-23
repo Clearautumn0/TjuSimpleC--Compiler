@@ -9,7 +9,6 @@
 
 新建一个ParsingTable类，包含两个成员变量：
 构造时要求传入参数
-
 - first_set: 字典，保存FIRST集合
 - follw_set: 字典，保存FOLLOW集合
 - grammar: 文法对象
