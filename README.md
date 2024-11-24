@@ -1,35 +1,191 @@
-# TjuSimpleC--Compiler
-天津大学2024编译原理大作业 C--编译器
+本次作业的词法分析器以及语法分析器均基于python开发
 
+# 项目结构
+├── docs
 
-```
-├── docs/                   # 项目文档
-│
-├── input/                  # 输入的 C-- 源代码文件
-│
-├── output/                 # 输出的分析结果
-│
-├── src/                    # 源代码目录
-│   ├── Lexer/              # 词法分析器模块
-│   │   ├── __init__.py     # 初始化Lexer模块
-│   │   ├── lexer.py        # 词法分析器的实现
-│   │   └── token.py        # 定义Token类
-│   │
-│   ├── Syntax/            # 语法分析的相关模块
-│   │   ├── __init__.py     # 初始化Grammar模块
-│   │   ├── grammar.py      # 文法定义
-│   │   ├── parser.py       # 语法分析器的实现
-│   │   ├── ast.py          # 抽象语法树定义
-│   │   └── error.py        # 错误处理
-│   │
-│   ├── utils/              # 工具类，如错误报告，调试工具
+├── input
+
+│   ├── extended_grammars.txt
+
+│   ├── lex_input
+
+│   │   ├── test_base_1.c
+
+│   │   ├── test_base_2.c
+
+│   │   ├── test_base_3.c
+
+│   │   ├── test_base_4.c
+
+│   │   ├── test_struct.c
+
+│   │   ├── test_switch.c
+
+│   │   ├── test_union.c
+
+├── output
+
+│   ├── grammar_rules.txt
+
+│   ├── grammar_without_left_recursion.txt
+
+│   ├── lex_output   //这里存放
+
+│   │   ├── lex1.txt
+
+│   │   ├── lex1_1.txt
+
+│   │   ├── lex1_2.txt
+
+│   │   ├── lex1_7.txt
+
+│   │   ├── lex2.txt
+
+│   │   ├── lex3.txt
+
+│   │   ├── lex4.txt
+
+│   │   ├── lex_struct.txt
+
+│   │   ├── lex_switch.txt
+
+│   │   ├── lex_union.txt
+
+│   ├── parser_output
+
+│   │   ├── syntax1.txt
+
+│   │   ├── syntax2.txt
+
+│   │   ├── syntax3.txt
+
+│   │   ├── syntax4.txt
+
+│   │   ├── syntax_struct.txt
+
+│   │   ├── syntax_switch.txt
+
+│   │   ├── syntax_union.txt
+
+│   ├── parsing_table.html
+
+│   ├── predictive_parser.txt
+
+├── README.md
+
+├── show_tree.py
+
+├── src
+
+│   ├── config.py
+
+│   ├── Lexer
+
+│   │   ├── Data_Deal.py
+
+│   │   ├── dfa.py
+
+│   │   ├── FA.py
+
+│   │   ├── helper_func.py
+
+│   │   ├── lexer.py
+
+│   │   ├── minimize_dfa.py
+
+│   │   ├── README.md
+
+│   │   ├── TransformMap.py
+
 │   │   ├── __init__.py
-│   │   └── utils.py
-│   │
-│   │     
-    ├── test/               # 测试用例
-    │   ├── __init__.py
-    │   ├── test_lexer.py
-    │   ├── test_parser.py
-    
-```
+
+│   ├── main.py
+
+│   ├── Syntax
+
+│   │   ├── eliminate_left_recursion.py
+
+│   │   ├── first_and_follow.py
+
+│   │   ├── grammar.py
+
+│   │   ├── lexer_token.py
+
+│   │   ├── parser.py
+
+│   │   ├── parsing_table.py
+
+│   │   ├── PredictiveParser.py
+
+│   │   ├── __init__.py
+
+│   ├── utils
+
+│   │   ├── lexer_util.py
+
+│   │   ├── syntax_util.py
+
+│   │   ├── __init__.py
+
+│   ├── __init__.py
+
+├── test
+
+│   ├── test_lexer.py
+
+│   ├── __init__.py
+
+│   ├── 这里用来存放词法分析器&语法分析器的测试文件.md
+
+
+
+# 运行方式
+测试运行词法分析器
+
+`python ./src/Lexer/lexer.py`
+
+测试运行语法分析器:您可以单独读取tokens来进行语法分析
+
+`python ./src/Syntax/parser.py`
+
+运行编译器,可以运行整体的编译器实现原始代码->tokens->语法分析情况
+
+`python ./src/main.py`
+
+
+
+# 编码环境:
+python 3.11以上
+
+# 开发环境
+pycharm community 2024.1 
+
+# 人员分工:
+覃邱维:项目负责人
+
+负责成员调度任务安排,负责整体的项目架构设计,实现语法分析器的分析表构建以及可视化部分,负责语法分析器中实体类的构以及数据的读入,负责展示ppt设计与实现,负责语法分析器的总体设计,负责新增文法的审查与校验.负责实验报告的组织与攥写.
+
+王俊哲：项目成员
+
+负责新增文法的编写与校验。语法分析器部分代码编写，实现语法分析器中消除左递归的功能，以及对语法分析器部分bug的修复。
+
+李亮克：项目成员
+
+负责词法分析器大部分代码的编写，负责部分NFA状态转换表的构建，NFA的确定化以及DFA的最小化的实现，同时为词法分析器编写了测试代码。
+
+聂哲浩：项目成员
+
+负责语法分析器部分代码的编写，实现语法分析器中FIRST和FOLLOW集合的计算，以及输出规约序列的功能。同时完成对语法分析模块的代码测试。
+
+张浩然：项目成员
+
+负责部分词法分析器的代码编写，部分文档撰写及排版工作。
+
+
+
+
+
+
+
+
+
