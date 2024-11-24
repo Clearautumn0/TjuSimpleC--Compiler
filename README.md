@@ -1,4 +1,4 @@
-#TJUSimpleC--Compiler
+# TJUSimpleC--Compiler
 
 
 本次作业的词法分析器以及语法分析器均基于python开发
