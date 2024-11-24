@@ -35,11 +35,85 @@ func    <IDN, func>
 
 '''
 import os
-
+import pandas as pd
+import plotly.express as px
 from src.Syntax.grammar import Grammar
 from src.Syntax.lexer_token import LexerToken
 
 
+def visualize_parsing_table( M):
+    """生成可视化的HTML文件，保存到../output目录"""
+    # 创建DataFrame并填充M的内容
+    rows = list(M.keys())
+    columns = set()
+
+    for transitions in M.values():
+        columns.update(transitions.keys())
+
+    columns = sorted(columns)  # 排序列
+
+    # 创建一个空的DataFrame
+    df = pd.DataFrame(index=rows, columns=columns)
+
+    # 填充DataFrame
+    for A in M:
+        for a in M[A]:
+
+            df.at[A, a] = M[A][a][0]  # 更新DataFrame
+
+    # 将NaN替换为空字符串
+    df = df.fillna('')
+
+    # 创建../output目录（如果不存在）
+    output_dir = '../output'
+    os.makedirs(output_dir, exist_ok=True)
+
+    # 保存HTML文件到指定目录
+    output_file = os.path.join(output_dir, "parsing_table.html")
+
+    # 生成HTML，并添加样式
+    html = df.to_html(border=0, justify='center', na_rep='', classes='dataframe')
+
+    # 添加样式和JavaScript
+    html = f"""
+    <html>
+    <head>
+        <title>Parsing Table</title>
+        <style>
+            body {{ font-family: Arial, sans-serif; }}
+            .dataframe {{ width: 100%; border-collapse: collapse; }}
+            .dataframe th, .dataframe td {{ border: 1px solid #dddddd; text-align: center; padding: 8px; }}
+            .dataframe th {{ background-color: #f2f2f2; }}
+            .dataframe tr:nth-child(even) {{ background-color: #f9f9f9; }}
+            .dataframe tr:hover {{ background-color: #f1f1f1; }}
+            .search-container {{ margin-bottom: 10px; }}
+        </style>
+        <script>
+            function searchTable() {{
+                let input = document.getElementById('tableSearch');
+                let filter = input.value.toLowerCase();
+                let table = document.querySelector('.dataframe');
+                let tr = table.getElementsByTagName('tr');
+
+                for (let i = 1; i < tr.length; i++) {{
+                    tr[i].style.display = tr[i].innerText.toLowerCase().includes(filter) ? '' : 'none';
+                }}
+            }}
+        </script>
+    </head>
+    <body>
+        <h2>Parsing Table</h2>
+        <div class="search-container">
+            <input type="text" id="tableSearch" onkeyup="searchTable()" placeholder="Search for values...">
+        </div>
+        {html}
+    </body>
+    </html>
+    """
+
+    # 写入生成的HTML内容到文件
+    with open(output_file, 'w', encoding='utf-8') as f:
+        f.write(html)
 # 加载tokens文件
 def load_tokens(filename):
     """从文件中读取 token，返回 Token 实例的列表"""

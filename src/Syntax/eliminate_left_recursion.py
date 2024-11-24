@@ -102,15 +102,4 @@ class LeftRecursionEliminator:
 
 # 测试
 if __name__ == "__main__":
-    test_path = "../../input/test_grammars.txt"
-    path = "../../input/grammars.txt"
-    ext_path = "../../input/extended_grammars.txt"
-    output_path = "../../output/grammar_without_left_recursion.txt"
-
-    oldGrammar = load_from_file(test_path)
-    eliminator = LeftRecursionEliminator(oldGrammar)
-    newGrammar = eliminator.new_productions
-    terminal_symbols = eliminator.terminal_symbols
-    newGrammar.output_grammar(output_path)
-    # print(newGrammar)
-    print(terminal_symbols)
+    pass

@@ -9,7 +9,7 @@ TEST_ID= "1"
 
 
 PARSER_OUTPUT_DIR = "../output/parser_output"
-
+VISUALIZE_PARSING_TABLE=False
 
 LEX_OUTPUT_FILE = f"{LEX_OUTPUT_DIR}/lex{TEST_ID}.txt"
 PARSER_OUTPUT_FILE = f"{PARSER_OUTPUT_DIR}/syntax{TEST_ID}.txt"

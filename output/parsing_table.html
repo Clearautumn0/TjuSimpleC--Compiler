@@ -1,0 +1,2206 @@
+
+    <html>
+    <head>
+        <title>Parsing Table</title>
+        <style>
+            body { font-family: Arial, sans-serif; }
+            .dataframe { width: 100%; border-collapse: collapse; }
+            .dataframe th, .dataframe td { border: 1px solid #dddddd; text-align: center; padding: 8px; }
+            .dataframe th { background-color: #f2f2f2; }
+            .dataframe tr:nth-child(even) { background-color: #f9f9f9; }
+            .dataframe tr:hover { background-color: #f1f1f1; }
+            .search-container { margin-bottom: 10px; }
+        </style>
+        <script>
+            function searchTable() {
+                let input = document.getElementById('tableSearch');
+                let filter = input.value.toLowerCase();
+                let table = document.querySelector('.dataframe');
+                let tr = table.getElementsByTagName('tr');
+
+                for (let i = 1; i < tr.length; i++) {
+                    tr[i].style.display = tr[i].innerText.toLowerCase().includes(filter) ? '' : 'none';
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <h2>Parsing Table</h2>
+        <div class="search-container">
+            <input type="text" id="tableSearch" onkeyup="searchTable()" placeholder="Search for values...">
+        </div>
+        <table class="dataframe dataframe">
+  <thead>
+    <tr style="text-align: center;">
+      <th></th>
+      <th>!</th>
+      <th>!=</th>
+      <th>#</th>
+      <th>%</th>
+      <th>(</th>
+      <th>)</th>
+      <th>*</th>
+      <th>+</th>
+      <th>,</th>
+      <th>-</th>
+      <th>/</th>
+      <th>:</th>
+      <th>;</th>
+      <th>&lt;</th>
+      <th>&lt;=</th>
+      <th>=</th>
+      <th>==</th>
+      <th>&gt;</th>
+      <th>&gt;=</th>
+      <th>INT</th>
+      <th>Ident</th>
+      <th>break</th>
+      <th>case</th>
+      <th>char</th>
+      <th>const</th>
+      <th>default</th>
+      <th>float</th>
+      <th>int</th>
+      <th>return</th>
+      <th>struct</th>
+      <th>switch</th>
+      <th>union</th>
+      <th>void</th>
+      <th>{</th>
+      <th>}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>program</th>
+      <td></td>
+      <td></td>
+      <td>{'program': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'program': ['compUnit']}</td>
+      <td>{'program': ['compUnit']}</td>
+      <td></td>
+      <td>{'program': ['compUnit']}</td>
+      <td>{'program': ['compUnit']}</td>
+      <td></td>
+      <td>{'program': ['compUnit']}</td>
+      <td></td>
+      <td>{'program': ['compUnit']}</td>
+      <td>{'program': ['compUnit']}</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>compUnit</th>
+      <td></td>
+      <td></td>
+      <td>{'compUnit': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'compUnit': ['decl', 'compUnit']}</td>
+      <td>{'compUnit': ['decl', 'compUnit']}</td>
+      <td></td>
+      <td>{'compUnit': ['decl', 'compUnit']}</td>
+      <td>{'compUnit': ['decl', 'compUnit']}</td>
+      <td></td>
+      <td>{'compUnit': ['structDef', 'compUnit']}</td>
+      <td></td>
+      <td>{'compUnit': ['unionDef', 'compUnit']}</td>
+      <td>{'compUnit': ['funcDef', 'compUnit']}</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>decl</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'decl': ['varDecl']}</td>
+      <td>{'decl': ['constDecl']}</td>
+      <td></td>
+      <td>{'decl': ['varDecl']}</td>
+      <td>{'decl': ['varDecl']}</td>
+      <td></td>
+      <td>{'decl': ['structDecl']}</td>
+      <td></td>
+      <td>{'decl': ['unionDecl']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>constDecl</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'constDecl': ['const', 'bType', 'constDef', 'argConst', ';']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>argConst</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'argConst': [',', 'constDef', 'argConst']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'argConst': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>constDef</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'constDef': ['Ident', '=', 'constInitVal']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>constInitVal</th>
+      <td>{'constInitVal': ['constExp']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'constInitVal': ['constExp']}</td>
+      <td></td>
+      <td></td>
+      <td>{'constInitVal': ['constExp']}</td>
+      <td></td>
+      <td>{'constInitVal': ['constExp']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'constInitVal': ['constExp']}</td>
+      <td>{'constInitVal': ['constExp']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>varDecl</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'varDecl': ['bType', 'varDef', 'argVarDecl', ';']}</td>
+      <td></td>
+      <td></td>
+      <td>{'varDecl': ['bType', 'varDef', 'argVarDecl', ';']}</td>
+      <td>{'varDecl': ['bType', 'varDef', 'argVarDecl', ';']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>argVarDecl</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'argVarDecl': [',', 'varDef', 'argVarDecl']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'argVarDecl': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>varDef</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'varDef': ['Ident', 'argVarDef']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>argVarDef</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'argVarDef': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'argVarDef': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td>{'argVarDef': ['=', 'initVal']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>initVal</th>
+      <td>{'initVal': ['exp']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'initVal': ['exp']}</td>
+      <td></td>
+      <td></td>
+      <td>{'initVal': ['exp']}</td>
+      <td></td>
+      <td>{'initVal': ['exp']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'initVal': ['exp']}</td>
+      <td>{'initVal': ['exp']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>bType</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'bType': ['char']}</td>
+      <td></td>
+      <td></td>
+      <td>{'bType': ['float']}</td>
+      <td>{'bType': ['int']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>funcDef</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'funcDef': ['funcType', 'Ident', '(', 'funcFParams', ')', 'block']}</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>funcType</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'funcType': ['void']}</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>funcFParams</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'funcFParams': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'funcFParams': ['funcFParam', 'argFunctionF']}</td>
+      <td></td>
+      <td></td>
+      <td>{'funcFParams': ['funcFParam', 'argFunctionF']}</td>
+      <td>{'funcFParams': ['funcFParam', 'argFunctionF']}</td>
+      <td></td>
+      <td>{'funcFParams': ['funcFParam', 'argFunctionF']}</td>
+      <td></td>
+      <td>{'funcFParams': ['funcFParam', 'argFunctionF']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>argFunctionF</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'argFunctionF': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td>{'argFunctionF': [',', 'funcFParam', 'argFunctionF']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>funcFParam</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'funcFParam': ['char', 'Ident']}</td>
+      <td></td>
+      <td></td>
+      <td>{'funcFParam': ['float', 'Ident']}</td>
+      <td>{'funcFParam': ['int', 'Ident']}</td>
+      <td></td>
+      <td>{'funcFParam': ['struct', 'structType', 'Ident']}</td>
+      <td></td>
+      <td>{'funcFParam': ['union', 'unionType', 'Ident']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>block</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'block': ['{', 'blockItem', '}']}</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>blockItem</th>
+      <td>{'blockItem': ['stmt', 'blockItem']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'blockItem': ['stmt', 'blockItem']}</td>
+      <td></td>
+      <td></td>
+      <td>{'blockItem': ['stmt', 'blockItem']}</td>
+      <td></td>
+      <td>{'blockItem': ['stmt', 'blockItem']}</td>
+      <td></td>
+      <td></td>
+      <td>{'blockItem': ['stmt', 'blockItem']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'blockItem': ['stmt', 'blockItem']}</td>
+      <td>{'blockItem': ['stmt', 'blockItem']}</td>
+      <td>{'blockItem': ['stmt', 'blockItem']}</td>
+      <td></td>
+      <td>{'blockItem': ['char', 'varDef', 'argVarDecl', ';', 'blockItem']}</td>
+      <td>{'blockItem': ['const', 'bType', 'constDef', 'argConst', ';', 'blockItem']}</td>
+      <td></td>
+      <td>{'blockItem': ['float', 'varDef', 'argVarDecl', ';', 'blockItem']}</td>
+      <td>{'blockItem': ['int', 'varDef', 'argVarDecl', ';', 'blockItem']}</td>
+      <td>{'blockItem': ['stmt', 'blockItem']}</td>
+      <td>{'blockItem': ['structDecl', 'blockItem']}</td>
+      <td>{'blockItem': ['switchBlock', 'blockItem']}</td>
+      <td>{'blockItem': ['unionDecl', 'blockItem']}</td>
+      <td></td>
+      <td>{'blockItem': ['stmt', 'blockItem']}</td>
+      <td>{'blockItem': ['$']}</td>
+    </tr>
+    <tr>
+      <th>stmt</th>
+      <td>{'stmt': ['exp', ';']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'stmt': ['exp', ';']}</td>
+      <td></td>
+      <td></td>
+      <td>{'stmt': ['exp', ';']}</td>
+      <td></td>
+      <td>{'stmt': ['exp', ';']}</td>
+      <td></td>
+      <td></td>
+      <td>{'stmt': [';']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'stmt': ['exp', ';']}</td>
+      <td>{'stmt': ['exp', ';']}</td>
+      <td>{'stmt': ['break']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'stmt': ['return', 'argExp', ';']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'stmt': ['{', 'blockItem', '}']}</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>argExp</th>
+      <td>{'argExp': ['exp']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'argExp': ['exp']}</td>
+      <td></td>
+      <td></td>
+      <td>{'argExp': ['exp']}</td>
+      <td></td>
+      <td>{'argExp': ['exp']}</td>
+      <td></td>
+      <td></td>
+      <td>{'argExp': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'argExp': ['exp']}</td>
+      <td>{'argExp': ['exp']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>exp</th>
+      <td>{'exp': ['assignExp']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'exp': ['assignExp']}</td>
+      <td></td>
+      <td></td>
+      <td>{'exp': ['assignExp']}</td>
+      <td></td>
+      <td>{'exp': ['assignExp']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'exp': ['assignExp']}</td>
+      <td>{'exp': ['assignExp']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>unaryExp</th>
+      <td>{'unaryExp': ['!', 'unaryExp']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'unaryExp': ['(', 'exp', ')']}</td>
+      <td></td>
+      <td></td>
+      <td>{'unaryExp': ['+', 'unaryExp']}</td>
+      <td></td>
+      <td>{'unaryExp': ['-', 'unaryExp']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'unaryExp': ['INT']}</td>
+      <td>{'unaryExp': ['Ident', 'callFunc']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>callFunc</th>
+      <td></td>
+      <td>{'callFunc': ['$']}</td>
+      <td></td>
+      <td>{'callFunc': ['$']}</td>
+      <td>{'callFunc': ['(', 'funcRParams', ')']}</td>
+      <td>{'callFunc': ['$']}</td>
+      <td>{'callFunc': ['$']}</td>
+      <td>{'callFunc': ['$']}</td>
+      <td>{'callFunc': ['$']}</td>
+      <td>{'callFunc': ['$']}</td>
+      <td>{'callFunc': ['$']}</td>
+      <td>{'callFunc': ['$']}</td>
+      <td>{'callFunc': ['$']}</td>
+      <td>{'callFunc': ['$']}</td>
+      <td>{'callFunc': ['$']}</td>
+      <td>{'callFunc': ['$']}</td>
+      <td>{'callFunc': ['$']}</td>
+      <td>{'callFunc': ['$']}</td>
+      <td>{'callFunc': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>funcRParams</th>
+      <td>{'funcRParams': ['funcRParam', 'argFunctionR']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'funcRParams': ['funcRParam', 'argFunctionR']}</td>
+      <td>{'funcRParams': ['$']}</td>
+      <td></td>
+      <td>{'funcRParams': ['funcRParam', 'argFunctionR']}</td>
+      <td></td>
+      <td>{'funcRParams': ['funcRParam', 'argFunctionR']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'funcRParams': ['funcRParam', 'argFunctionR']}</td>
+      <td>{'funcRParams': ['funcRParam', 'argFunctionR']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>argFunctionR</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'argFunctionR': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td>{'argFunctionR': [',', 'funcRParam', 'argFunctionR']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>funcRParam</th>
+      <td>{'funcRParam': ['assignExp']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'funcRParam': ['assignExp']}</td>
+      <td></td>
+      <td></td>
+      <td>{'funcRParam': ['assignExp']}</td>
+      <td></td>
+      <td>{'funcRParam': ['assignExp']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'funcRParam': ['assignExp']}</td>
+      <td>{'funcRParam': ['assignExp']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>mulExp</th>
+      <td>{'mulExp': ['!', 'unaryExp', 'mulExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'mulExp': ['(', 'exp', ')', 'mulExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td>{'mulExp': ['+', 'unaryExp', 'mulExpAtom']}</td>
+      <td></td>
+      <td>{'mulExp': ['-', 'unaryExp', 'mulExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'mulExp': ['INT', 'mulExpAtom']}</td>
+      <td>{'mulExp': ['Ident', 'callFunc', 'mulExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>mulExpAtom</th>
+      <td></td>
+      <td>{'mulExpAtom': ['$']}</td>
+      <td></td>
+      <td>{'mulExpAtom': ['%', 'unaryExp', 'mulExpAtom']}</td>
+      <td></td>
+      <td>{'mulExpAtom': ['$']}</td>
+      <td>{'mulExpAtom': ['*', 'unaryExp', 'mulExpAtom']}</td>
+      <td>{'mulExpAtom': ['$']}</td>
+      <td>{'mulExpAtom': ['$']}</td>
+      <td>{'mulExpAtom': ['$']}</td>
+      <td>{'mulExpAtom': ['/', 'unaryExp', 'mulExpAtom']}</td>
+      <td>{'mulExpAtom': ['$']}</td>
+      <td>{'mulExpAtom': ['$']}</td>
+      <td>{'mulExpAtom': ['$']}</td>
+      <td>{'mulExpAtom': ['$']}</td>
+      <td>{'mulExpAtom': ['$']}</td>
+      <td>{'mulExpAtom': ['$']}</td>
+      <td>{'mulExpAtom': ['$']}</td>
+      <td>{'mulExpAtom': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>addExp</th>
+      <td>{'addExp': ['!', 'unaryExp', 'mulExpAtom', 'addExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'addExp': ['(', 'exp', ')', 'mulExpAtom', 'addExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td>{'addExp': ['+', 'unaryExp', 'mulExpAtom', 'addExpAtom']}</td>
+      <td></td>
+      <td>{'addExp': ['-', 'unaryExp', 'mulExpAtom', 'addExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'addExp': ['INT', 'mulExpAtom', 'addExpAtom']}</td>
+      <td>{'addExp': ['Ident', 'callFunc', 'mulExpAtom', 'addExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>addExpAtom</th>
+      <td></td>
+      <td>{'addExpAtom': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'addExpAtom': ['$']}</td>
+      <td></td>
+      <td>{'addExpAtom': ['+', 'mulExp', 'addExpAtom']}</td>
+      <td>{'addExpAtom': ['$']}</td>
+      <td>{'addExpAtom': ['-', 'mulExp', 'addExpAtom']}</td>
+      <td></td>
+      <td>{'addExpAtom': ['$']}</td>
+      <td>{'addExpAtom': ['$']}</td>
+      <td>{'addExpAtom': ['$']}</td>
+      <td>{'addExpAtom': ['$']}</td>
+      <td>{'addExpAtom': ['$']}</td>
+      <td>{'addExpAtom': ['$']}</td>
+      <td>{'addExpAtom': ['$']}</td>
+      <td>{'addExpAtom': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>relExp</th>
+      <td>{'relExp': ['!', 'unaryExp', 'mulExpAtom', 'addExpAtom', 'relExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'relExp': ['(', 'exp', ')', 'mulExpAtom', 'addExpAtom', 'relExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td>{'relExp': ['+', 'unaryExp', 'mulExpAtom', 'addExpAtom', 'relExpAtom']}</td>
+      <td></td>
+      <td>{'relExp': ['-', 'unaryExp', 'mulExpAtom', 'addExpAtom', 'relExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'relExp': ['INT', 'mulExpAtom', 'addExpAtom', 'relExpAtom']}</td>
+      <td>{'relExp': ['Ident', 'callFunc', 'mulExpAtom', 'addExpAtom', 'relExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>relExpAtom</th>
+      <td></td>
+      <td>{'relExpAtom': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'relExpAtom': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td>{'relExpAtom': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td>{'relExpAtom': ['$']}</td>
+      <td>{'relExpAtom': ['$']}</td>
+      <td>{'relExpAtom': ['&lt;', 'addExp', 'relExpAtom']}</td>
+      <td>{'relExpAtom': ['&lt;=', 'addExp', 'relExpAtom']}</td>
+      <td>{'relExpAtom': ['$']}</td>
+      <td>{'relExpAtom': ['$']}</td>
+      <td>{'relExpAtom': ['&gt;', 'addExp', 'relExpAtom']}</td>
+      <td>{'relExpAtom': ['&gt;=', 'addExp', 'relExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>eqExp</th>
+      <td>{'eqExp': ['!', 'unaryExp', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'eqExp': ['(', 'exp', ')', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td>{'eqExp': ['+', 'unaryExp', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom']}</td>
+      <td></td>
+      <td>{'eqExp': ['-', 'unaryExp', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'eqExp': ['INT', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom']}</td>
+      <td>{'eqExp': ['Ident', 'callFunc', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>eqExpAtom</th>
+      <td></td>
+      <td>{'eqExpAtom': ['!=', 'relExp', 'eqExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'eqExpAtom': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td>{'eqExpAtom': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td>{'eqExpAtom': ['$']}</td>
+      <td>{'eqExpAtom': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td>{'eqExpAtom': ['$']}</td>
+      <td>{'eqExpAtom': ['==', 'relExp', 'eqExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>assignExp</th>
+      <td>{'assignExp': ['!', 'unaryExp', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom', 'assignExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'assignExp': ['(', 'exp', ')', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom', 'assignExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td>{'assignExp': ['+', 'unaryExp', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom', 'assignExpAtom']}</td>
+      <td></td>
+      <td>{'assignExp': ['-', 'unaryExp', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom', 'assignExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'assignExp': ['INT', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom', 'assignExpAtom']}</td>
+      <td>{'assignExp': ['Ident', 'callFunc', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom', 'assignExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>assignExpAtom</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'assignExpAtom': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td>{'assignExpAtom': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td>{'assignExpAtom': ['$']}</td>
+      <td>{'assignExpAtom': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td>{'assignExpAtom': ['=', 'eqExp', 'assignExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>constExp</th>
+      <td>{'constExp': ['!', 'unaryExp', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom', 'assignExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'constExp': ['(', 'exp', ')', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom', 'assignExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td>{'constExp': ['+', 'unaryExp', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom', 'assignExpAtom']}</td>
+      <td></td>
+      <td>{'constExp': ['-', 'unaryExp', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom', 'assignExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'constExp': ['INT', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom', 'assignExpAtom']}</td>
+      <td>{'constExp': ['Ident', 'callFunc', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom', 'assignExpAtom']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>switchBlock</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'switchBlock': ['switch', '(', 'unaryExp', ')', '{', 'caseBlock', 'argCaseBlock', 'defaultBlock', '}']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>caseBlock</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'caseBlock': ['case', 'constExp', ':', '{', 'switchBlockElem', '}']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>argCaseBlock</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'argCaseBlock': ['case', 'constExp', ':', '{', 'switchBlockElem', '}', 'argCaseBlock']}</td>
+      <td></td>
+      <td></td>
+      <td>{'argCaseBlock': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'argCaseBlock': ['$']}</td>
+    </tr>
+    <tr>
+      <th>defaultBlock</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'defaultBlock': ['default', ':', '{', 'switchBlockElem', '}']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'defaultBlock': ['$']}</td>
+    </tr>
+    <tr>
+      <th>switchBlockElem</th>
+      <td>{'switchBlockElem': ['!', 'unaryExp', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom', 'assignExpAtom', ';', 'switchBlockElem']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'switchBlockElem': ['(', 'exp', ')', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom', 'assignExpAtom', ';', 'switchBlockElem']}</td>
+      <td></td>
+      <td></td>
+      <td>{'switchBlockElem': ['+', 'unaryExp', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom', 'assignExpAtom', ';', 'switchBlockElem']}</td>
+      <td></td>
+      <td>{'switchBlockElem': ['-', 'unaryExp', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom', 'assignExpAtom', ';', 'switchBlockElem']}</td>
+      <td></td>
+      <td></td>
+      <td>{'switchBlockElem': [';', 'switchBlockElem']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'switchBlockElem': ['INT', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom', 'assignExpAtom', ';', 'switchBlockElem']}</td>
+      <td>{'switchBlockElem': ['Ident', 'callFunc', 'mulExpAtom', 'addExpAtom', 'relExpAtom', 'eqExpAtom', 'assignExpAtom', ';', 'switchBlockElem']}</td>
+      <td>{'switchBlockElem': ['break', 'switchBlockElem']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'switchBlockElem': ['return', 'argExp', ';', 'switchBlockElem']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'switchBlockElem': ['{', 'blockItem', '}', 'switchBlockElem']}</td>
+      <td>{'switchBlockElem': ['$']}</td>
+    </tr>
+    <tr>
+      <th>structDef</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'structDef': ['struct', 'structType', '{', 'structBlockElem', '}', 'structVar', ';']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>structType</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'structType': ['Ident']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>structBlockElem</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'structBlockElem': ['char', 'varDef', 'argVarDecl', ';', 'structBlockElem']}</td>
+      <td>{'structBlockElem': ['const', 'bType', 'constDef', 'argConst', ';', 'structBlockElem']}</td>
+      <td></td>
+      <td>{'structBlockElem': ['float', 'varDef', 'argVarDecl', ';', 'structBlockElem']}</td>
+      <td>{'structBlockElem': ['int', 'varDef', 'argVarDecl', ';', 'structBlockElem']}</td>
+      <td></td>
+      <td>{'structBlockElem': ['structDecl', 'structBlockElem']}</td>
+      <td></td>
+      <td>{'structBlockElem': ['unionDecl', 'structBlockElem']}</td>
+      <td>{'structBlockElem': ['void', 'Ident', '(', 'funcFParams', ')', 'block', 'structBlockElem']}</td>
+      <td></td>
+      <td>{'structBlockElem': ['$']}</td>
+    </tr>
+    <tr>
+      <th>structVar</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'structVar': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'structVar': ['Ident', 'argStructVar']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>argStructVar</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'argStructVar': [',', 'Ident', 'argStructVar']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'argStructVar': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>structDecl</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'structDecl': ['struct', 'structType', 'Ident', ';']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>unionDef</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'unionDef': ['union', 'unionType', '{', 'unionBlockElem', '}', 'unionVar', ';']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>unionType</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'unionType': ['Ident']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>unionBlockElem</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'unionBlockElem': ['char', 'varDef', 'argVarDecl', ';', 'unionBlockElem']}</td>
+      <td>{'unionBlockElem': ['const', 'bType', 'constDef', 'argConst', ';', 'unionBlockElem']}</td>
+      <td></td>
+      <td>{'unionBlockElem': ['float', 'varDef', 'argVarDecl', ';', 'unionBlockElem']}</td>
+      <td>{'unionBlockElem': ['int', 'varDef', 'argVarDecl', ';', 'unionBlockElem']}</td>
+      <td></td>
+      <td>{'unionBlockElem': ['struct', 'structType', 'Ident', ';', 'unionBlockElem']}</td>
+      <td></td>
+      <td>{'unionBlockElem': ['unionDecl', 'unionBlockElem']}</td>
+      <td></td>
+      <td></td>
+      <td>{'unionBlockElem': ['$']}</td>
+    </tr>
+    <tr>
+      <th>unionVar</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'unionVar': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'unionVar': ['Ident', 'argUnionVar']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>argUnionVar</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'argUnionVar': [',', 'Ident', 'argUnionVar']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'argUnionVar': ['$']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>unionDecl</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{'unionDecl': ['union', 'unionType', 'Ident', ';']}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+    </body>
+    </html>
+    
