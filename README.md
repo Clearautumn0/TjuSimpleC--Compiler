@@ -5,9 +5,9 @@
 
 ├── input
 
-│   ├── extended_grammars.txt
+│   ├── extended_grammars.txt  //**修改后的文法**
 
-│   ├── lex_input
+│   ├── lex_input		\\项目测试代码保存位置
 
 │   │   ├── test_base_1.c
 
@@ -23,13 +23,13 @@
 
 │   │   ├── test_union.c
 
-├── output
+├── output    
 
 │   ├── grammar_rules.txt
 
 │   ├── grammar_without_left_recursion.txt
 
-│   ├── lex_output   //这里存放
+│   ├── lex_output   //词法分析器分析结果
 
 │   │   ├── lex1.txt
 
@@ -51,7 +51,7 @@
 
 │   │   ├── lex_union.txt
 
-│   ├── parser_output
+│   ├── parser_output   //语法分析器分析结果
 
 │   │   ├── syntax1.txt
 
@@ -67,19 +67,19 @@
 
 │   │   ├── syntax_union.txt
 
-│   ├── parsing_table.html
+│   ├── parsing_table.html    //可视化的分析表内容
 
-│   ├── predictive_parser.txt
+│   ├── predictive_parser.txt   
 
 ├── README.md
 
 ├── show_tree.py
 
-├── src
+├── src      //项目源代码
 
-│   ├── config.py
+│   ├── config.py    //项目配置文件,这里配置项目的输入输出位置,是否打印可视化的分析表
 
-│   ├── Lexer
+│   ├── Lexer   **//词法分析器**
 
 │   │   ├── Data_Deal.py
 
@@ -89,7 +89,7 @@
 
 │   │   ├── helper_func.py
 
-│   │   ├── lexer.py
+│   │   ├── lexer.py    //**词法分析器入口**
 
 │   │   ├── minimize_dfa.py
 
@@ -99,9 +99,9 @@
 
 │   │   ├── __init__.py
 
-│   ├── main.py
+│   ├── main.py    //**词法分析器+语法分析器入口**
 
-│   ├── Syntax
+│   ├── Syntax   //**语法分析器**
 
 │   │   ├── eliminate_left_recursion.py
 
@@ -111,7 +111,7 @@
 
 │   │   ├── lexer_token.py
 
-│   │   ├── parser.py
+│   │   ├── parser.py    //**语法分析器入口**
 
 │   │   ├── parsing_table.py
 
@@ -119,7 +119,7 @@
 
 │   │   ├── __init__.py
 
-│   ├── utils
+│   ├── utils   //**工具函数与工具类**
 
 │   │   ├── lexer_util.py
 
