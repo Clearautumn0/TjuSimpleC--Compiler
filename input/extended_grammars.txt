@@ -21,6 +21,7 @@ bType -> float
 bType -> char
 funcDef -> funcType Ident ( funcFParams ) block
 funcType -> void
+
 funcFParams -> funcFParam argFunctionF
 funcFParams -> $
 argFunctionF -> , funcFParam argFunctionF
@@ -86,7 +87,7 @@ argCaseBlock -> caseBlock argCaseBlock
 argCaseBlock -> $
 defaultBlock -> default : { switchBlockElem }
 defaultBlock -> $
-switchBlockElem -> stmt switchBlockElem
+switchBlockElem -> blockItem switchBlockElem
 switchBlockElem -> $
 stmt -> break
 
@@ -102,7 +103,7 @@ structVar -> $
 argStructVar -> , Ident argStructVar
 argStructVar -> $
 decl -> structDecl
-structDecl -> struct structType Ident ;
+structDecl -> struct structType varDef argVarDecl ;
 funcFParam -> struct structType Ident
 
 
@@ -116,5 +117,5 @@ unionVar -> $
 argUnionVar -> , Ident argUnionVar
 argUnionVar -> $
 decl -> unionDecl
-unionDecl -> union unionType Ident ;
+unionDecl -> union unionType varDef argVarDecl ;
 funcFParam -> union unionType Ident

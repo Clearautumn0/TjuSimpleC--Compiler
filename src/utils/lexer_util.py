@@ -12,17 +12,13 @@ from src.Lexer.Data_Deal import symbols_table, symbols, processed_symbols_table,
 from src.Lexer.helper_func import get_closure, get_next_state, get_char_type, get_tokens
 from src.Lexer.dfa import nfa_determinization
 from src.Lexer.minimize_dfa import minimize
-from src.config import LEX_OUTPUT_DIR,TEST_ID,TEST_CODE_DIR
-
-
-
+from src.config import LEX_OUTPUT_DIR, TEST_ID, TEST_CODE_DIR, LEX_OUTPUT_FILE
 
 
 def lexical_analysis_helper(DFA):
     address=TEST_CODE_DIR
-    output_dir = LEX_OUTPUT_DIR
-    output_filename = f"lex{TEST_ID}.txt"
-    output_path = os.path.join(output_dir, output_filename)
+
+    output_path = LEX_OUTPUT_FILE
     with open(address, 'r') as test_sample, open(output_path, 'w') as record_tokens:
         if not test_sample or not record_tokens:
             print("文件打开失败")

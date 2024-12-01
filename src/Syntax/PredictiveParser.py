@@ -63,6 +63,7 @@ class PredictiveParser:
 
                 if top in self.non_terminals:  # 如果栈顶元素是非终结符
 
+                    # print(top)
                     # 从解析表中查找对应的产生式
                     production_rules = self.parsing_table.get((top, current_input))
 
@@ -72,6 +73,8 @@ class PredictiveParser:
 
                     production = next(iter(production_rules))  # 获取第一个产生式
                     production = production[top]  # 提取产生式右部
+                    if top == 'blockItem':
+                        print(production)
 
                     stack.pop()  # 弹出栈顶非终结符
                     if production != ['$']:  # 如果不是空串，将产生式右部反转后入栈
@@ -82,7 +85,9 @@ class PredictiveParser:
                     step_number += 1
 
                 else:  # 如果栈顶元素是终结符
+                    # print(top)
                     if top == current_input:  # 如果栈顶元素和当前输入匹配
+
                         if top == '#' or top == "EOF":  # 如果栈顶元素是结束符，则说明输入字符串已经全部匹配完毕，成功结束
                             stack.pop()  # 匹配成功，弹出栈顶元素
                             index += 1  # 移动输入指针
@@ -95,9 +100,9 @@ class PredictiveParser:
                             action = f"move"  # 当前操作为移动
                             steps.append((step_number, top, current_input, action))  # 记录当前步骤
                             step_number += 1
-
                     else:
                         print(top)
+                        print(current_input)
                         raise SyntaxError(f"Unexpected symbol: {current_input} at position {index} terminal")
 
         except SyntaxError as e:

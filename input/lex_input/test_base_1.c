@@ -1,4 +1,4 @@
 void main(){
-    int =1;
+    int a=1;
     return 2;
-}
+}a

@@ -20,7 +20,7 @@ def parser():
     grammar = load_from_file(grammar_file_path)
     eliminator = LeftRecursionEliminator(grammar)
     grammar = eliminator.new_productions
-    # print(f"消除左递归后的文法:{grammar_without_left_recursion}")
+    # print(f"消除左递归后的文法:{grammar}")
 
     new_parser = FirstAndFollow(grammar, '$', "program", "#")
     first_set=new_parser.get_first_set()
